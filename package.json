@@ -1,0 +1,26 @@
+{
+	"name": "MMM-VolvoCar",
+	"version": "1.0.0",
+	"description": "A Volvo Car module for Magic Mirror",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/emillundgren/MMM-VolvoCar.git"
+	},
+	"keywords": [
+		"magic mirror",
+		"smart mirror",
+		"mirror UI",
+		"modular",
+        "volvo",
+        "volvo car",
+        "volvo on call"
+	],
+	"author": "Emil Lundgren",
+	"contributors": [
+		"https://github.com/emillundgren/MMM-VolvoCar/graphs/contributors"
+	],
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/emillundgren/MMM-VolvoCar/issues"
+	}
+}
