@@ -1,6 +1,8 @@
+const Log = require("logger");
 const fs = require('fs');
 const got = require('got');
 const querystring = require('querystring');
+const crypto = require('crypto');
 
 const EXPIRYTHRESHOLD = 3300;
 
@@ -18,7 +20,7 @@ class OAuth {
 
   getAuthorizationParameters() {
     // Generate a random state value for the request
-    const csrfState = Math.random().toString(36).substring(7);
+    const csrfState = crypto.randomUUID();
 
     // Setup the required query parameters
     const queryParams = {
@@ -30,10 +32,10 @@ class OAuth {
     };
 
     // Generate the full Authorization URL
-    const authorizationUrl = `${this.authUrl}?${querystring.stringify(queryParams)}`
+    const fullAuthUrl = `${this.authUrl}?${querystring.stringify(queryParams)}`
 
     // Return both the URL and the state parameter so we can save this in a cookie
-    return [authorizationUrl, csrfState];
+    return [fullAuthUrl, csrfState];
   }
 
   async getToken(authCode, callback) {
@@ -44,20 +46,19 @@ class OAuth {
             body: querystring.stringify({
                 grant_type: 'authorization_code',
                 code: authCode,
-                redirect_uri: this.redirectUri,
-                client_id: this.client_id,
-                client_secret: this.client_secret
+                redirect_uri: this.redirectUri
             }),
             headers: {
                 'User-Agent': 'MMM-VolvoCar',
                 'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Basic ${Buffer.from(this.client_id+':'+this.client_secret).toString('base64')}`,
             }
         });
 
         self.saveAndInitToken(response.body);
         callback();
     } catch (error) {
-        console.log('error:', error);
+        Log.error(error);
     }
   }
 
@@ -68,35 +69,34 @@ class OAuth {
         const response = await got.post(this.tokenUrl, {
             body: querystring.stringify({
                 grant_type: 'refresh_token',
-                refresh_token: this.refresh_token,
-                client_id: this.client_id,
-                client_secret: this.client_secret
+                refresh_token: this.refresh_token
             }),
             headers: {
                 'User-Agent': 'MMM-VolvoCar',
                 'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Basic ${Buffer.from(this.client_id+':'+this.client_secret).toString('base64')}`,
             }
         });
 
         self.saveAndInitToken(response.body);
         callback();
     } catch (error) {
-        console.log('error:', error);
+        Log.error(error);
     }
   }
 
   initTokenFromFile() {
     try {
-      console.log('Init token from file' + this.tokenFile);
+      Log.log(`Init token from file ${this.tokenFile}`);
       if (fs.existsSync(this.tokenFile)) {
         var data = fs.readFileSync(this.tokenFile, 'utf8');
         this.initToken(JSON.parse(data));
       }
       else {
-        console.log('No token file found');
+        Log.info('No token file found');
       }
-    } catch (err) {
-      console.error(err)
+    } catch (error) {
+      Log.error(error)
     }
   }
 
@@ -108,8 +108,8 @@ class OAuth {
   }
 
   isExpired() {
-    console.log(`isExpired date:  ${(new Date().getTime() > (this.expiry_time - EXPIRYTHRESHOLD))}`)
-    console.log(`Expiry_time: ${this.expiry_time}, datenow: ${new Date().getTime()}, threshold: ${EXPIRYTHRESHOLD}`)
+    Log.log(`isExpired:  ${(new Date().getTime() > (this.expiry_time - EXPIRYTHRESHOLD))}`)
+    Log.log(`Expiry_time: ${this.expiry_time}, datenow: ${new Date().getTime()}, threshold: ${EXPIRYTHRESHOLD}`)
     if (isNullOrUndefined(this.access_token) || this.access_token.length === 0) return true;
     return (new Date().getTime() > (this.expiry_time - EXPIRYTHRESHOLD));
   }
@@ -122,7 +122,7 @@ class OAuth {
       this.initToken(token);
       fs.writeFileSync(this.tokenFile, JSON.stringify(token));
     } catch (error) {
-      console.log(error);
+      Log.error(error);
     }
   }
 

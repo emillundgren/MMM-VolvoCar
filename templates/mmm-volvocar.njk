@@ -1,0 +1,14 @@
+{% if loading %}
+    <div class="small dimmed light">
+        LOADING...
+    </div>
+{% elif not authenticated %}
+    <div class="small dimmed light">
+        <a href="/MMM-VolvoCar/auth">Authenticate</a>
+    </div>
+{% else %}
+<div class="small dimmed light">
+    <p>VALUES: {{carData.electricRange.value}} {{carData.electricRange.unit}}</p>
+    <progress max="100" value="{{carData.batteryChargeLevel.value}}" data-label="50%"></progress>
+</div>
+{% endif %}
