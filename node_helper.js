@@ -124,8 +124,6 @@ module.exports = NodeHelper.create({
 
       // Get Promises from the Volvo API
       const getRechargeStatus = this.volvoApiClient.getRechargeStatus(this.authClient.access_token);
-      const getBatteryChargeLevel = this.volvoApiClient.getBatteryChargeLevel(this.authClient.access_token);
-      const getElectricRange = this.volvoApiClient.getElectricRange(this.authClient.access_token);
 
       //Resolv the Promises and merge the data into a single object
       Promise.all([
