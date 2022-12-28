@@ -127,28 +127,15 @@ module.exports = NodeHelper.create({
       const getBatteryChargeLevel = this.volvoApiClient.getBatteryChargeLevel(this.authClient.access_token);
       const getElectricRange = this.volvoApiClient.getElectricRange(this.authClient.access_token);
 
-      //Resolv the Promises and merge the data into a single object
-      getRechargeStatus.then((response) => {
-        //self.sendSocketNotification('UPDATE_DATA_ON_MM', response);
-        //Log.log(response.data);
-
-        const carJson = {data: {}};
-        carJson.data = response.data;
-        self.sendSocketNotification('UPDATE_DATA_ON_MM', carJson);
+      Promise.all([
+        getBatteryChargeLevel,
+        getElectricRange
+      ]).then((objects) => {
+        const mergedData = Object.assign({}, ...objects.map(o => o.data));
+        const mergedObject = { data: mergedData };
+        Log.log(mergedObject);
+        self.sendSocketNotification('UPDATE_DATA_ON_MM', mergedObject);
       });
-
-      
-      /* getBatteryChargeLevel.then((response) => {
-        //self.sendSocketNotification('UPDATE_DATA_ON_MM', response);
-        Log.log(response);
-      }); */
-
-      
-      /* getElectricRange.then((response) => {
-        //self.sendSocketNotification('UPDATE_DATA_ON_MM', response);
-        Log.log(response);
-      }); */
-
     }
   },
 });
