@@ -123,13 +123,27 @@ module.exports = NodeHelper.create({
       }
 
       // Get Promises from the Volvo API
+      // Energy API
+      /* const getRechargeStatus = this.volvoApiClient.getRechargeStatus(this.authClient.access_token); */
+      
+      // Connected Vehicle API
       const getFuel = this.volvoApiClient.getFuel(this.authClient.access_token);
+      const getStatistics = this.volvoApiClient.getStatistics(this.authClient.access_token);
+      const getDoorsStatus = this.volvoApiClient.getDoorsStatus(this.authClient.access_token);
       const getOdometer = this.volvoApiClient.getOdometer(this.authClient.access_token);
+      const getDiagnostics = this.volvoApiClient.getDiagnostics(this.authClient.access_token);
 
       //Resolv the Promises and merge the data into a single object
       Promise.all([
+        // Energy API
+        /* getRechargeStatus, */
+
+        // Connected Vehicle API
         getFuel,
-        getOdometer
+        getStatistics,
+        getDoorsStatus,
+        getOdometer,
+        getDiagnostics,
       ]).then((objects) => {
         const mergedData = Object.assign({}, ...objects.map(o => o.data));
         const mergedObject = { data: mergedData };

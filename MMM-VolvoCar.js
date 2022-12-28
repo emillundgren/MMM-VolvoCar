@@ -5,6 +5,7 @@ Module.register("MMM-VolvoCar", {
       client_secret: null,
       vcc_api_key: null,
       car_vin: null,
+      car_type: null,
     },
 
     // Create loading variable, set to true by default
@@ -24,7 +25,10 @@ Module.register("MMM-VolvoCar", {
 
     // Get the CSS-file for the module
     getStyles: function() {
-      return [this.file('MMM-VolvoCar.css')]
+      return [
+        this.file('MMM-VolvoCar.css'),
+        'font-awesome.css',
+      ]
     },
 
     // The template of how the data is shown on the mirror

@@ -7,8 +7,35 @@
         <a href="/MMM-VolvoCar/auth">Authenticate</a>
     </div>
 {% else %}
-<div class="small dimmed light">
-    <p>VALUES: {{carData.electricRange.value}} {{carData.electricRange.unit}}</p>
-    <progress max="100" value="{{carData.batteryChargeLevel.value}}" data-label="50%"></progress>
+<div class="MMM-VolvoCar wrapper">
+    <div class="statusbars">
+        <table width="100%">
+            {% if config.car_type in ["petrol","diesel","hybrid"] and carData.fuelAmount.value %}
+            <tr class="fuelbar">
+                <td class="text"><span><i class="fa-solid fa-gas-pump"></i> {{carData.distanceToEmpty.value}} km</span></td>
+                <td class="bar"><progress class="{{ 'danger' if carData.fuelAmount.value | int < 20 }}" max="71" value="{{carData.fuelAmount.value}}" /></td>
+            </tr>
+            {% endif %}
+            {% if config.car_type in ["electric","hybrid"] and carData.electricRange.value %}
+            <tr class="electricbar">
+                {% if carData.chargingSystemStatus.value in ["CHARGING_SYSTEM_CHARGING"] %}
+                <td class="text"><span><i class="fa-solid fa-plug"></i> {{carData.estimatedChargingTime.value}} min</span></td>
+                {% else %}
+                <td class="text"><span><i class="fa-solid fa-bolt"></i> {{carData.electricRange.value}} km</span></td>
+                {% endif %}
+                <td class="bar"><progress max="100" value="{{carData.batteryChargeLevel.value}}" /></td>
+            </tr>
+            {% endif %}
+        </table>
+        <table width="100%">
+            <tr class="statusbar">
+                {% if carData.carLocked.value %}<td>{% if carData.carLocked.value in ["LOCKED"] %}<i class="fa-solid fa-lock"></i> {{carData.carLocked.value}}{% endif %}{% if carData.carLocked.value in ["UNLOCKED"] %}<i class="fa-solid fa-lock-open"></i> {{carData.carLocked.value}}{% endif %}</td>{% endif %}
+                {% if carData.odometer.value %}<td><i class="fa-solid fa-road"></i> {{carData.odometer.value}} km</td>{% endif %}
+                {% if carData.averageSpeed.value %}<td><i class="fa-solid fa-gauge-high"></i> {{carData.averageSpeed.value}} km/h</td>{% endif %}
+                {% if carData.averageFuelConsumption.value %}<td><i class="fa-solid fa-gauge-high"></i> {{carData.averageFuelConsumption.value}} L/100km</td>{% endif %}
+                {% if carData.externalTemp.value %}<td><i class="fa-solid fa-temperature-three-quarters"></i> {{carData.externalTemp.value}} °C</td>{% endif %}
+            </tr>
+        </table>
+    </div>
 </div>
 {% endif %}
