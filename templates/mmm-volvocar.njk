@@ -32,7 +32,7 @@
                 {% if carData.carLocked.value %}<td>{% if carData.carLocked.value in ["LOCKED"] %}<i class="fa-solid fa-lock"></i> {{carData.carLocked.value}}{% endif %}{% if carData.carLocked.value in ["UNLOCKED"] %}<i class="fa-solid fa-lock-open"></i> {{carData.carLocked.value}}{% endif %}</td>{% endif %}
                 {% if carData.odometer.value %}<td><i class="fa-solid fa-road"></i> {{carData.odometer.value}} km</td>{% endif %}
                 {% if carData.averageSpeed.value %}<td><i class="fa-solid fa-gauge-high"></i> {{carData.averageSpeed.value}} km/h</td>{% endif %}
-                {% if carData.averageFuelConsumption.value %}<td><i class="fa-solid fa-gauge-high"></i> {{carData.averageFuelConsumption.value}} L/100km</td>{% endif %}
+                {% if carData.averageFuelConsumption.value %}<td><i class="fa-solid fa-chart-line"></i> {{carData.averageFuelConsumption.value}} L/100km</td>{% endif %}
                 {% if carData.externalTemp.value %}<td><i class="fa-solid fa-temperature-three-quarters"></i> {{carData.externalTemp.value}} °C</td>{% endif %}
             </tr>
         </table>
