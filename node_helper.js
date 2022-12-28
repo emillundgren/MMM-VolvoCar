@@ -123,12 +123,13 @@ module.exports = NodeHelper.create({
       }
 
       // Get Promises from the Volvo API
-      const getRechargeStatus = this.volvoApiClient.getRechargeStatus(this.authClient.access_token);
+      const getFuel = this.volvoApiClient.getFuel(this.authClient.access_token);
+      const getOdometer = this.volvoApiClient.getOdometer(this.authClient.access_token);
 
       //Resolv the Promises and merge the data into a single object
       Promise.all([
-        getBatteryChargeLevel,
-        getElectricRange
+        getFuel,
+        getOdometer
       ]).then((objects) => {
         const mergedData = Object.assign({}, ...objects.map(o => o.data));
         const mergedObject = { data: mergedData };
