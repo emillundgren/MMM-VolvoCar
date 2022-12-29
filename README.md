@@ -53,7 +53,7 @@ A MagicMirror Module for displaying data from your Volvo car
 | `car_vin` | The VIN-code for your car. | `null` | A string with the VIN-code |
 | `car_type` | The type of car | `null` | `electric` or `hybrid` or `petrol` or `diesel` |
 | `fuel_tank_capacity` | The size of your fuel tank. _Only needed if  your `car_type` is not `electric`_ | `60` | Any positive integer |
-| `display` | See more under [Display](#configuration-options---display) |
+| `display` | See more under [Display](#configuration-options---display) |  |  |
 
 ## Configuration options - Display
 | **Option** | **Description**| **Default value** | **Possible values** |
