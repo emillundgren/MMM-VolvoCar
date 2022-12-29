@@ -1,23 +1,133 @@
-.text {
-    width: 10%;
-}
-.bar {
-    width: 90%;
-}
-.statusbars .bar progress {
-    width: 100%;
-    height: 2rem;
-    accent-color: green;
+/*
+** VARIABLES
+*/
+:root {
+	--color-statusbar-default: #717582;
+	--color-statusbar-background: #35393d;
+	--color-warning: #ffc107;
+	--color-danger: #dc3545;
 }
 
-.fa-lock-open {
-    color: red;
+/*
+** BASE STRUCTURE
+*/
+.wrapper {
+	width: calc(100vw / 3);
+	min-width: 450px;
+}
+
+.container {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+}
+
+.container>* {
+	flex: 0 0 auto;
+}
+
+.item {
+	width: 50%;
+}
+
+.divider {
+	border-top: 1px dashed var(--color-text);
+	margin: 0.5em 0;
+}
+
+/*
+** STYLE: statusbar
+*/
+.statusbar>.align-left {
+	width: 25% !important;
+}
+
+.statusbar>.align-right {
+	width: 75% !important;
+}
+
+.statusbar>div>.statusbar-container {
+	width: auto;
+	height: 20px;
+	background: var(--color-statusbar-background);
+	border-radius: 1em;
+	overflow: hidden;
+}
+
+.statusbar>div>.statusbar-container>.statusbar-bar {
+	height: 100%;
+	text-align: center;
+	color: #000 !important;
+	font-size: var(--font-size-xsmall);
+	border-radius: 0 1em 1em 0;
+	background: var(--color-statusbar-default);
+}
+
+.statusbar>div>.statusbar-container>.statusbar-bar>.statusbar-text {
+	line-height: var(--font-size);
+}
+
+/*
+** STYLE: info-icons
+*/
+.info-icons>.item:nth-child(odd) {
+	text-align: left;
+}
+
+.info-icons>.item:nth-child(even) {
+	text-align: right;
+}
+
+/*
+** STYLE: alert-icons
+*/
+.alert-icons {
+	text-align: center;
+}
+
+.alert-icons>.item {
+	width: auto;
+	font-size: var(--font-size-xsmall);
+	line-height: var(--font-size);
+	color: #000;
+	background-color: var(--color-danger) !important;
+	padding: 0 0.5em 0 0.5em;
+	margin: 0.5em 0.25em 0 0;
+	border-radius: 0.5em;
+}
+
+/*
+** OVERRIDES
+*/
+.hide {
+	display: none;
+}
+
+.align-left {
+	text-align: left !important;
+}
+
+.align-center {
+	text-align: center !important;
+}
+
+.align-right {
+	text-align: right !important;
 }
 
 .warning {
-    accent-color: yellow !important;
+	color: var(--color-warning) !important;
+}
+
+.warning-bg {
+	background-color: var(--color-warning) !important;
 }
 
 .danger {
-    accent-color: red !important;
+	color: var(--color-danger) !important;
+}
+
+.danger-bg {
+	background-color: var(--color-danger) !important;
 }
