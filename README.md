@@ -47,13 +47,13 @@ A MagicMirror Module for displaying data from your Volvo car
 | **Option** | **Description**| **Default value** | **Possible values** |
 | --- | --- | --- | --- |
 | `updateInterval` | How often the module should fetch new data from the APIs (milliseconds) | `10 * 60 * 1000` _10 minutes_ | Any positive integer (milliseconds) |
-| `client_id` | The client_id for your application. See Authorization | `null` | A string with the client_id |
-| `client_secret` | The client_secret for your application. See Authorization | `null` | A string with the client_secret |
-| `vcc_api_key` | The vcc_api_key for your application. See Authorization | `null` | A string with the vcc_api_key |
+| `client_id` | The client_id for your application. See more under [Authorization](#authorization) | `null` | A string with the client_id |
+| `client_secret` | The client_secret for your application. See more under [Authorization](#authorization) | `null` | A string with the client_secret |
+| `vcc_api_key` | The vcc_api_key for your application. See more under [Authorization](#authorization) | `null` | A string with the vcc_api_key |
 | `car_vin` | The VIN-code for your car. | `null` | A string with the VIN-code |
 | `car_type` | The type of car | `null` | `electric` or `hybrid` or `petrol` or `diesel` |
 | `fuel_tank_capacity` | The size of your fuel tank. _Only needed if  your `car_type` is not `electric`_ | `60` | Any positive integer |
-| `display` | See more under Configuration options - Display |  |  |
+| `display` | See more under [Display](#configuration-options---display) |  |  |
 
 ## Configuration options - Display
 | **Option** | **Description**| **Default value** | **Possible values** |
@@ -61,11 +61,13 @@ A MagicMirror Module for displaying data from your Volvo car
 | `statusbar` | Show or hide the statusbars | `true` | `true` or `false` |
 | `info_icons` | Show or hide the info icons | `true` | `true` or `false` |
 | `alert_icons` | Show or hide the alert icons | `true` | `true` or `false` |
-| `statusbar_color` | See more under Configuration options - Display - Statusbar Color |  |  |
+| `statusbar_color` | See more under [Statusbar Color](#configuration-options---statusbar-color) |  |  |
 
-## Configuration options - Display - Statusbar Color
+## Configuration options - Statusbar Color
 | **Option** | **Description**| **Default value** | **Possible values** |
 | --- | --- | --- | --- |
 | `active` | Active or inactivate the warning colors on the statusbar | `true` | `true` or `false` |
 | `warning` | Set the `from`/`until` values for when the warning color should be displayed | `{ from: 20, until: 11 },` | `from` and `until` take any positive integer between `0` and `100` |
 | `danger` | Set the `from`/`until` values for when the danger color should be displayed | `{ from: 20, until: 11 },` | `from` and `until` take any positive integer between `0` and `100` |
+
+## Authorization
