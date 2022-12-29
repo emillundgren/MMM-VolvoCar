@@ -62,7 +62,10 @@ Module.register("MMM-VolvoCar", {
       if (notification === 'MODULE_READY') {
         this.loading = false;
         this.authenticated = true;
+
+        // Do an initial fetch of the data and then start the loop of updating the data
         this.sendSocketNotification('GET_CAR_DATA');
+        self.startLoop();
       }
 
       // Redraw the module with the new data
@@ -70,5 +73,13 @@ Module.register("MMM-VolvoCar", {
         this.carData = payload.data;
         self.updateDom();
       }
-    }
+    },
+
+    // Start the loop that refreshes the data based on the set updateInterval
+    startLoop: function() {
+      Log.log(this.name + ' is starting the update loop');
+      window.setInterval(() => {
+        this.sendSocketNotification('GET_CAR_DATA');
+      }, this.config.updateInterval);
+    },
   });

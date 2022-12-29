@@ -8,16 +8,16 @@ module.exports = NodeHelper.create({
   // Defaults for the node_helper
   defaults: {
     // OAuth2 Parameters
-    authUrl:      'https://volvoid.eu.volvocars.com/as/authorization.oauth2',
-    tokenUrl:     'https://volvoid.eu.volvocars.com/as/token.oauth2',
+    authUrl: 'https://volvoid.eu.volvocars.com/as/authorization.oauth2',
+    tokenUrl: 'https://volvoid.eu.volvocars.com/as/token.oauth2',
     redirect_uri: 'http://localhost:8080/MMM-VolvoCar/callback',
-    scope:        'openid',
+    scope: 'openid',
 
     // Local storage of access_token
-    tokenFile:    './modules/MMM-VolvoCar/tokens.json',
+    tokenFile: './modules/MMM-VolvoCar/tokens.json',
 
     // API Parameters
-    apiBaseUrl:   'https://api.volvocars.com',
+    apiBaseUrl: 'https://api.volvocars.com',
   },
 
   // Create config object for the node_helper
@@ -80,8 +80,8 @@ module.exports = NodeHelper.create({
       }
 
       // Make sure that we have needed credential set in the config
-      if (!this.config.client_id || !this.config.client_secret || !this.config.vcc_api_key || !this.config.car_vin) {
-        Log.error(this.name + ' - SET_CONFIG: Either client_id, client_secret, vcc_api_key or car_vin is not set, exiting...');
+      if (!this.config.client_id || !this.config.client_secret || !this.config.vcc_api_key || !this.config.car_vin || !this.config.car_type) {
+        Log.error(this.name + ' - SET_CONFIG: Either client_id, client_secret, vcc_api_key, car_vin or car_type is not set, exiting...');
         return;
       }
 
@@ -105,7 +105,7 @@ module.exports = NodeHelper.create({
           });
         }
         else
-        self.sendSocketNotification('SHOW_LOGIN');
+          self.sendSocketNotification('SHOW_LOGIN');
       }
       else {
         self.sendSocketNotification('MODULE_READY');
@@ -122,33 +122,22 @@ module.exports = NodeHelper.create({
         return;
       }
 
-      // Get Promises from the Volvo API
-      // Energy API
-      /* const getRechargeStatus = this.volvoApiClient.getRechargeStatus(this.authClient.access_token); */
-      
-      // Connected Vehicle API
-      const getFuel = this.volvoApiClient.getFuel(this.authClient.access_token);
-      const getStatistics = this.volvoApiClient.getStatistics(this.authClient.access_token);
-      const getDoorsStatus = this.volvoApiClient.getDoorsStatus(this.authClient.access_token);
-      const getOdometer = this.volvoApiClient.getOdometer(this.authClient.access_token);
-      const getDiagnostics = this.volvoApiClient.getDiagnostics(this.authClient.access_token);
-
-      //Resolv the Promises and merge the data into a single object
+      // Fetch the needed data from the API
       Promise.all([
         // Energy API
-        /* getRechargeStatus, */
+        this.volvoApiClient.getRechargeStatus(this.authClient.access_token),
 
         // Connected Vehicle API
-        getFuel,
-        getStatistics,
-        getDoorsStatus,
-        getOdometer,
-        getDiagnostics,
+        /* this.volvoApiClient.getFuel(this.authClient.access_token),
+        this.volvoApiClient.getStatistics(this.authClient.access_token),
+        this.volvoApiClient.getDoorsStatus(this.authClient.access_token),
+        this.volvoApiClient.getOdometer(this.authClient.access_token),
+        this.volvoApiClient.getDiagnostics(this.authClient.access_token), */
       ]).then((objects) => {
-        const mergedData = Object.assign({}, ...objects.map(o => o.data));
-        const mergedObject = { data: mergedData };
-        Log.log(mergedObject);
-        self.sendSocketNotification('UPDATE_DATA_ON_MM', mergedObject);
+        const mergedObjects = Object.assign({}, ...objects.map(object => object.data));
+        const carData = { data: mergedObjects };
+        Log.log(carData);
+        self.sendSocketNotification('UPDATE_DATA_ON_MM', carData);
       });
     }
   },
