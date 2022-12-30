@@ -1,6 +1,7 @@
 Module.register("MMM-VolvoCar", {
 	defaults: {
 		updateInterval: 10 * 60 * 1000,
+		useApiSampleData: true,
 		client_id: null,
 		client_secret: null,
 		vcc_api_key: null,

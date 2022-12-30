@@ -1,6 +1,7 @@
 const NodeHelper = require("node_helper");
 const Log = require("logger");
 const got = require('got');
+const fs = require('fs');
 const OAuth = require('./auth/oauth.js');
 const VolvoApis = require('./api/volvo.js');
 
@@ -18,6 +19,7 @@ module.exports = NodeHelper.create({
 
 		// API Parameters
 		apiBaseUrl: 'https://api.volvocars.com',
+		apiSampleDataFile: './modules/MMM-VolvoCar/sampleData.json',
 	},
 
 	// Create config object for the node_helper
@@ -87,13 +89,13 @@ module.exports = NodeHelper.create({
 
 			// If no authClient is created, create one!
 			if (this.authClient === null) {
-				Log.info("AUTHCLIENT IS NULL - CREATING A NEW CLIENT");
+				Log.info(`${this.name} - Setting up OAuth2 client`);
 				this.authClient = new OAuth(this.config);
 			}
 
 			// If no volvoApiClient is created, create one!
 			if (this.volvoApiClient === null) {
-				Log.info("VOLVOAPICLIENT IS NULL - CREATING A NEW CLIENT");
+				Log.info(`${this.name} - Setting up Volvo Cars API client`);
 				this.volvoApiClient = new VolvoApis(this.config);
 			}
 
@@ -122,17 +124,26 @@ module.exports = NodeHelper.create({
 				return;
 			}
 
+			if (this.config.useApiSampleData && fs.existsSync(this.config.apiSampleDataFile)) {
+				Log.log("Displaying data from sampleData.json instead of using the API");
+				var apiSampleData = JSON.parse(fs.readFileSync(this.config.apiSampleDataFile, 'utf8'));
+				//Log.log(JSON.stringify(apiSampleData));
+				Log.log(apiSampleData);
+				self.sendSocketNotification('UPDATE_DATA_ON_MM', apiSampleData);
+				return;
+			}
+
 			// Fetch the needed data from the API
 			Promise.all([
 				// Energy API
 				this.volvoApiClient.getRechargeStatus(this.authClient.access_token),
 
 				// Connected Vehicle API
-				/* this.volvoApiClient.getFuel(this.authClient.access_token),
+				this.volvoApiClient.getFuel(this.authClient.access_token),
 				this.volvoApiClient.getStatistics(this.authClient.access_token),
 				this.volvoApiClient.getDoorsStatus(this.authClient.access_token),
 				this.volvoApiClient.getOdometer(this.authClient.access_token),
-				this.volvoApiClient.getDiagnostics(this.authClient.access_token), */
+				this.volvoApiClient.getDiagnostics(this.authClient.access_token),
 			]).then((objects) => {
 				const mergedObjects = Object.assign({}, ...objects.map(object => object.data));
 				const carData = { data: mergedObjects };

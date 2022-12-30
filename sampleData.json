@@ -1,0 +1,112 @@
+{
+	"data": {
+		"batteryChargeLevel": {
+			"value": "85.0",
+			"unit": "percentage",
+			"timestamp": "2022-09-02T11:33:31.889Z"
+		},
+		"electricRange": {
+			"value": "123",
+			"unit": "kilometers",
+			"timestamp": "2022-09-02T11:33:31.889Z"
+		},
+		"estimatedChargingTime": {
+			"value": "4",
+			"unit": "minutes",
+			"timestamp": "2022-09-02T11:33:31.889Z"
+		},
+		"chargingConnectionStatus": {
+			"value": "CONNECTION_STATUS_CONNECTED_AC",
+			"timestamp": "2022-09-02T11:33:31.889Z"
+		},
+		"chargingSystemStatus": {
+			"value": "CHARGING_SYSTEM_CHARGING",
+			"timestamp": "2022-09-02T11:33:31.889Z"
+		},
+		"fuelAmount": {
+			"value": "39",
+			"unit": "liters",
+			"timestamp": "2022-12-29T19:36:02Z"
+		},
+		"tripMeter1": {
+			"value": "9",
+			"unit": "kilometers",
+			"timestamp": "2022-12-29T19:36:02Z"
+		},
+		"tripMeter2": {
+			"value": "0",
+			"unit": "kilometers",
+			"timestamp": "2022-12-29T19:36:02Z"
+		},
+		"averageFuelConsumption": {
+			"value": "0.4",
+			"unit": "liters_per_100_kilometers",
+			"timestamp": "2022-12-29T19:36:02Z"
+		},
+		"distanceToEmpty": {
+			"value": "510",
+			"unit": "kilometers",
+			"timestamp": "2022-12-29T19:36:02Z"
+		},
+		"averageSpeed": {
+			"value": "304",
+			"unit": "kilometers_per_hour",
+			"timestamp": "2022-12-29T19:36:02Z"
+		},
+		"carLocked": {
+			"value": "LOCKED",
+			"timestamp": "2022-12-29T19:38:04Z"
+		},
+		"frontLeft": {
+			"value": "CLOSED",
+			"timestamp": "2022-12-29T19:38:04Z"
+		},
+		"frontRight": {
+			"value": "CLOSED",
+			"timestamp": "2022-12-29T19:38:04Z"
+		},
+		"rearLeft": {
+			"value": "CLOSED",
+			"timestamp": "2022-12-29T19:38:04Z"
+		},
+		"rearRight": {
+			"value": "CLOSED",
+			"timestamp": "2022-12-29T19:38:04Z"
+		},
+		"hood": {
+			"value": "CLOSED",
+			"timestamp": "2022-12-29T19:38:04Z"
+		},
+		"tailGate": {
+			"value": "CLOSED",
+			"timestamp": "2022-12-29T19:38:04Z"
+		},
+		"odometer": {
+			"value": "99",
+			"unit": "kilometers",
+			"timestamp": "2022-12-29T19:36:02Z"
+		},
+		"engineHoursToService": {
+			"value": "630",
+			"unit": "hours",
+			"timestamp": "2022-12-29T19:36:02Z"
+		},
+		"serviceStatus": {
+			"value": "332",
+			"timestamp": "2022-12-29T19:36:02Z"
+		},
+		"kmToService": {
+			"value": "29006",
+			"unit": "kilometers",
+			"timestamp": "2022-12-29T19:36:02Z"
+		},
+		"washerFluidLevel": {
+			"value": "WASHER_FLUID_LEVEL_STATUS_OFF",
+			"timestamp": "2022-12-29T19:36:02Z"
+		},
+		"serviceTrigger": {
+			"value": "SERVICE_WARNING_NO_SERVICE_REMINDER_TRIGGERED",
+			"timestamp": "2022-12-29T19:36:02Z"
+		}
+	}
+}
