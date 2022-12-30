@@ -22,8 +22,8 @@
 {% endmacro %}
 
 {# ACTIVATE ALERT SECTION BASED ON CERTAIN PROPERTY VALUES #}
-{% if carData.hood.value in ["OPEN"] %}{% set hoodOpen = true %}{% set noActiveAlerts = false %}{% endif %}
-{% if carData.tailGate.value in ["OPEN"] %}{% set tailGateOpen = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if carData.hood.value | lower in ["open"] %}{% set hoodOpen = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if carData.tailGate.value | lower in ["open"] %}{% set tailGateOpen = true %}{% set noActiveAlerts = false %}{% endif %}
 
 {# CONTENT SECTION #}
 {% if loading %}
