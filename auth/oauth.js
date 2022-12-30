@@ -8,13 +8,13 @@ const EXPIRYTHRESHOLD = 3300;
 
 class OAuth {
 	constructor(config) {
-		this.client_id = config.client_id;
-		this.client_secret = config.client_secret;
-		this.scope = config.scope;
+		this.client_id = config.authClientId;
+		this.client_secret = config.authClientSecret;
+		this.scope = config.authScope;
 		this.authUrl = config.authUrl;
-		this.tokenUrl = config.tokenUrl;
-		this.redirectUri = config.redirect_uri;
-		this.tokenFile = config.tokenFile;
+		this.tokenUrl = config.authTokenUrl;
+		this.redirect_uri = config.authRedirectUri;
+		this.tokenFile = config.authTokenFile;
 		if (!isNullOrUndefined(this.tokenFile)) this.initTokenFromFile();
 	}
 
@@ -26,7 +26,7 @@ class OAuth {
 		const queryParams = {
 			response_type: 'code',
 			client_id: this.client_id,
-			redirect_uri: this.redirectUri,
+			redirect_uri: this.redirect_uri,
 			scope: this.scope,
 			state: csrfState,
 		};
@@ -46,7 +46,7 @@ class OAuth {
 				body: querystring.stringify({
 					grant_type: 'authorization_code',
 					code: authCode,
-					redirect_uri: this.redirectUri
+					redirect_uri: this.redirect_uri
 				}),
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',

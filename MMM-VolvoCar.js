@@ -1,29 +1,34 @@
 Module.register("MMM-VolvoCar", {
 	defaults: {
-		updateInterval: 10 * 60 * 1000,
-		useApiSampleData: true,
-		client_id: null,
-		client_secret: null,
-		vcc_api_key: null,
-		car_vin: null,
-		car_type: null,
-		fuel_tank_capacity: 60,
-		display: {
-			statusbar: true,
-			info_icons: true,
-			alert_icons: true,
-			statusbar_color: {
-				active: true,
-				warning: {
-					from: 20,
-					until: 11
-				},
-				danger: {
-					from: 10,
-					until: 0
-				}
-			}
-		},
+		moduleDataRefreshInterval: 10 * 60 * 1000,
+
+		// SETTINGS: Authorization
+		authUrl: 'https://volvoid.eu.volvocars.com/as/authorization.oauth2',
+		authTokenUrl: 'https://volvoid.eu.volvocars.com/as/token.oauth2',
+		authRedirectUri: 'http://localhost:8080/MMM-VolvoCar/callback',
+		authScope: 'openid',
+		authClientId: null,
+		authClientSecret: null,
+		authVccApiKey: null,
+		authTokenFile: './modules/MMM-VolvoCar/tokens.json',
+
+		// SETTINGS: API
+		apiBaseUrl: 'https://api.volvocars.com',
+		apiUseSampleDataFile: true,
+		apiSampleDataFile: './modules/MMM-VolvoCar/sampleData.json',
+
+		// SETTINGS: Car
+		carType: null,
+		carVin: null,
+		carFuelTankSize: 60,
+
+		// SETTINGS: Display
+		hideStatusbar: false,
+		hideInfoIcons: false,
+		hideAlertIcons: false,
+		useStatusbarColor: true,
+		statusbarColorDangerMinMax: [0, 10],
+		statusbarColorWarnMinMax: [11, 20],
 	},
 
 	// Create loading variable, set to true by default
@@ -35,7 +40,7 @@ Module.register("MMM-VolvoCar", {
 	// Create object where the data to display is stored
 	carData: null,
 
-	// Start our module and send the config to the node_module
+	// Start our module and send the config to the node_helper
 	start: function () {
 		Log.info(this.name + ' is starting');
 		this.sendSocketNotification('SET_CONFIG', this.config);
@@ -98,6 +103,6 @@ Module.register("MMM-VolvoCar", {
 		Log.log(this.name + ' is starting the update loop');
 		window.setInterval(() => {
 			this.sendSocketNotification('GET_CAR_DATA');
-		}, this.config.updateInterval);
+		}, this.config.moduleDataRefreshInterval);
 	},
 });

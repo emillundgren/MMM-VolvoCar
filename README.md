@@ -16,58 +16,60 @@ A MagicMirror Module for displaying data from your Volvo car
 	position: "top_right",
 	header: "test header",
 	config: {
-		updateInterval: 10 * 60 * 1000,
-		client_id: null,
-		client_secret: null,
-		vcc_api_key: null,
-		car_vin: null,
-		car_type: null,
-		fuel_tank_capacity: 60,
-		display: {
-			statusbar: true,
-			info_icons: true,
-			alert_icons: true,
-			statusbar_color: {
-				active: true,
-				warning: {
-					from: 20,
-					until: 11
-				},
-				danger: {
-					from: 10,
-					until: 0
-				}
-			}
-		},
+		moduleDataRefreshInterval: 10 * 60 * 1000,
+
+		// SETTINGS: Authorization
+		authUrl: 'https://volvoid.eu.volvocars.com/as/authorization.oauth2',
+		authTokenUrl: 'https://volvoid.eu.volvocars.com/as/token.oauth2',
+		authRedirectUri: 'http://localhost:8080/MMM-VolvoCar/callback',
+		authScope: 'openid',
+		authClientId: null,
+		authClientSecret: null,
+		authVccApiKey: null,
+		authTokenFile: './modules/MMM-VolvoCar/tokens.json',
+
+		// SETTINGS: API
+		apiBaseUrl: 'https://api.volvocars.com',
+		apiUseSampleDataFile: false,
+		apiSampleDataFile: './modules/MMM-VolvoCar/sampleData.json',
+
+		// SETTINGS: Car
+		carType: null,
+		carVin: null,
+		carFuelTankSize: 60,
+
+		// SETTINGS: Display
+		hideStatusbar: false,
+		hideInfoIcons: false,
+		hideAlertIcons: false,
+		useStatusbarColor: true,
+		statusbarColorDangerMinMax: [0, 10],
+		statusbarColorWarnMinMax: [11, 20],
 	}
 },
 ```
 
 ## Configuration options
-| **Option** | **Description**| **Default value** | **Possible values** |
-| --- | --- | --- | --- |
-| `updateInterval` | How often the module should fetch new data from the APIs (milliseconds) | `10 * 60 * 1000` _10 minutes_ | Any positive integer (milliseconds) |
-| `client_id` | The client_id for your application. See more under [Authorization](#authorization) | `null` | A string with the client_id |
-| `client_secret` | The client_secret for your application. See more under [Authorization](#authorization) | `null` | A string with the client_secret |
-| `vcc_api_key` | The vcc_api_key for your application. See more under [Authorization](#authorization) | `null` | A string with the vcc_api_key |
-| `car_vin` | The VIN-code for your car. | `null` | A string with the VIN-code |
-| `car_type` | The type of car | `null` | `electric` or `hybrid` or `petrol` or `diesel` |
-| `fuel_tank_capacity` | The size of your fuel tank. _Only needed if  your `car_type` is not `electric`_ | `60` | Any positive integer |
-| `display` | See more under [Display](#configuration-options---display) |  |  |
-
-## Configuration options - Display
-| **Option** | **Description**| **Default value** | **Possible values** |
-| --- | --- | --- | --- |
-| `statusbar` | Show or hide the statusbars | `true` | `true` or `false` |
-| `info_icons` | Show or hide the info icons | `true` | `true` or `false` |
-| `alert_icons` | Show or hide the alert icons | `true` | `true` or `false` |
-| `statusbar_color` | See more under [Statusbar Color](#configuration-options---statusbar-color) |  |  |
-
-## Configuration options - Statusbar Color
-| **Option** | **Description**| **Default value** | **Possible values** |
-| --- | --- | --- | --- |
-| `active` | Active or inactivate the warning colors on the statusbar | `true` | `true` or `false` |
-| `warning` | Set the `from`/`until` values for when the warning color should be displayed | `{ from: 20, until: 11 },` | `from` and `until` take any positive integer between `0` and `100` |
-| `danger` | Set the `from`/`until` values for when the danger color should be displayed | `{ from: 20, until: 11 },` | `from` and `until` take any positive integer between `0` and `100` |
-
-## Authorization
+| **Option** | **Description**| **Type** | **Default** | **Possible values** |
+| --- | --- | --- | --- | --- |
+| `moduleDataRefreshInterval` | The interval for which the data shown inthe module is refreshed | `number` | `10 * 60 * 1000` | |
+| `authUrl` | The OAuth2 Authorixation URL for the Volvo API | `string` | `https://volvoid.eu.volvocars.com/as/authorization.oauth2` | |
+| `authTokenUrl` | The OAuth2 Token URL for the Volvo API | `string` | `https://volvoid.eu.volvocars.com/as/token.oauth2` | |
+| `authRedirectUri` | The OAuth2 Redirect Callback URL on our module | `string` | `http://localhost:8080/MMM-VolvoCar/callback` | |
+| `authScope` | The needed scopes from the Volvo API | `string` | `openid` | |
+| `authClientId` | Your Volvo API application's client_id | `string` | `null` | |
+| `authClientSecret` | Your Volvo API application's client_secret | `string` | `null` | |
+| `authVccApiKey` | Your Volvo API application's api key | `string` | `null` | |
+| `authTokenFile` | The path for where to store the access_token from the Volvo API | `string` | `./modules/MMM-VolvoCar/tokens.json` |  |
+| `apiBaseUrl` | The base URL for the Volvo API | `string` | `https://api.volvocars.com` | |
+| `apiUseSampleDataFile` | Used to decide if you want to use real data from the API or sample data from the provided file | `boolean` | `false` | `true` or `false` |
+| `apiSampleDataFile` | The path for where your sample data are stored | `string` | `./modules/MMM-VolvoCar/sampleData.json` | |
+| `carType` | The type of car. Used to to decide what info should be shown | `string` | `null` | `electric` or `hybrid` or `petrol` or `diesel` |
+| `carVin` | The VIN-code of your car. Used in API-calls to fetch the data from your car | `string` | `null` | |
+| `carFuelTankSize` | The size of your fuel tank. <br> _Currently needed as this data is not available in the API_ | `number` | `60` | |
+| `hideStatusbar` | Boolean to decide if the statusbars, displaying battery/fuel percentage, should be shown | `boolean` | `false` | `true` or `false` |
+| `hideInfoIcons` | Boolean to decide if the default info icons should be shown | `boolean` | `false` | `true` or `false` |
+| `hideAlertIcons` | Boolean to decide if the alert icons should be shown | `boolean` | `false` | `true` or `false` |
+| `useStatusbarColor` | Boolean to decide if the statusbars should show color when getting low. <br> _Red between values of `statusbarColorDangerMinMax`_ <br>_Yellow between values of `statusbarColorWarnMinMax`_ | `boolean` | `true` | `true` or `false` |
+| `statusbarColorDangerMinMax` | The `min`/`max` percentage values for when to show the danger color | `array` consiting of two `number` | `[0, 10]` | `array` with two valid `number` between `0` and `100` |
+| `statusbarColorWarnMinMax` | The `min`/`max` percentage values for when to show the warning color | `array` consiting of two `number` | `[11, 20]` | `array` with two valid `number` between `0` and `100` |

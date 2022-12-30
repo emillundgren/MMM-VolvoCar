@@ -39,7 +39,7 @@
 			"timestamp": "2022-12-29T19:36:02Z"
 		},
 		"averageFuelConsumption": {
-			"value": "0.4",
+			"value": "6.4",
 			"unit": "liters_per_100_kilometers",
 			"timestamp": "2022-12-29T19:36:02Z"
 		},
@@ -49,7 +49,7 @@
 			"timestamp": "2022-12-29T19:36:02Z"
 		},
 		"averageSpeed": {
-			"value": "304",
+			"value": "43",
 			"unit": "kilometers_per_hour",
 			"timestamp": "2022-12-29T19:36:02Z"
 		},
@@ -82,7 +82,7 @@
 			"timestamp": "2022-12-29T19:38:04Z"
 		},
 		"odometer": {
-			"value": "99",
+			"value": "2749",
 			"unit": "kilometers",
 			"timestamp": "2022-12-29T19:36:02Z"
 		},

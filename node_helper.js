@@ -6,22 +6,6 @@ const OAuth = require('./auth/oauth.js');
 const VolvoApis = require('./api/volvo.js');
 
 module.exports = NodeHelper.create({
-	// Defaults for the node_helper
-	defaults: {
-		// OAuth2 Parameters
-		authUrl: 'https://volvoid.eu.volvocars.com/as/authorization.oauth2',
-		tokenUrl: 'https://volvoid.eu.volvocars.com/as/token.oauth2',
-		redirect_uri: 'http://localhost:8080/MMM-VolvoCar/callback',
-		scope: 'openid',
-
-		// Local storage of access_token
-		tokenFile: './modules/MMM-VolvoCar/tokens.json',
-
-		// API Parameters
-		apiBaseUrl: 'https://api.volvocars.com',
-		apiSampleDataFile: './modules/MMM-VolvoCar/sampleData.json',
-	},
-
 	// Create config object for the node_helper
 	config: {},
 
@@ -73,8 +57,8 @@ module.exports = NodeHelper.create({
 		var self = this;
 
 		if (notification === 'SET_CONFIG') {
-			// Append the node_helper defaults to the main modules config object
-			this.config = Object.assign(this.defaults, payload);
+			// Set the config from the main module to the node_helper
+			this.config = payload;
 
 			// If the authClient is set, check if token is expired and then show login prompt, otherwise start the app
 			if (this.authClient != null) {
@@ -82,8 +66,8 @@ module.exports = NodeHelper.create({
 			}
 
 			// Make sure that we have needed credential set in the config
-			if (!this.config.client_id || !this.config.client_secret || !this.config.vcc_api_key || !this.config.car_vin || !this.config.car_type) {
-				Log.error(this.name + ' - SET_CONFIG: Either client_id, client_secret, vcc_api_key, car_vin or car_type is not set, exiting...');
+			if (!this.config.authClientId || !this.config.authClientSecret || !this.config.authVccApiKey || !this.config.carVin || !this.config.carType) {
+				Log.error(this.name + ' - SET_CONFIG: Either authClientId, authClientSecret, authVccApiKey, carVin or carType is not set, exiting...');
 				return;
 			}
 
@@ -124,11 +108,10 @@ module.exports = NodeHelper.create({
 				return;
 			}
 
-			if (this.config.useApiSampleData && fs.existsSync(this.config.apiSampleDataFile)) {
+			// Use the Sample Data instead of the API
+			if (this.config.apiUseSampleDataFile && fs.existsSync(this.config.apiSampleDataFile)) {
 				Log.log("Displaying data from sampleData.json instead of using the API");
 				var apiSampleData = JSON.parse(fs.readFileSync(this.config.apiSampleDataFile, 'utf8'));
-				//Log.log(JSON.stringify(apiSampleData));
-				Log.log(apiSampleData);
 				self.sendSocketNotification('UPDATE_DATA_ON_MM', apiSampleData);
 				return;
 			}

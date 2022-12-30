@@ -1,24 +1,29 @@
 {# GENERAL VARIABLES #}
 {% if carData.carLocked.value | lower in ["locked"] %}{% set isLocked = true %}{% else %}{% set isLocked = false %}{% endif %}
+{% set noActiveAlerts = true %}
 
 {# FUEL SPECIFIC VARIABLES #}
-{% if config.car_type | lower in ["petrol","diesel","hybrid"] %}{% set fuelPowered = true %}{% else %}{% set fuelPowered = false %}{% endif %}
-{% if carData.fuelAmount.value %}{% set fuelLevelPercentage = ((carData.fuelAmount.value/config.fuel_tank_capacity)*100) | round(0, floor)  %}{% else %}{% set fuelLevelPercentage = 0 %}{% endif %}
+{% if config.carType | lower in ["petrol","diesel","hybrid"] %}{% set fuelPowered = true %}{% else %}{% set fuelPowered = false %}{% endif %}
+{% if carData.fuelAmount.value %}{% set fuelLevelPercentage = ((carData.fuelAmount.value/config.carFuelTankSize)*100) | round(0, floor)  %}{% else %}{% set fuelLevelPercentage = 0 %}{% endif %}
 
 {# ELECTRIC SPECIFIC VARIABLES #}
-{% if config.car_type | lower in ["electric","hybrid"] %}{% set batteryPowered = true %}{% else %}{% set batteryPowered = false %}{% endif %}
+{% if config.carType | lower in ["electric","hybrid"] %}{% set batteryPowered = true %}{% else %}{% set batteryPowered = false %}{% endif %}
 {% if carData.chargingSystemStatus.value | lower in ["charging_system_charging"] %}{% set isCharging = true %}{% else %}{% set isCharging = false %}{% endif %}
 
 {# MACRO TO RETURN A CLASS BASED ON THE PROVIDED VALUE #}
 {% macro setStatusbarColor(val) %}
-    {% if config.display.statusbar_color.active %}
-        {% if val >= config.display.statusbar_color.danger.until and val <= config.display.statusbar_color.danger.from %}
-            danger-bg
-        {% elif val >= config.display.statusbar_color.warning.until and val <= config.display.statusbar_color.warning.from  %}
+    {% if config.useStatusbarColor %}
+        {% if val >= config.statusbarColorWarnMinMax | first and val <= config.statusbarColorWarnMinMax | last %}
             warning-bg
+        {% elif val >= config.statusbarColorDangerMinMax | first and val <= config.statusbarColorDangerMinMax | last %}
+            danger-bg
         {% endif %}
     {% endif %}
 {% endmacro %}
+
+{# ACTIVATE ALERT SECTION BASED ON CERTAIN PROPERTY VALUES #}
+{% if carData.hood.value in ["OPEN"] %}{% set hoodOpen = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if carData.tailGate.value in ["OPEN"] %}{% set tailGateOpen = true %}{% set noActiveAlerts = false %}{% endif %}
 
 {# CONTENT SECTION #}
 {% if loading %}
@@ -31,7 +36,7 @@
     </div>
 {% else %}
     {# STATUSBARS #}
-    <div class="wrapper {{'hide' if not config.display.statusbar}}">
+    <div class="wrapper {{'hide' if config.hideStatusbar}}">
         {# FUEL LEVEL STATUSBAR #}
         <div class="container statusbar {{'hide' if not fuelPowered}}">
             <div class="item align-left">
@@ -64,8 +69,8 @@
     </div>
 
     {# INFO ICONS #}
-    <div class="divider {{'hide' if not config.display.statusbar or not config.display.info_icons}}"></div>
-    <div class="wrapper {{'hide' if not config.display.info_icons}}">
+    <div class="wrapper {{'hide' if config.hideInfoIcons}}">
+        <div class="divider {{'hide' if config.hideStatusbar}}"></div>
         <div class="container info-icons">
             <div class="item {{'hide' if not carData.carLocked.value}}">
                 <i class="fa-solid {{'fa-lock' if isLocked else 'fa-lock-open danger'}}"></i>
@@ -91,36 +96,11 @@
     </div>
 
     {# ALERTS ICONS #}
-    <div class="divider {{'hide' if not config.display.info_icons or not config.display.alert_icons}}"></div>
-    <div class="wrapper {{'hide' if not config.display.alert_icons}}">
+    <div class="wrapper {{'hide' if config.hideAlertIcons or noActiveAlerts}}">
+        <div class="divider {{'hide' if config.hideInfoIcons and config.hideStatusbar}}"></div>
         <div class="container alert-icons">
-            <div class="item">
-                <span>TEST</span>
-            </div>
-            <div class="item">
-                <span>TEST</span>
-            </div>
-            <div class="item">
-                <span>TEST</span>
-            </div>
-            <div class="item">
-                <span>TEST</span>
-            </div>
-            <div class="item">
-                <span>TEST</span>
-            </div>
-            <div class="item">
-                <span>TEST</span>
-            </div>
-            <div class="item">
-                <span>TEST</span>
-            </div>
-            <div class="item">
-                <span>TEST</span>
-            </div>
-            <div class="item">
-                <span>TEST</span>
-            </div>
+            {% if hoodOpen %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>HOOD OPEN</span></div>{% endif %}
+            {% if tailGateOpen %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TAILGATE OPEN</span></div>{% endif %}
         </div>
     </div>
 {% endif %}

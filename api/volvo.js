@@ -3,14 +3,14 @@ const Log = require("logger");
 
 class VolvoApis {
 	constructor(config) {
-		this.vcc_api_key = config.vcc_api_key
+		this.vcc_api_key = config.authVccApiKey
 		this.apiBaseUrl = config.apiBaseUrl
-		this.car_vin = config.car_vin
+		this.carVin = config.carVin
 	}
 
 	async getRechargeStatus(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/energy/v1/vehicles/${this.car_vin}/recharge-status`, {
+			const response = await got(`${this.apiBaseUrl}/energy/v1/vehicles/${this.carVin}/recharge-status`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
@@ -25,7 +25,7 @@ class VolvoApis {
 
 	async getWindowsStatus(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.car_vin}/windows`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/windows`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
@@ -40,7 +40,7 @@ class VolvoApis {
 
 	async getDoorsStatus(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.car_vin}/doors`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/doors`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
@@ -55,7 +55,7 @@ class VolvoApis {
 
 	async getExternalTemp(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.car_vin}/environment`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/environment`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
@@ -70,7 +70,7 @@ class VolvoApis {
 
 	async getVehicleDetails(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.car_vin}`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
@@ -85,7 +85,7 @@ class VolvoApis {
 
 	async getTyres(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.car_vin}/tyres`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/tyres`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
@@ -100,7 +100,7 @@ class VolvoApis {
 
 	async getStatistics(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.car_vin}/statistics`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/statistics`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
@@ -115,7 +115,7 @@ class VolvoApis {
 
 	async getOdometer(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.car_vin}/odometer`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/odometer`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
@@ -130,7 +130,7 @@ class VolvoApis {
 
 	async getFuel(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.car_vin}/fuel`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/fuel`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
@@ -145,7 +145,7 @@ class VolvoApis {
 
 	async getDiagEngine(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.car_vin}/engine`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/engine`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
@@ -160,7 +160,7 @@ class VolvoApis {
 
 	async getDiagnostics(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.car_vin}/diagnostics`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/diagnostics`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
@@ -175,7 +175,7 @@ class VolvoApis {
 
 	async getDiagBrakes(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.car_vin}/brakes`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/brakes`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,

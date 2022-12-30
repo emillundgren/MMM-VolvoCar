@@ -91,7 +91,7 @@
 	font-size: var(--font-size-xsmall);
 	line-height: var(--font-size);
 	color: #000;
-	background-color: var(--color-danger) !important;
+	background-color: var(--color-warning) !important;
 	padding: 0 0.5em 0 0.5em;
 	margin: 0.5em 0.25em 0 0;
 	border-radius: 0.5em;
