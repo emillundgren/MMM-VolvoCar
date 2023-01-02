@@ -45,28 +45,28 @@ Here's an example of a basic config for the module. See full list of available s
 ```
 
 ## Configuration
-| **Option** | **Description**| **Type** | **Default** | **Possible values** |
-| --- | --- | --- | --- | --- |
-| `moduleDataRefreshInterval` | The interval for which the data shown inthe module is refreshed | `number` | `10 * 60 * 1000` | |
-| `authUrl` | The OAuth2 Authorixation URL for the Volvo API | `string` | `https://volvoid.eu.volvocars.com/as/authorization.oauth2` | |
-| `authTokenUrl` | The OAuth2 Token URL for the Volvo API | `string` | `https://volvoid.eu.volvocars.com/as/token.oauth2` | |
-| `authRedirectUri` | The OAuth2 Redirect Callback URL on our module | `string` | `http://localhost:8080/MMM-VolvoCar/callback` | |
-| `authScope` | The needed scopes from the Volvo API | `string` | `openid` | |
-| `authClientId` | Your Volvo API application's client_id | `string` | `null` | |
-| `authClientSecret` | Your Volvo API application's client_secret | `string` | `null` | |
-| `authVccApiKey` | Your Volvo API application's api key | `string` | `null` | |
-| `authTokenFile` | The path for where to store the access_token from the Volvo API | `string` | `./modules/MMM-VolvoCar/tokens.json` |  |
-| `apiBaseUrl` | The base URL for the Volvo API | `string` | `https://api.volvocars.com` | |
-| `apiUseSampleDataFile` | Used to decide if you want to use real data from the API or sample data from the provided file | `boolean` | `false` | `true` or `false` |
-| `apiSampleDataFile` | The path for where your sample data are stored | `string` | `./modules/MMM-VolvoCar/sampleData.json` | |
-| `carType` | The type of car. Used to to decide what info should be shown | `string` | `null` | `electric` or `hybrid` or `petrol` or `diesel` |
-| `carVin` | The VIN-code of your car. Used in API-calls to fetch the data from your car | `string` | `null` | |
-| `carFuelTankSize` | The size of your fuel tank. <br> _Currently needed as this data is not available in the API_ | `number` | `60` | |
-| `hideStatusbar` | Boolean to decide if the statusbars, displaying battery/fuel percentage, should be shown | `boolean` | `false` | `true` or `false` |
-| `hideInfoIcons` | Boolean to decide if the default info icons should be shown | `boolean` | `false` | `true` or `false` |
-| `hideAlertIcons` | Boolean to decide if the alert icons should be shown | `boolean` | `false` | `true` or `false` |
-| `hideLastUpdated,` | Boolean to decide if the last updated timestamp should be shown | `boolean` | `false` | `true` or `false` |
-| `useStatusbarColor` | Boolean to decide if the statusbars should show color when getting low. <br> _Red between values of `statusbarColorDangerMinMax`_ <br>_Yellow between values of `statusbarColorWarnMinMax`_ | `boolean` | `true` | `true` or `false` |
-| `statusbarColorDangerMinMax` | The `min`/`max` percentage values for when to show the danger color | `array` consiting of two `number` | `[0, 10]` | `array` with two valid `number` between `0` and `100` |
-| `statusbarColorWarnMinMax` | The `min`/`max` percentage values for when to show the warning color | `array` consiting of two `number` | `[11, 20]` | `array` with two valid `number` between `0` and `100` |
-| `dateFormat` | The format in which dates should be shown. <br> _Using `moment.js`, more info could be found on [momentjs.com](https://momentjs.com/docs/#/parsing/string/)_ | `string` | `YYYY-MM-DD HH:mm:ss` | |
+| **Setting** | **Description**|
+| --- | --- |
+| `moduleDataRefreshInterval` | The interval for which the data shown inthe module is refreshed <br><br> <ul><li>**Type:** `number`</li><li>**Default:** `10 * 60 * 1000`</li></ul> |
+| `authUrl` | The OAuth2 Authorixation URL for the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `https://volvoid.eu.volvocars.com/as/authorization.oauth2`</li></ul> |
+| `authTokenUrl` | The OAuth2 Token URL for the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `https://volvoid.eu.volvocars.com/as/token.oauth2`</li></ul> |
+| `authRedirectUri` | 	The OAuth2 Redirect Callback URL on our module <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `http://localhost:8080/MMM-VolvoCar/callback`</li></ul> |
+| `authScope` | The needed scopes from the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `openid`</li></ul> |
+| `authClientId` | Your Volvo API application's client_id <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
+| `authClientSecret` | Your Volvo API application's client_secret <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
+| `authVccApiKey` | Your Volvo API application's api key <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
+| `authTokenFile` | The path for where to store the access_token from the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `./modules/MMM-VolvoCar/tokens.json`</li></ul> |
+| `apiBaseUrl` | The base URL for the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `https://api.volvocars.com`</li></ul> |
+| `apiUseSampleDataFile` | Used to decide if you want to use real data from the API or sample data from the provided file <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `false`</li><li>**Possible values** `true` or `false`</li></ul> |
+| `apiSampleDataFile` | The path for where your sample data are stored <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `./modules/MMM-VolvoCar/sampleData.json`</li></ul> |
+| `carType` | The type of car. Used to to decide what info should be shown <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li><li>**Possible values** `electric` or `hybrid` or `petrol` or `diesel`</li></ul> |
+| `carVin` | The VIN-code of your car. Used in API-calls to fetch the data from your car <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
+| `carFuelTankSize` | The size of your fuel tank. <br> _Currently needed as this data is not available in the API_ <br><br> <ul><li>**Type:** `number`</li><li>**Default:** `60`</li></ul> |
+| `hideStatusbar` | Boolean to decide if the statusbars, displaying battery/fuel percentage, should be shown <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `false`</li><li>**Possible values** `true` or `false`</li></ul> |
+| `hideInfoIcons` | Boolean to decide if the default info icons should be shown <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `false`</li><li>**Possible values** `true` or `false`</li></ul> |
+| `hideAlertIcons` | Boolean to decide if the alert icons should be shown <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `false`</li><li>**Possible values** `true` or `false`</li></ul> |
+| `hideLastUpdated` | Boolean to decide if the last updated timestamp should be shown <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `false`</li><li>**Possible values** `true` or `false`</li></ul> |
+| `useStatusbarColor` | Boolean to decide if the statusbars should show color when getting low. <br> _Red between values of `statusbarColorDangerMinMax`_ <br> _Yellow between values of `statusbarColorWarnMinMax`_ <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `true`</li><li>**Possible values** `true` or `false`</li></ul> |
+| `statusbarColorDangerMinMax` | The `min`/`max` percentage values for when to show the warning color <br><br> <ul><li>**Type:** `array` consisting of two `number`</li><li>**Default:** `[0,10]`</li></ul> |
+| `statusbarColorWarnMinMax` | The `min`/`max` percentage values for when to show the warning color <br><br> <ul><li>**Type:** `array` consisting of two `number`</li><li>**Default:** `[11,20]`</li></ul> |
+| `dateFormat` | The format in which dates should be shown. <br> _Using moment.js, more info could be found on [momentjs.com](https://momentjs.com/docs)_ <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `YYYY-MM-DD HH:mm:ss`</li></ul> |
