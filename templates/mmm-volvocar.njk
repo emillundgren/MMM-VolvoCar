@@ -22,8 +22,23 @@
 {% endmacro %}
 
 {# ACTIVATE ALERT SECTION BASED ON CERTAIN PROPERTY VALUES #}
-{% if carData.hood.value | upper in ["OPEN"] %}{% set hoodOpen = true %}{% set noActiveAlerts = false %}{% endif %}
-{% if carData.tailGate.value | upper in ["OPEN"] %}{% set tailGateOpen = true %}{% set noActiveAlerts = false %}{% endif %}
+{# DOORS #}
+{% if carData.doors.frontLeft.value | upper in ["OPEN"] %}{% set doorOpenFL = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if carData.doors.frontRight.value | upper in ["OPEN"] %}{% set doorOpenFR = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if carData.doors.rearLeft.value | upper in ["OPEN"] %}{% set doorOpenRL = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if carData.doors.rearRight.value | upper in ["OPEN"] %}{% set doorOpenRR = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if carData.doors.hood.value | upper in ["OPEN"] %}{% set hoodOpen = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if carData.doors.tailGate.value | upper in ["OPEN"] %}{% set tailGateOpen = true %}{% set noActiveAlerts = false %}{% endif %}
+{# WINDOWS #}
+{% if carData.windows.frontLeft.value | upper in ["OPEN"] %}{% set windowOpenFL = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if carData.windows.frontRight.value | upper in ["OPEN"] %}{% set windowOpenFR = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if carData.windows.rearLeft.value | upper in ["OPEN"] %}{% set windowOpenRL = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if carData.windows.rearRight.value | upper in ["OPEN"] %}{% set windowOpenRR = true %}{% set noActiveAlerts = false %}{% endif %}
+{# TIRES #}
+{% if carData.tires.frontLeft.value | upper not in ["TYRE_PRESSURE_WARNING_TYPE_NO_WARN", "NORMAL"] %}{% set tireAlertFL = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if carData.tires.frontRight.value | upper not in ["TYRE_PRESSURE_WARNING_TYPE_NO_WARN", "NORMAL"] %}{% set tireAlertFR = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if carData.tires.rearLeft.value | upper not in ["TYRE_PRESSURE_WARNING_TYPE_NO_WARN", "NORMAL"] %}{% set tireAlertRL = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if carData.tires.rearRight.value | upper not in ["TYRE_PRESSURE_WARNING_TYPE_NO_WARN", "NORMAL"] %}{% set tireAlertRR = true %}{% set noActiveAlerts = false %}{% endif %}
 
 {# CONTENT SECTION #}
 {% if loading %}
@@ -99,8 +114,23 @@
     <div class="wrapper {{'hide' if config.hideAlertIcons or noActiveAlerts}}">
         <div class="divider {{'hide' if config.hideInfoIcons and config.hideStatusbar}}"></div>
         <div class="container alert-icons">
-            {% if hoodOpen %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>HOOD OPEN</span></div>{% endif %}
+            {# DOORS #}
+            {% if doorOpenFL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>FRONT LEFT DOOR OPEN</span></div>{% endif %}
+            {% if doorOpenFR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>FRONT RIGHT DOOR OPEN</span></div>{% endif %}
+            {% if doorOpenRL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>REAR LEFT DOOR OPEN</span></div>{% endif %}
+            {% if doorOpenRR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>REAR RIGHT DOOR OPEN</span></div>{% endif %}
             {% if tailGateOpen %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TAILGATE OPEN</span></div>{% endif %}
+            {% if hoodOpen %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>HOOD OPEN</span></div>{% endif %}
+            {# WINDOWS #}
+            {% if windowOpenFL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>FRONT LEFT WINDOW OPEN</span></div>{% endif %}
+            {% if windowOpenFR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>FRONT RIGHT WINDOW OPEN</span></div>{% endif %}
+            {% if windowOpenRL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>REAR LEFT WINDOW OPEN</span></div>{% endif %}
+            {% if windowOpenRR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>REAR RIGHT WINDOW OPEN</span></div>{% endif %}
+            {# TIRES #}
+            {% if tireAlertFL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TIRES FRONT LEFT {{carData.tires.frontLeft.value}}</span></div>{% endif %}
+            {% if tireAlertFR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TIRES FRONT RIGHT {{carData.tires.frontRight.value}}</span></div>{% endif %}
+            {% if tireAlertRL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TIRES REAR LEFT {{carData.tires.rearLeft.value}}</span></div>{% endif %}
+            {% if tireAlertRR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TIRES REAR RIGHT {{carData.tires.rearRight.value}}</span></div>{% endif %}
         </div>
     </div>
 

@@ -122,15 +122,21 @@ module.exports = NodeHelper.create({
 				this.volvoApiClient.getRechargeStatus(this.authClient.access_token),
 
 				// Connected Vehicle API
+				this.volvoApiClient.getVehicleDetails(this.authClient.access_token),
+				this.volvoApiClient.getOdometer(this.authClient.access_token),
+				this.volvoApiClient.getDoorsStatus(this.authClient.access_token),
+				this.volvoApiClient.getWindowsStatus(this.authClient.access_token),
+				this.volvoApiClient.getTyres(this.authClient.access_token),
 				this.volvoApiClient.getFuel(this.authClient.access_token),
 				this.volvoApiClient.getStatistics(this.authClient.access_token),
-				this.volvoApiClient.getDoorsStatus(this.authClient.access_token),
-				this.volvoApiClient.getOdometer(this.authClient.access_token),
+				/* this.volvoApiClient.getExternalTemp(this.authClient.access_token), // Currently not returning any data... */
 				this.volvoApiClient.getDiagnostics(this.authClient.access_token),
+				this.volvoApiClient.getDiagEngine(this.authClient.access_token),
+				this.volvoApiClient.getDiagBrakes(this.authClient.access_token),
 			]).then((objects) => {
 				const mergedObjects = Object.assign({}, ...objects.map(object => object.data));
 				const carData = { data: mergedObjects };
-				Log.log(carData);
+				Log.log(JSON.stringify(carData, null, 2));
 				self.sendSocketNotification('UPDATE_DATA_ON_MM', carData);
 			});
 		}
