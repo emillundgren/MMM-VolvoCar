@@ -21,7 +21,7 @@ To use this module, you simply need to clone this repository into your Magic Mir
 	git clone https://github.com/emillundgren/MMM-VolvoCar.git
 	```
 3. Add the module to your Magic Mirror by copying the [Sample Config](#sample-config) below and add that to your `config.js`
-4. Start your Magic Mirror and press the Authenticate link. <br> _For more details about authentication see the [Authentication](authentication.md) section_
+4. Start your Magic Mirror and press the Authenticate link. <br> _For more details about authentication see the [Authentication](AUTHENTICATION.md) section_
 
 ## Sample Config
 Here's an example of a basic config for the module. See full list of available settings below under [Configuration](#configuration)
