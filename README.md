@@ -9,47 +9,42 @@ A MagicMirror Module for displaying data from your Volvo car
 
 ![Example Screenshot](../assets/example.png?raw=true)
 
+## Installation
+To use this module, you simply need to clone this repository into your Magic Mirror's modules folder
+
+1. Navigate to the `modules` folder
+	```bash
+	cd ~/MagicMirror/modules
+	```
+2. Clone the repository
+	```bash
+	git clone https://github.com/emillundgren/MMM-VolvoCar.git
+	```
+3. Add the module to your Magic Mirror by copying the [Sample Config](#sample-config) below and add that to your `config.js`
+4. Start your Magic Mirror and press the Authenticate link. <br> _For more details about authentication see the [Authentication](authentication.md) section_
+
 ## Sample Config
+Here's an example of a basic config for the module. See full list of available settings below under [Configuration](#configuration)
 ```javascript
 {
 	module: "MMM-VolvoCar",
 	position: "top_right",
-	header: "test header",
+	header: "My Volvo Car",
 	config: {
-		moduleDataRefreshInterval: 10 * 60 * 1000,
-
 		// SETTINGS: Authorization
-		authUrl: 'https://volvoid.eu.volvocars.com/as/authorization.oauth2',
-		authTokenUrl: 'https://volvoid.eu.volvocars.com/as/token.oauth2',
-		authRedirectUri: 'http://localhost:8080/MMM-VolvoCar/callback',
-		authScope: 'openid',
-		authClientId: null,
-		authClientSecret: null,
-		authVccApiKey: null,
-		authTokenFile: './modules/MMM-VolvoCar/tokens.json',
-
-		// SETTINGS: API
-		apiBaseUrl: 'https://api.volvocars.com',
-		apiUseSampleDataFile: false,
-		apiSampleDataFile: './modules/MMM-VolvoCar/sampleData.json',
+		authClientId: 'CHANGE_FOR_YOUR_CLIENT_ID',
+		authClientSecret: 'CHANGE_FOR_YOUR_CLIENT_SECRET',
+		authVccApiKey: 'CHANGE_FOR_YOUR_VCC_API_KEY',
 
 		// SETTINGS: Car
-		carType: null,
-		carVin: null,
+		carType: 'hybrid',
+		carVin: 'CHANGE_FOR_YOUR_CAR_VIN',
 		carFuelTankSize: 60,
-
-		// SETTINGS: Display
-		hideStatusbar: false,
-		hideInfoIcons: false,
-		hideAlertIcons: false,
-		useStatusbarColor: true,
-		statusbarColorDangerMinMax: [0, 10],
-		statusbarColorWarnMinMax: [11, 20],
 	}
 },
 ```
 
-## Configuration options
+## Configuration
 | **Option** | **Description**| **Type** | **Default** | **Possible values** |
 | --- | --- | --- | --- | --- |
 | `moduleDataRefreshInterval` | The interval for which the data shown inthe module is refreshed | `number` | `10 * 60 * 1000` | |
@@ -70,6 +65,8 @@ A MagicMirror Module for displaying data from your Volvo car
 | `hideStatusbar` | Boolean to decide if the statusbars, displaying battery/fuel percentage, should be shown | `boolean` | `false` | `true` or `false` |
 | `hideInfoIcons` | Boolean to decide if the default info icons should be shown | `boolean` | `false` | `true` or `false` |
 | `hideAlertIcons` | Boolean to decide if the alert icons should be shown | `boolean` | `false` | `true` or `false` |
+| `hideLastUpdated,` | Boolean to decide if the last updated timestamp should be shown | `boolean` | `false` | `true` or `false` |
 | `useStatusbarColor` | Boolean to decide if the statusbars should show color when getting low. <br> _Red between values of `statusbarColorDangerMinMax`_ <br>_Yellow between values of `statusbarColorWarnMinMax`_ | `boolean` | `true` | `true` or `false` |
 | `statusbarColorDangerMinMax` | The `min`/`max` percentage values for when to show the danger color | `array` consiting of two `number` | `[0, 10]` | `array` with two valid `number` between `0` and `100` |
 | `statusbarColorWarnMinMax` | The `min`/`max` percentage values for when to show the warning color | `array` consiting of two `number` | `[11, 20]` | `array` with two valid `number` between `0` and `100` |
+| `dateFormat` | The format in which dates should be shown. <br> _Using `moment.js`, more info could be found on [momentjs.com](https://momentjs.com/docs/#/parsing/string/)_ | `string` | `YYYY-MM-DD HH:mm:ss` | |

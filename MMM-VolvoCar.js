@@ -1,6 +1,7 @@
 Module.register("MMM-VolvoCar", {
+	// Default settings for the module
 	defaults: {
-		moduleDataRefreshInterval: 10 * 60 * 1000,
+		moduleDataRefreshInterval: 1 * 60 * 1000,
 
 		// SETTINGS: Authorization
 		authUrl: 'https://volvoid.eu.volvocars.com/as/authorization.oauth2',
@@ -26,24 +27,29 @@ Module.register("MMM-VolvoCar", {
 		hideStatusbar: false,
 		hideInfoIcons: false,
 		hideAlertIcons: false,
+		hideLastUpdated: false,
 		useStatusbarColor: true,
 		statusbarColorDangerMinMax: [0, 10],
 		statusbarColorWarnMinMax: [11, 20],
+		dateFormat: 'YYYY-MM-DD HH:mm:ss',
 	},
-
-	// Create loading variable, set to true by default
-	loading: true,
-
-	// Create authenticated variable, set to false by default
-	authenticated: false,
-
-	// Create object where the data to display is stored
-	carData: null,
 
 	// Start our module and send the config to the node_helper
 	start: function () {
 		Log.info(this.name + ' is starting');
+
+		// Assign some default loading variables
+		this.loading = true;
+		this.authenticated = false;
+
 		this.sendSocketNotification('SET_CONFIG', this.config);
+	},
+
+	// Define required scripts.
+	getScripts: function () {
+		return [
+			"moment.js",
+		];
 	},
 
 	// Get the CSS-file for the module
@@ -66,6 +72,7 @@ Module.register("MMM-VolvoCar", {
 			authenticated: this.authenticated,
 			config: this.config,
 			carData: this.carData,
+			lastUpdated: this.lastUpdated
 		};
 		return templateData
 	},
@@ -93,7 +100,10 @@ Module.register("MMM-VolvoCar", {
 
 		// Redraw the module with the new data
 		if (notification === 'UPDATE_DATA_ON_MM') {
+			const now = moment();
+
 			this.carData = payload.data;
+			this.lastUpdated = now.format(this.config.dateFormat);
 			self.updateDom();
 		}
 	},

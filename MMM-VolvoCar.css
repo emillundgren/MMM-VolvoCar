@@ -98,6 +98,19 @@
 }
 
 /*
+** STYLE: Last Updated
+*/
+.last-updated {
+	text-align: end;
+}
+.last-updated >.item {
+	width: 100%;
+	font-style: italic;
+	font-size: var(--font-size-xsmall);
+	color: var(--color-text-dimmed);
+}
+
+/*
 ** OVERRIDES
 */
 .hide {

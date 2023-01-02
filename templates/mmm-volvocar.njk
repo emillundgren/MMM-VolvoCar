@@ -1,14 +1,14 @@
 {# GENERAL VARIABLES #}
-{% if carData.carLocked.value | lower in ["locked"] %}{% set isLocked = true %}{% else %}{% set isLocked = false %}{% endif %}
+{% if carData.carLocked.value | upper in ["LOCKED"] %}{% set isLocked = true %}{% else %}{% set isLocked = false %}{% endif %}
 {% set noActiveAlerts = true %}
 
 {# FUEL SPECIFIC VARIABLES #}
-{% if config.carType | lower in ["petrol","diesel","hybrid"] %}{% set fuelPowered = true %}{% else %}{% set fuelPowered = false %}{% endif %}
+{% if config.carType | upper in ["PETROL","DIESEL","HYBRID"] %}{% set fuelPowered = true %}{% else %}{% set fuelPowered = false %}{% endif %}
 {% if carData.fuelAmount.value %}{% set fuelLevelPercentage = ((carData.fuelAmount.value/config.carFuelTankSize)*100) | round(0, floor)  %}{% else %}{% set fuelLevelPercentage = 0 %}{% endif %}
 
 {# ELECTRIC SPECIFIC VARIABLES #}
-{% if config.carType | lower in ["electric","hybrid"] %}{% set batteryPowered = true %}{% else %}{% set batteryPowered = false %}{% endif %}
-{% if carData.chargingSystemStatus.value | lower in ["charging_system_charging"] %}{% set isCharging = true %}{% else %}{% set isCharging = false %}{% endif %}
+{% if config.carType | upper in ["ELECTRIC","HYBRID"] %}{% set batteryPowered = true %}{% else %}{% set batteryPowered = false %}{% endif %}
+{% if carData.chargingSystemStatus.value | upper in ["CHARGING_SYSTEM_CHARGING"] %}{% set isCharging = true %}{% else %}{% set isCharging = false %}{% endif %}
 
 {# MACRO TO RETURN A CLASS BASED ON THE PROVIDED VALUE #}
 {% macro setStatusbarColor(val) %}
@@ -22,8 +22,8 @@
 {% endmacro %}
 
 {# ACTIVATE ALERT SECTION BASED ON CERTAIN PROPERTY VALUES #}
-{% if carData.hood.value | lower in ["open"] %}{% set hoodOpen = true %}{% set noActiveAlerts = false %}{% endif %}
-{% if carData.tailGate.value | lower in ["open"] %}{% set tailGateOpen = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if carData.hood.value | upper in ["OPEN"] %}{% set hoodOpen = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if carData.tailGate.value | upper in ["OPEN"] %}{% set tailGateOpen = true %}{% set noActiveAlerts = false %}{% endif %}
 
 {# CONTENT SECTION #}
 {% if loading %}
@@ -101,6 +101,14 @@
         <div class="container alert-icons">
             {% if hoodOpen %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>HOOD OPEN</span></div>{% endif %}
             {% if tailGateOpen %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TAILGATE OPEN</span></div>{% endif %}
+        </div>
+    </div>
+
+    <div class="wrapper {{'hide' if config.hideLastUpdated}}">
+        <div class="container last-updated">
+            <div class="item align-right">
+                <p>Last updated {{lastUpdated}}</p>
+            </div>
         </div>
     </div>
 {% endif %}
