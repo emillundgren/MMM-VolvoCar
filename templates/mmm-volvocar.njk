@@ -56,7 +56,7 @@
 {% else %}
     <div id="mmm-volvocar" class="mmm-volvocar">
         {# HEADER IMAGE #}
-        <div class="wrapper">
+        <div class="wrapper {{'hide' if config.hideHeaderImage}}">
             <div class="header-image">
                 <img src="{{config.headerImageFile}}"></img>
                 <div class="container layout-{{config.headerImageLayout}}">
