@@ -55,10 +55,10 @@ Here's an example of a basic config for the module. See full list of available s
 | `authClientId` | Your Volvo API application's client_id <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
 | `authClientSecret` | Your Volvo API application's client_secret <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
 | `authVccApiKey` | Your Volvo API application's api key <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
-| `authTokenFile` | The path for where to store the access_token from the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `./modules/MMM-VolvoCar/tokens.json`</li></ul> |
+| `authTokenFile` | The path for where to store the access_token from the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `./modules/MMM-VolvoCar/assets/tokens.json`</li></ul> |
 | `apiBaseUrl` | The base URL for the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `https://api.volvocars.com`</li></ul> |
 | `apiUseSampleDataFile` | Used to decide if you want to use real data from the API or sample data from the provided file <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `false`</li><li>**Possible values:** `true` or `false`</li></ul> |
-| `apiSampleDataFile` | The path for where your sample data are stored <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `./modules/MMM-VolvoCar/sampleData.json`</li></ul> |
+| `apiSampleDataFile` | The path for where your sample data are stored <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `./modules/MMM-VolvoCar/assets/sampleData.json`</li></ul> |
 | `carType` | The type of car. Used to to decide what info should be shown <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li><li>**Possible values:** `electric` or `hybrid` or `petrol` or `diesel`</li></ul> |
 | `carVin` | The VIN-code of your car. Used in API-calls to fetch the data from your car <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
 | `carFuelTankSize` | The size of your fuel tank. <br> _Currently needed as this data is not available in the API_ <br><br> <ul><li>**Type:** `number`</li><li>**Default:** `60`</li></ul> |
@@ -67,7 +67,7 @@ Here's an example of a basic config for the module. See full list of available s
 | `hideHeaderImageTextModel` | Boolean to decide if the header image text with car model should be shown <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `false`</li><li>**Possible values:** `true` or `false`</li></ul> |
 | `hideHeaderImageTextCustom` | Boolean to decide if the header image custom text with should be shown <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `false`</li><li>**Possible values:** `true` or `false`</li></ul> |
 | `headerImageCustomText` | Custom text to display in the header image, for example the registration number of the car, if you intend to display more than one car on your Magic Mirror <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
-| `headerImageFile` | The path for where your header image is stored <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `./modules/MMM-VolvoCar/headerImage.png`</li></ul> |
+| `headerImageFile` | The path for where your header image is stored <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `./modules/MMM-VolvoCar/assets/headerImage.png`</li></ul> |
 | `hideStatusbar` | Boolean to decide if the statusbars, displaying battery/fuel percentage, should be shown <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `false`</li><li>**Possible values:** `true` or `false`</li></ul> |
 | `useStatusbarColor` | Boolean to decide if the statusbars should show color when getting low. <br> _Red between values of `statusbarColorDangerMinMax`_ <br> _Yellow between values of `statusbarColorWarnMinMax`_ <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `true`</li><li>**Possible values:** `true` or `false`</li></ul> |
 | `statusbarColorDangerMinMax` | The `min`/`max` percentage values for when to show the warning color <br><br> <ul><li>**Type:** `array` consisting of two `number`</li><li>**Default:** `[0,10]`</li></ul> |

@@ -11,12 +11,12 @@ Module.register("MMM-VolvoCar", {
 		authClientId: null,
 		authClientSecret: null,
 		authVccApiKey: null,
-		authTokenFile: './modules/MMM-VolvoCar/tokens.json',
+		authTokenFile: './modules/MMM-VolvoCar/assets/tokens.json',
 
 		// SETTINGS: API
 		apiBaseUrl: 'https://api.volvocars.com',
 		apiUseSampleDataFile: true,
-		apiSampleDataFile: './modules/MMM-VolvoCar/sampleData.json',
+		apiSampleDataFile: './modules/MMM-VolvoCar/assets/sampleData.json',
 
 		// SETTINGS: Car
 		carType: null,
@@ -30,7 +30,7 @@ Module.register("MMM-VolvoCar", {
 		hideHeaderImageTextModel: false,
 		hideHeaderImageTextCustom: false,
 		headerImageCustomText: null,
-		headerImageFile: './modules/MMM-VolvoCar/headerImage.png',
+		headerImageFile: './modules/MMM-VolvoCar/assets/headerImage.png',
 
 		// Statusbars
 		hideStatusbar: false,
