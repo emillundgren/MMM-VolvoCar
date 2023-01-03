@@ -52,6 +52,36 @@ module.exports = NodeHelper.create({
 		});
 	},
 
+	downloadHeaderImage: function (imageUrl, localPath, carData) {
+		var self = this;
+		const https = require('https');
+
+		// Adjusted image-parameters for the view we want
+		const urlParamsToModify = {
+			w: 720,
+			bg: '00000000',
+			angle: 3,
+		}
+
+		// Modify the incoming URL with the new image-parameters
+		const modifiedUrl = new URL(imageUrl);
+		for (const [key, value] of Object.entries(urlParamsToModify)) {
+			modifiedUrl.searchParams.set(key, value);
+		}
+
+		// Download the image and save to local disk
+		const file = fs.createWriteStream(localPath);
+		https.get(modifiedUrl.toString(), (response) => {
+			response.pipe(file);
+		});
+
+		// Make sure to re-draw the Mirror once the file finished downloading
+		file.on('finish', () => {
+			Log.log(`${this.name} - Finished downloading and saving image to ${localPath}`);
+			self.sendSocketNotification('UPDATE_DATA_ON_MM', carData);
+		});
+	},
+
 	socketNotificationReceived: function (notification, payload) {
 		Log.info(`node_helper of ${this.name} received a socket notification: ${notification}`);
 		var self = this;
@@ -110,8 +140,15 @@ module.exports = NodeHelper.create({
 
 			// Use the Sample Data instead of the API
 			if (this.config.apiUseSampleDataFile && fs.existsSync(this.config.apiSampleDataFile)) {
-				Log.log("Displaying data from sampleData.json instead of using the API");
+				Log.log(`Displaying data from ${this.config.apiUseSampleDataFile} instead of using the API`);
 				var apiSampleData = JSON.parse(fs.readFileSync(this.config.apiSampleDataFile, 'utf8'));
+
+				// Download the header image if it does not already exist 
+				if (!fs.existsSync(this.config.headerImageFile)) {
+					this.downloadHeaderImage(apiSampleData.data.images.exteriorDefaultUrl, this.config.headerImageFile, apiSampleData);
+				}
+
+				// Send the data to the Mirror
 				self.sendSocketNotification('UPDATE_DATA_ON_MM', apiSampleData);
 				return;
 			}
@@ -136,7 +173,13 @@ module.exports = NodeHelper.create({
 			]).then((objects) => {
 				const mergedObjects = Object.assign({}, ...objects.map(object => object.data));
 				const carData = { data: mergedObjects };
-				Log.log(JSON.stringify(carData, null, 2));
+				
+				// Download the header image if it does not already exist 
+				if (!fs.existsSync(this.config.headerImageFile)) {
+					this.downloadHeaderImage(carData.data.images.exteriorDefaultUrl, this.config.headerImageFile, carData);
+				}
+
+				// Send the data to the Mirror
 				self.sendSocketNotification('UPDATE_DATA_ON_MM', carData);
 			});
 		}

@@ -42,102 +42,120 @@
 
 {# CONTENT SECTION #}
 {% if loading %}
-    <div class="wrapper">
-        <p>LOADING...</p>
+    <div id="mmm-volvocar" class="mmm-volvocar">
+        <div class="wrapper">
+            <p>LOADING...</p>
+        </div>
     </div>
 {% elif not authenticated %}
-    <div class="wrapper">
-        <p><a href="/MMM-VolvoCar/auth">Authenticate</a></p>
+    <div id="mmm-volvocar" class="mmm-volvocar">
+        <div class="wrapper">
+            <p><a href="/MMM-VolvoCar/auth">Authenticate</a></p>
+        </div>
     </div>
 {% else %}
-    {# STATUSBARS #}
-    <div class="wrapper {{'hide' if config.hideStatusbar}}">
-        {# FUEL LEVEL STATUSBAR #}
-        <div class="container statusbar {{'hide' if not fuelPowered}}">
-            <div class="item align-left">
-                <i class="fa-solid fa-gas-pump"></i>
-                <span>{{carData.distanceToEmpty.value}} km</span>
+    <div id="mmm-volvocar" class="mmm-volvocar">
+        {# HEADER IMAGE #}
+        <div class="wrapper">
+            <div class="header-image">
+                <img src="{{config.headerImageFile}}"></img>
+                <div class="container layout-{{config.headerImageLayout}}">
+                    <span class="item {{'hide' if config.hideHeaderImageTextModel}}">{{carData.descriptions.model}} {{carData.modelYear}}</span>
+                    <span class="item {{'hide' if config.hideHeaderImageTextCustom}}">{{config.headerImageCustomText}}</span>
+                </div>
             </div>
-            <div class="item align-right">
-                <div class="statusbar-container">
-                    <div class="statusbar-bar {{setStatusbarColor(fuelLevelPercentage)}}" style="width: {{fuelLevelPercentage}}%">
-                        <div class="statusbar-text">{{fuelLevelPercentage}}%</div>
+        </div>
+
+        {# STATUSBARS #}
+        <div class="wrapper {{'hide' if config.hideStatusbar}}">
+            {# FUEL LEVEL STATUSBAR #}
+            <div class="container statusbar {{'hide' if not fuelPowered}}">
+                <div class="item align-left">
+                    <i class="fa-solid fa-gas-pump"></i>
+                    <span>{{carData.distanceToEmpty.value}} km</span>
+                </div>
+                <div class="item align-right">
+                    <div class="statusbar-container">
+                        <div class="statusbar-bar {{setStatusbarColor(fuelLevelPercentage)}}" style="width: {{fuelLevelPercentage}}%">
+                            <div class="statusbar-text">{{fuelLevelPercentage}}%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# ELECTRIC CAR BATTERY STATUSBAR #}
+            <div class="container statusbar {{'hide' if not batteryPowered}}">
+                <div class="item align-left">
+                    <i class="fa-solid {{'fa-plug' if isCharging else 'fa-bolt'}}"></i>
+                    <span>{{carData.estimatedChargingTime.value+' min' if isCharging else carData.electricRange.value+' km'}}</span>
+                </div>
+                <div class="item align-right">
+                    <div class="statusbar-container">
+                        <div class="statusbar-bar {{setStatusbarColor(carData.batteryChargeLevel.value)}}" style="width: {{carData.batteryChargeLevel.value | round(0, floor)}}%">
+                            <div class="statusbar-text">{{carData.batteryChargeLevel.value | round(0, floor)}}%</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        {# ELECTRIC CAR BATTERY STATUSBAR #}
-        <div class="container statusbar {{'hide' if not batteryPowered}}">
-            <div class="item align-left">
-                <i class="fa-solid {{'fa-plug' if isCharging else 'fa-bolt'}}"></i>
-                <span>{{carData.estimatedChargingTime.value+' min' if isCharging else carData.electricRange.value+' km'}}</span>
-            </div>
-            <div class="item align-right">
-                <div class="statusbar-container">
-                    <div class="statusbar-bar {{setStatusbarColor(carData.batteryChargeLevel.value)}}" style="width: {{carData.batteryChargeLevel.value | round(0, floor)}}%">
-                        <div class="statusbar-text">{{carData.batteryChargeLevel.value | round(0, floor)}}%</div>
-                    </div>
+        {# INFO ICONS #}
+        <div class="wrapper {{'hide' if config.hideInfoIcons}}">
+            <div class="divider {{'hide' if config.hideStatusbar}}"></div>
+            <div class="container info-icons">
+                <div class="item {{'hide' if not carData.carLocked.value}}">
+                    <i class="fa-solid {{'fa-lock' if isLocked else 'fa-lock-open danger'}}"></i>
+                    <span>{{carData.carLocked.value}}</span>
+                </div>
+                <div class="item {{'hide' if not carData.averageSpeed.value}}">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>{{carData.averageSpeed.value}} km/h</span>
+                </div>
+                <div class="item {{'hide' if not carData.odometer.value}}">
+                    <i class="fa-solid fa-road"></i>
+                    <span>{{carData.odometer.value}} km</span>
+                </div>
+                <div class="item {{'hide' if not carData.averageFuelConsumption.value}}">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>{{carData.averageFuelConsumption.value}} L/100km</span>
+                </div>
+                <div class="item {{'hide' if not carData.externalTemp.value}}">
+                    <i class="fa-solid fa-temperature-three-quarters"></i>
+                    <span>{{carData.externalTemp.value}} °C</span>
                 </div>
             </div>
         </div>
-    </div>
 
-    {# INFO ICONS #}
-    <div class="wrapper {{'hide' if config.hideInfoIcons}}">
-        <div class="divider {{'hide' if config.hideStatusbar}}"></div>
-        <div class="container info-icons">
-            <div class="item {{'hide' if not carData.carLocked.value}}">
-                <i class="fa-solid {{'fa-lock' if isLocked else 'fa-lock-open danger'}}"></i>
-                <span>{{carData.carLocked.value}}</span>
-            </div>
-            <div class="item {{'hide' if not carData.averageSpeed.value}}">
-                <i class="fa-solid fa-gauge-high"></i>
-                <span>{{carData.averageSpeed.value}} km/h</span>
-            </div>
-            <div class="item {{'hide' if not carData.odometer.value}}">
-                <i class="fa-solid fa-road"></i>
-                <span>{{carData.odometer.value}} km</span>
-            </div>
-            <div class="item {{'hide' if not carData.averageFuelConsumption.value}}">
-                <i class="fa-solid fa-chart-line"></i>
-                <span>{{carData.averageFuelConsumption.value}} L/100km</span>
-            </div>
-            <div class="item {{'hide' if not carData.externalTemp.value}}">
-                <i class="fa-solid fa-temperature-three-quarters"></i>
-                <span>{{carData.externalTemp.value}} °C</span>
+        {# ALERTS ICONS #}
+        <div class="wrapper {{'hide' if config.hideAlertIcons or noActiveAlerts}}">
+            <div class="divider {{'hide' if config.hideInfoIcons and config.hideStatusbar}}"></div>
+            <div class="container alert-icons">
+                {# DOORS #}
+                {% if doorOpenFL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>FRONT LEFT DOOR OPEN</span></div>{% endif %}
+                {% if doorOpenFR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>FRONT RIGHT DOOR OPEN</span></div>{% endif %}
+                {% if doorOpenRL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>REAR LEFT DOOR OPEN</span></div>{% endif %}
+                {% if doorOpenRR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>REAR RIGHT DOOR OPEN</span></div>{% endif %}
+                {% if tailGateOpen %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TAILGATE OPEN</span></div>{% endif %}
+                {% if hoodOpen %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>HOOD OPEN</span></div>{% endif %}
+                {# WINDOWS #}
+                {% if windowOpenFL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>FRONT LEFT WINDOW OPEN</span></div>{% endif %}
+                {% if windowOpenFR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>FRONT RIGHT WINDOW OPEN</span></div>{% endif %}
+                {% if windowOpenRL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>REAR LEFT WINDOW OPEN</span></div>{% endif %}
+                {% if windowOpenRR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>REAR RIGHT WINDOW OPEN</span></div>{% endif %}
+                {# TIRES #}
+                {% if tireAlertFL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TIRE FRONT LEFT {{carData.tires.frontLeft.value}}</span></div>{% endif %}
+                {% if tireAlertFR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TIRE FRONT RIGHT {{carData.tires.frontRight.value}}</span></div>{% endif %}
+                {% if tireAlertRL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TIRE REAR LEFT {{carData.tires.rearLeft.value}}</span></div>{% endif %}
+                {% if tireAlertRR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TIRE REAR RIGHT {{carData.tires.rearRight.value}}</span></div>{% endif %}
             </div>
         </div>
-    </div>
 
-    {# ALERTS ICONS #}
-    <div class="wrapper {{'hide' if config.hideAlertIcons or noActiveAlerts}}">
-        <div class="divider {{'hide' if config.hideInfoIcons and config.hideStatusbar}}"></div>
-        <div class="container alert-icons">
-            {# DOORS #}
-            {% if doorOpenFL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>FRONT LEFT DOOR OPEN</span></div>{% endif %}
-            {% if doorOpenFR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>FRONT RIGHT DOOR OPEN</span></div>{% endif %}
-            {% if doorOpenRL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>REAR LEFT DOOR OPEN</span></div>{% endif %}
-            {% if doorOpenRR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>REAR RIGHT DOOR OPEN</span></div>{% endif %}
-            {% if tailGateOpen %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TAILGATE OPEN</span></div>{% endif %}
-            {% if hoodOpen %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>HOOD OPEN</span></div>{% endif %}
-            {# WINDOWS #}
-            {% if windowOpenFL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>FRONT LEFT WINDOW OPEN</span></div>{% endif %}
-            {% if windowOpenFR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>FRONT RIGHT WINDOW OPEN</span></div>{% endif %}
-            {% if windowOpenRL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>REAR LEFT WINDOW OPEN</span></div>{% endif %}
-            {% if windowOpenRR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>REAR RIGHT WINDOW OPEN</span></div>{% endif %}
-            {# TIRES #}
-            {% if tireAlertFL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TIRES FRONT LEFT {{carData.tires.frontLeft.value}}</span></div>{% endif %}
-            {% if tireAlertFR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TIRES FRONT RIGHT {{carData.tires.frontRight.value}}</span></div>{% endif %}
-            {% if tireAlertRL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TIRES REAR LEFT {{carData.tires.rearLeft.value}}</span></div>{% endif %}
-            {% if tireAlertRR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>TIRES REAR RIGHT {{carData.tires.rearRight.value}}</span></div>{% endif %}
-        </div>
-    </div>
-
-    <div class="wrapper {{'hide' if config.hideLastUpdated}}">
-        <div class="container last-updated">
-            <div class="item align-right">
-                <p>Last updated {{lastUpdated}}</p>
+        {# LAST UPDATED TIMESTAMP #}
+        <div class="wrapper {{'hide' if config.hideLastUpdated}}">
+            <div class="container last-updated">
+                <div class="item align-right">
+                    <p>Last updated {{lastUpdated}}</p>
+                </div>
             </div>
         </div>
     </div>

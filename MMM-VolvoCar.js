@@ -24,13 +24,28 @@ Module.register("MMM-VolvoCar", {
 		carFuelTankSize: 60,
 
 		// SETTINGS: Display
+		// Header Image
+		hideHeaderImage: false,
+		headerImageLayout: 1,
+		hideHeaderImageTextModel: false,
+		hideHeaderImageTextCustom: false,
+		headerImageCustomText: null,
+		headerImageFile: './modules/MMM-VolvoCar/headerImage.png',
+
+		// Statusbars
 		hideStatusbar: false,
-		hideInfoIcons: false,
-		hideAlertIcons: false,
-		hideLastUpdated: false,
 		useStatusbarColor: true,
 		statusbarColorDangerMinMax: [0, 10],
 		statusbarColorWarnMinMax: [11, 20],
+
+		// Info Icons
+		hideInfoIcons: false,
+
+		// Alert Icons
+		hideAlertIcons: false,
+
+		// Last Updated
+		hideLastUpdated: false,
 		dateFormat: 'YYYY-MM-DD HH:mm:ss',
 	},
 
