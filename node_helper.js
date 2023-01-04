@@ -78,7 +78,7 @@ module.exports = NodeHelper.create({
 		// Make sure to re-draw the Mirror once the file finished downloading
 		file.on('finish', () => {
 			Log.log(`${this.name} - Finished downloading and saving image to ${localPath}`);
-			self.sendSocketNotification('UPDATE_DATA_ON_MM', carData);
+			self.sendSocketNotification('MMMVC_REDRAW_MIRROR', carData);
 		});
 	},
 
@@ -86,18 +86,18 @@ module.exports = NodeHelper.create({
 		Log.info(`node_helper of ${this.name} received a socket notification: ${notification}`);
 		var self = this;
 
-		if (notification === 'SET_CONFIG') {
+		if (notification === 'MMMVC_SET_CONFIG') {
 			// Set the config from the main module to the node_helper
 			this.config = payload;
 
 			// If the authClient is set, check if token is expired and then show login prompt, otherwise start the app
 			if (this.authClient != null) {
-				this.authClient.isExpired() ? self.sendSocketNotification('SHOW_LOGIN') : self.sendSocketNotification('MODULE_READY');
+				this.authClient.isExpired() ? self.sendSocketNotification('MMMVC_SHOW_AUTH') : self.sendSocketNotification('MMMVC_MODULE_READY');
 			}
 
 			// Make sure that we have needed credential set in the config
 			if (!this.config.authClientId || !this.config.authClientSecret || !this.config.authVccApiKey || !this.config.carVin || !this.config.carType) {
-				Log.error(this.name + ' - SET_CONFIG: Either authClientId, authClientSecret, authVccApiKey, carVin or carType is not set, exiting...');
+				Log.error(this.name + ' - MMMVC_SET_CONFIG: Either authClientId, authClientSecret, authVccApiKey, carVin or carType is not set, exiting...');
 				return;
 			}
 
@@ -117,23 +117,23 @@ module.exports = NodeHelper.create({
 			if (this.authClient.isExpired()) {
 				if (this.authClient.refresh_token && this.authClient.refresh_token.length > 0) {
 					this.authClient.refreshToken(() => {
-						self.sendSocketNotification('MODULE_READY');
+						self.sendSocketNotification('MMMVC_MODULE_READY');
 					});
 				}
 				else
-					self.sendSocketNotification('SHOW_LOGIN');
+					self.sendSocketNotification('MMMVC_SHOW_AUTH');
 			}
 			else {
-				self.sendSocketNotification('MODULE_READY');
+				self.sendSocketNotification('MMMVC_MODULE_READY');
 			}
 		}
 
-		if (notification === 'GET_CAR_DATA') {
+		if (notification === 'MMMVC_GET_CAR_DATA') {
 			// Make sure that the authClient is setup and access_token is valid
 			if (this.authClient === null) return;
 			if (this.authClient.isExpired()) {
 				this.authClient.refreshToken(() => {
-					self.sendSocketNotification('GET_CAR_DATA');
+					self.sendSocketNotification('MMMVC_GET_CAR_DATA');
 				});
 				return;
 			}
@@ -149,7 +149,7 @@ module.exports = NodeHelper.create({
 				}
 
 				// Send the data to the Mirror
-				self.sendSocketNotification('UPDATE_DATA_ON_MM', apiSampleData);
+				self.sendSocketNotification('MMMVC_REDRAW_MIRROR', apiSampleData);
 				return;
 			}
 
@@ -180,7 +180,7 @@ module.exports = NodeHelper.create({
 				}
 
 				// Send the data to the Mirror
-				self.sendSocketNotification('UPDATE_DATA_ON_MM', carData);
+				self.sendSocketNotification('MMMVC_REDRAW_MIRROR', carData);
 			});
 		}
 	},

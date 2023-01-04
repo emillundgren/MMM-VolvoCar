@@ -57,7 +57,7 @@ Module.register("MMM-VolvoCar", {
 		this.loading = true;
 		this.authenticated = false;
 
-		this.sendSocketNotification('SET_CONFIG', this.config);
+		this.sendSocketNotification('MMMVC_SET_CONFIG', this.config);
 	},
 
 	// Define required scripts.
@@ -97,24 +97,24 @@ Module.register("MMM-VolvoCar", {
 		var self = this;
 
 		// When not authenticated, we show the auth-link
-		if (notification === 'SHOW_LOGIN') {
+		if (notification === 'MMMVC_SHOW_AUTH') {
 			this.loading = false;
 			this.authenticated = false;
 			self.updateDom();
 		}
 
 		// When the module is ready, we request to fetch data from the API
-		if (notification === 'MODULE_READY') {
+		if (notification === 'MMMVC_MODULE_READY') {
 			this.loading = false;
 			this.authenticated = true;
 
 			// Do an initial fetch of the data and then start the loop of updating the data
-			this.sendSocketNotification('GET_CAR_DATA');
+			this.sendSocketNotification('MMMVC_GET_CAR_DATA');
 			self.startLoop();
 		}
 
 		// Redraw the module with the new data
-		if (notification === 'UPDATE_DATA_ON_MM') {
+		if (notification === 'MMMVC_REDRAW_MIRROR') {
 			const now = moment();
 
 			this.carData = payload.data;
@@ -127,7 +127,7 @@ Module.register("MMM-VolvoCar", {
 	startLoop: function () {
 		Log.log(this.name + ' is starting the update loop');
 		window.setInterval(() => {
-			this.sendSocketNotification('GET_CAR_DATA');
+			this.sendSocketNotification('MMMVC_GET_CAR_DATA');
 		}, this.config.moduleDataRefreshInterval);
 	},
 });
