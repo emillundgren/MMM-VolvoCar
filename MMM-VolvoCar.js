@@ -15,7 +15,7 @@ Module.register("MMM-VolvoCar", {
 
 		// SETTINGS: API
 		apiBaseUrl: 'https://api.volvocars.com',
-		apiUseSampleDataFile: true,
+		apiUseSampleDataFile: false,
 		apiSampleDataFile: './modules/MMM-VolvoCar/assets/sampleData.json',
 
 		// SETTINGS: Car
