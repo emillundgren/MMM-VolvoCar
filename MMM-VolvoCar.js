@@ -34,6 +34,7 @@ Module.register("MMM-VolvoCar", {
 
 		// Statusbars
 		hideStatusbar: false,
+		useStatusbarChargingAnimation: true,
 		useStatusbarColor: true,
 		statusbarColorDangerMinMax: [0, 10],
 		statusbarColorWarnMinMax: [11, 20],

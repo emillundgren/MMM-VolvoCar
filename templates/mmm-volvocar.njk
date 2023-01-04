@@ -91,7 +91,7 @@
                 </div>
                 <div class="item align-right">
                     <div class="statusbar-container">
-                        <div class="statusbar-bar {{setStatusbarColor(carData.batteryChargeLevel.value)}}" style="width: {{carData.batteryChargeLevel.value | round(0, floor)}}%">
+                        <div class="statusbar-bar {{'charging-animation' if isCharging and config.useStatusbarChargingAnimation}} {{setStatusbarColor(carData.batteryChargeLevel.value)}}" style="width: {{carData.batteryChargeLevel.value | round(0, floor)}}%">
                             <div class="statusbar-text">{{carData.batteryChargeLevel.value | round(0, floor)}}%</div>
                         </div>
                     </div>

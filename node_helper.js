@@ -140,7 +140,7 @@ module.exports = NodeHelper.create({
 
 			// Use the Sample Data instead of the API
 			if (this.config.apiUseSampleDataFile && fs.existsSync(this.config.apiSampleDataFile)) {
-				Log.log(`Displaying data from ${this.config.apiUseSampleDataFile} instead of using the API`);
+				Log.log(`Displaying data from ${this.config.apiSampleDataFile} instead of using the API`);
 				var apiSampleData = JSON.parse(fs.readFileSync(this.config.apiSampleDataFile, 'utf8'));
 
 				// Download the header image if it does not already exist 

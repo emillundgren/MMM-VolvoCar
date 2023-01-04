@@ -94,7 +94,6 @@
 	height: 20px;
 	background: var(--color-statusbar-background);
 	border-radius: 1em;
-	overflow: hidden;
 }
 
 .statusbar>div>.statusbar-container>.statusbar-bar {
@@ -102,12 +101,42 @@
 	text-align: center;
 	color: #000 !important;
 	font-size: var(--font-size-xsmall);
-	border-radius: 0 1em 1em 0;
+	border-radius: 1em;
 	background: var(--color-statusbar-default);
 }
 
 .statusbar>div>.statusbar-container>.statusbar-bar>.statusbar-text {
 	line-height: var(--font-size);
+}
+
+.statusbar-bar.charging-animation {
+	background-image: repeating-linear-gradient(
+		135deg,
+		rgba(96, 188, 104, 0.75),
+		rgba(96, 188, 104, 0.75) 10px,
+		rgba(70, 152,  77, 0.75) 10px,
+		rgba(70, 152,  77, 0.75) 20px
+	) !important;
+	background-size: 84px !important;
+	background-position: 0px 0%;
+
+	animation-name: statusbar-background-animation;
+	animation-duration: 3s;
+	animation-timing-function: linear;
+	animation-delay: 0s;
+	animation-iteration-count: infinite;
+	animation-direction: normal;
+	animation-fill-mode: forwards;
+}
+
+@keyframes statusbar-background-animation {
+	from {
+		background-position-x: 0px;
+	}
+
+	to {
+		background-position-x: 84px;
+	}
 }
 
 /*
