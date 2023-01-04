@@ -91,7 +91,7 @@
 
 .statusbar>div>.statusbar-container {
 	width: auto;
-	height: 20px;
+	height: var(--font-size);
 	background: var(--color-statusbar-background);
 	border-radius: 1em;
 }
