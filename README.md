@@ -7,7 +7,7 @@ A MagicMirror Module for displaying data from your Volvo car
 [![Known Vulnerabilities](https://snyk.io/test/github/emillundgren/MMM-VolvoCar/badge.svg)](https://snyk.io/test/github/emillundgren/MMM-VolvoCar)
 
 
-![Example Screenshot](../assets/example.png?raw=true)
+![Example Screenshot](../assets/example.gif?raw=true)
 
 ## Installation
 To use this module, you simply need to clone this repository into your Magic Mirror's modules folder
@@ -22,6 +22,17 @@ To use this module, you simply need to clone this repository into your Magic Mir
 	```
 3. Add the module to your Magic Mirror by copying the [Sample Config](#sample-config) below and add that to your `config.js`
 4. Start your Magic Mirror and press the Authenticate link. <br> _For more details about authentication see the [Authentication](AUTHENTICATION.md) section_
+
+## Updating
+
+1. Navigate to the `MMM-VolvoCar` folder
+	```bash
+	cd ~/MagicMirror/modules/MMM-VolvoCar
+	```
+2. Update the repository
+	```bash
+	git pull
+	```
 
 ## Sample Config
 Here's an example of a basic config for the module. See full list of available settings below under [Configuration](#configuration)
