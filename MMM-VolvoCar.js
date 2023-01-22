@@ -76,6 +76,14 @@ Module.register("MMM-VolvoCar", {
 		]
 	},
 
+	// Get translations for the module
+	getTranslations: function () {
+		return {
+			en: "translations/en.json",
+			sv: "translations/sv.json"
+		};
+	},
+
 	// The template of how the data is shown on the mirror
 	getTemplate: function () {
 		return "templates\\mmm-volvocar.njk"
