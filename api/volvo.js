@@ -88,12 +88,12 @@ class VolvoApis {
 				data: {
 					carLocked: result.data.carLocked,
 					doors: {
-						frontLeft: result.data.frontLeft,
-						frontRight: result.data.frontRight,
-						rearLeft: result.data.rearLeft,
-						rearRight: result.data.rearRight,
-						hood: result.data.hood,
-						tailGate: result.data.tailGate,
+						frontLeft: result.data.frontLeftDoorOpen,
+						frontRight: result.data.frontRightDoorOpen,
+						rearLeft: result.data.rearLeftDoorOpen,
+						rearRight: result.data.rearRightDoorOpen,
+						hood: result.data.hoodOpen,
+						tailGate: result.data.tailGateOpen,
 					}
 				}
 			}
@@ -120,10 +120,10 @@ class VolvoApis {
 				operationId: result.operationId,
 				data: {
 					windows: {
-						frontLeft: result.data.frontLeft,
-						frontRight: result.data.frontRight,
-						rearLeft: result.data.rearLeft,
-						rearRight: result.data.rearRight,
+						frontLeft: result.data.frontLeftWindowOpen,
+						frontRight: result.data.frontRightWindowOpen,
+						rearLeft: result.data.rearLeftWindowOpen,
+						rearRight: result.data.rearRightWindowOpen,
 					}
 				}
 			}
