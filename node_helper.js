@@ -56,15 +56,20 @@ module.exports = NodeHelper.create({
 		var self = this;
 		const https = require('https');
 
+		// Find the image filename and make sure it's set to default.png
+		const imageUrlRegEx = /(?<filename>[\w-]+)(?<fileseparator>\.)(?<fileextension>jpeg|jpg|png|gif)/g
+		const imageUrlFixed = imageUrl.replace(imageUrlRegEx, "default.png");
+
 		// Adjusted image-parameters for the view we want
 		const urlParamsToModify = {
+			client: 'connected-vehicle-api',
 			w: 720,
 			bg: '00000000',
 			angle: 3,
 		}
 
 		// Modify the incoming URL with the new image-parameters
-		const modifiedUrl = new URL(imageUrl);
+		const modifiedUrl = new URL(imageUrlFixed);
 		for (const [key, value] of Object.entries(urlParamsToModify)) {
 			modifiedUrl.searchParams.set(key, value);
 		}
@@ -166,7 +171,7 @@ module.exports = NodeHelper.create({
 				this.volvoApiClient.getTyres(this.authClient.access_token),
 				this.volvoApiClient.getFuel(this.authClient.access_token),
 				this.volvoApiClient.getStatistics(this.authClient.access_token),
-				/* this.volvoApiClient.getExternalTemp(this.authClient.access_token), // Currently not returning any data... */
+				//this.volvoApiClient.getExternalTemp(this.authClient.access_token), // Currently not returning any data...
 				this.volvoApiClient.getDiagnostics(this.authClient.access_token),
 				this.volvoApiClient.getDiagEngine(this.authClient.access_token),
 				this.volvoApiClient.getDiagBrakes(this.authClient.access_token),
@@ -181,6 +186,9 @@ module.exports = NodeHelper.create({
 
 				// Send the data to the Mirror
 				self.sendSocketNotification('MMMVC_REDRAW_MIRROR', carData);
+
+				// Add full output of data for debugging
+				Log.debug(JSON.stringify(carData, null, 4));
 			});
 		}
 	},
