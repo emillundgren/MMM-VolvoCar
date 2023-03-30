@@ -21,7 +21,8 @@ class VolvoApis {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/vnd.volvocars.api.energy.vehicledata.v1+json'
 				}
 			});
 			return JSON.parse(response.body)
@@ -43,7 +44,8 @@ class VolvoApis {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicle.v1+json'
 				}
 			});
 			return JSON.parse(response.body)
@@ -58,7 +60,8 @@ class VolvoApis {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
 				}
 			});
 			return JSON.parse(response.body)
@@ -73,7 +76,8 @@ class VolvoApis {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
 				}
 			});
 			// Parse result and create new object
@@ -105,7 +109,8 @@ class VolvoApis {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
 				}
 			});
 			// Parse result and create new object
@@ -134,7 +139,8 @@ class VolvoApis {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
 				}
 			});
 			// Parse result and create new object
@@ -163,7 +169,8 @@ class VolvoApis {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
 				}
 			});
 			return JSON.parse(response.body)
@@ -178,7 +185,8 @@ class VolvoApis {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
 				}
 			});
 			return JSON.parse(response.body)
@@ -193,7 +201,8 @@ class VolvoApis {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
 				}
 			});
 			return JSON.parse(response.body)
@@ -208,7 +217,8 @@ class VolvoApis {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
 				}
 			});
 			return JSON.parse(response.body)
@@ -223,7 +233,8 @@ class VolvoApis {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
 				}
 			});
 			return JSON.parse(response.body)
@@ -238,7 +249,8 @@ class VolvoApis {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
 				}
 			});
 			return JSON.parse(response.body)
