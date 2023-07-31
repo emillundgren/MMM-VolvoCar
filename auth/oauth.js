@@ -8,8 +8,8 @@ const EXPIRYTHRESHOLD = 3300;
 
 class OAuth {
 	constructor(config) {
-		this.client_id = config.authClientId;
-		this.client_secret = config.authClientSecret;
+		this.username = config.authUsername;
+		this.password = config.authPassword;
 		this.scope = config.authScope;
 		this.authUrl = config.authUrl;
 		this.tokenUrl = config.authTokenUrl;
@@ -18,63 +18,45 @@ class OAuth {
 		if (!isNullOrUndefined(this.tokenFile)) this.initTokenFromFile();
 	}
 
-	getAuthorizationParameters() {
-		// Generate a random state value for the request
-		const csrfState = crypto.randomUUID();
-
-		// Setup the required query parameters
-		const queryParams = {
-			response_type: 'code',
-			client_id: this.client_id,
-			redirect_uri: this.redirect_uri,
-			scope: this.scope,
-			state: csrfState,
-		};
-
-		// Generate the full Authorization URL
-		const fullAuthUrl = `${this.authUrl}?${querystring.stringify(queryParams)}`
-
-		// Return both the URL and the state parameter so we can save this in a cookie
-		return [fullAuthUrl, csrfState];
-	}
-
-	async getToken(authCode, callback) {
+	async getToken() {
 		var self = this;
-
+		Log.info('Fetching a new access_token');
 		try {
 			const response = await got.post(this.tokenUrl, {
 				body: querystring.stringify({
-					grant_type: 'authorization_code',
-					code: authCode,
-					redirect_uri: this.redirect_uri
+					username: this.username,
+					password: this.password,
+					access_token_manager_id: 'JWTh4Yf0b',
+					grant_type: 'password',
+					scope: this.scope,
 				}),
 				headers: {
-					'User-Agent': 'MMM-VolvoCar',
+					'Authorization': 'Basic aDRZZjBiOlU4WWtTYlZsNnh3c2c1WVFxWmZyZ1ZtSWFEcGhPc3kxUENhVXNpY1F0bzNUUjVrd2FKc2U0QVpkZ2ZJZmNMeXc=',
 					'Content-Type': 'application/x-www-form-urlencoded',
-					'Authorization': `Basic ${Buffer.from(this.client_id + ':' + this.client_secret).toString('base64')}`,
+					'User-Agent': 'okhttp/4.10.0',
 				}
 			});
 
 			self.saveAndInitToken(response.body);
-			callback();
 		} catch (error) {
 			Log.error(error);
 		}
 	}
 
-	async refreshToken(callback) {
+	async refreshToken(refreshToken, callback) {
 		var self = this;
-
+		Log.info('Refreshing the access_token using the refresh_token');
 		try {
 			const response = await got.post(this.tokenUrl, {
 				body: querystring.stringify({
-					grant_type: 'refresh_token',
-					refresh_token: this.refresh_token
+					access_token_manager_id: "JWTh4Yf0b",
+					grant_type: "refresh_token",
+					refresh_token: refreshToken,
 				}),
 				headers: {
-					'User-Agent': 'MMM-VolvoCar',
+					'Authorization': 'Basic aDRZZjBiOlU4WWtTYlZsNnh3c2c1WVFxWmZyZ1ZtSWFEcGhPc3kxUENhVXNpY1F0bzNUUjVrd2FKc2U0QVpkZ2ZJZmNMeXc=',
 					'Content-Type': 'application/x-www-form-urlencoded',
-					'Authorization': `Basic ${Buffer.from(this.client_id + ':' + this.client_secret).toString('base64')}`,
+					'User-Agent': 'okhttp/4.10.0',
 				}
 			});
 
@@ -94,6 +76,7 @@ class OAuth {
 			}
 			else {
 				Log.info('No token file found');
+				this.getToken();
 			}
 		} catch (error) {
 			Log.error(error)
@@ -108,17 +91,16 @@ class OAuth {
 	}
 
 	isExpired() {
-		Log.log(`isExpired:  ${(new Date().getTime() > (this.expiry_time - EXPIRYTHRESHOLD))}`)
-		Log.log(`Expiry_time: ${this.expiry_time}, datenow: ${new Date().getTime()}, threshold: ${EXPIRYTHRESHOLD}`)
+		Log.log(`isExpired:  ${(new Date().getTime() > (this.expiry_time))}`)
+		Log.log(`Expiry_time: ${this.expiry_time}, datenow: ${new Date().getTime()}`)
 		if (isNullOrUndefined(this.access_token) || this.access_token.length === 0) return true;
-		return (new Date().getTime() > (this.expiry_time - EXPIRYTHRESHOLD));
+		return (new Date().getTime() > (this.expiry_time));
 	}
 
 	saveAndInitToken(tokenBody) {
 		try {
 			var token = JSON.parse(tokenBody);
-			//token.expiry_time = new Date().getTime() + (token.expires_in * 1000);
-			token.expiry_time = new Date().getTime() + (token.expires_in);
+			token.expiry_time = new Date().getTime() + (token.expires_in * 1000);
 			this.initToken(token);
 			fs.writeFileSync(this.tokenFile, JSON.stringify(token));
 		} catch (error) {

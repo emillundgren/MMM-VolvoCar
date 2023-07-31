@@ -21,7 +21,6 @@ To use this module, you simply need to clone this repository into your Magic Mir
 	git clone https://github.com/emillundgren/MMM-VolvoCar.git
 	```
 3. Add the module to your Magic Mirror by copying the [Sample Config](#sample-config) below and add that to your `config.js`
-4. Start your Magic Mirror and press the Authenticate link. <br> _For more details about authentication see the [Authentication](AUTHENTICATION.md) section_
 
 ## Updating
 
@@ -43,8 +42,8 @@ Here's an example of a basic config for the module. See full list of available s
 	header: "My Volvo Car",
 	config: {
 		// SETTINGS: Authorization
-		authClientId: 'CHANGE_FOR_YOUR_CLIENT_ID',
-		authClientSecret: 'CHANGE_FOR_YOUR_CLIENT_SECRET',
+		authUsername: 'CHANGE_FOR_YOUR_CLIENT_ID',
+		authPassword: 'CHANGE_FOR_YOUR_CLIENT_SECRET',
 		authVccApiKey: 'CHANGE_FOR_YOUR_VCC_API_KEY',
 
 		// SETTINGS: Car
@@ -59,12 +58,10 @@ Here's an example of a basic config for the module. See full list of available s
 | **Setting** | **Description**|
 | --- | --- |
 | `moduleDataRefreshInterval` | The interval for which the data shown inthe module is refreshed <br><br> <ul><li>**Type:** `number`</li><li>**Default:** `10 * 60 * 1000`</li></ul> |
-| `authUrl` | The OAuth2 Authorixation URL for the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `https://volvoid.eu.volvocars.com/as/authorization.oauth2`</li></ul> |
 | `authTokenUrl` | The OAuth2 Token URL for the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `https://volvoid.eu.volvocars.com/as/token.oauth2`</li></ul> |
-| `authRedirectUri` | 	The OAuth2 Redirect Callback URL on our module <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `http://localhost:8080/MMM-VolvoCar/callback`</li></ul> |
 | `authScope` | The needed scopes from the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `openid`</li></ul> |
-| `authClientId` | Your Volvo API application's client_id <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
-| `authClientSecret` | Your Volvo API application's client_secret <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
+| `authUsername` | The username of your Volvo Cars account <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
+| `authPassword` | The password of your Volvo Cars account <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
 | `authVccApiKey` | Your Volvo API application's api key <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
 | `authTokenFile` | The path for where to store the access_token from the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `./modules/MMM-VolvoCar/assets/tokens.json`</li></ul> |
 | `apiBaseUrl` | The base URL for the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `https://api.volvocars.com`</li></ul> |

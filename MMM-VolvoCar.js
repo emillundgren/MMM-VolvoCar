@@ -1,15 +1,14 @@
 Module.register("MMM-VolvoCar", {
 	// Default settings for the module
 	defaults: {
-		moduleDataRefreshInterval: 1 * 60 * 1000,
+		// SETTINGS: MMM-VolvoCar module
+		moduleDataRefreshInterval: 10 * 60 * 1000,
 
 		// SETTINGS: Authorization
-		authUrl: 'https://volvoid.eu.volvocars.com/as/authorization.oauth2',
 		authTokenUrl: 'https://volvoid.eu.volvocars.com/as/token.oauth2',
-		authRedirectUri: 'http://localhost:8080/MMM-VolvoCar/callback',
 		authScope: 'openid',
-		authClientId: null,
-		authClientSecret: null,
+		authUsername: null,
+		authPassword: null,
 		authVccApiKey: null,
 		authTokenFile: './modules/MMM-VolvoCar/assets/tokens.json',
 
