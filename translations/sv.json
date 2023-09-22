@@ -1,6 +1,7 @@
 {
     "LOADING": "LADDAR...",
-    "AUTHENTICATE": "LOGGA IN",
+    "AUTHENTICATE_HAEDER": "EJ INLOGGAD",
+    "AUTHENTICATE_TEXT": "Om detta är första gången du startar modulen, testa att ladda om spegeln",
     "LAST_UPDATED": "SENAST UPPDATERAD",
     "LOCKED": "LÅST",
     "UNLOCKED": "UPPLÅST",
@@ -22,5 +23,6 @@
     "ALERT_BRAKE_FLUID": "BROMSVÄTSKA",
     "ALERT_ENGINE_COOLANT": "KYLVÄTSKA",
     "ALERT_OIL_LEVEL": "OLJENIVÅ",
-    "ALERT_WASHER_FLUID": "SPOLARVÄTSKA"
+    "ALERT_WASHER_FLUID": "SPOLARVÄTSKA",
+    "ALERT_ENGINE_RUNNING": "MOTORN IGÅNG"
 }

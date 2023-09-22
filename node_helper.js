@@ -1,6 +1,6 @@
 const NodeHelper = require("node_helper");
 const Log = require("logger");
-const got = require('got');
+const axios = require('axios');
 const fs = require('fs');
 const OAuth = require('./auth/oauth.js');
 const VolvoApis = require('./api/volvo.js');
@@ -19,7 +19,6 @@ module.exports = NodeHelper.create({
 
 	downloadHeaderImage: function (imageUrl, localPath, carData) {
 		var self = this;
-		const https = require('https');
 
 		// Find the image filename and make sure it's set to default.png
 		const imageUrlRegEx = /(?<filename>[\w-]+)(?<fileseparator>\.)(?<fileextension>jpeg|jpg|png|gif)/g
@@ -27,7 +26,6 @@ module.exports = NodeHelper.create({
 
 		// Adjusted image-parameters for the view we want
 		const urlParamsToModify = {
-			client: 'connected-vehicle-api',
 			w: 720,
 			bg: '00000000',
 			angle: 3,
@@ -39,16 +37,32 @@ module.exports = NodeHelper.create({
 			modifiedUrl.searchParams.set(key, value);
 		}
 
-		// Download the image and save to local disk
-		const file = fs.createWriteStream(localPath);
-		https.get(modifiedUrl.toString(), (response) => {
-			response.pipe(file);
-		});
+		// Create a writer to save the file
+		const writer = fs.createWriteStream(localPath)
 
-		// Make sure to re-draw the Mirror once the file finished downloading
-		file.on('finish', () => {
-			Log.log(`${this.name} - Finished downloading and saving image to ${localPath}`);
-			self.sendSocketNotification('MMMVC_REDRAW_MIRROR', carData);
+		// Download and save the imagethe image
+		axios({
+			method: 'get',
+			url: modifiedUrl,
+			responseType: 'stream',
+		}).then(response => {
+			return new Promise((resolve, reject) => {
+				response.data.pipe(writer);
+
+				let error = null;
+
+				writer.on('error', err => {
+					error = err;
+					writer.close();
+					reject(err);
+			  	});
+
+				writer.on('close', () => {
+					if (!error) {
+				  		resolve(true);
+					}
+			  	});
+			});
 		});
 	},
 
@@ -138,6 +152,7 @@ module.exports = NodeHelper.create({
 				this.volvoApiClient.getWindowsStatus(this.authClient.access_token),
 				this.volvoApiClient.getTyres(this.authClient.access_token),
 				this.volvoApiClient.getFuel(this.authClient.access_token),
+				this.volvoApiClient.getEngineStatus(this.authClient.access_token),
 				this.volvoApiClient.getStatistics(this.authClient.access_token),
 				//this.volvoApiClient.getExternalTemp(this.authClient.access_token), // Currently not returning any data...
 				this.volvoApiClient.getDiagnostics(this.authClient.access_token),

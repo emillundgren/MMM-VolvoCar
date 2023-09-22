@@ -202,6 +202,22 @@ class VolvoApis {
 		}
 	}
 
+	async getEngineStatus(access_token) {
+		try {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/engine-status`, {
+				headers: {
+					'User-Agent': 'MMM-VolvoCar',
+					'Authorization': `Bearer ${access_token}`,
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
+				}
+			});
+			return JSON.parse(response.body)
+		} catch (error) {
+			Log.error(error);
+		}
+	}
+
 	async getStatistics(access_token) {
 		try {
 			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/statistics`, {

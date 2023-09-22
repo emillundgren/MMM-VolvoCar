@@ -22,7 +22,7 @@
 {% endmacro %}
 
 {# ACTIVATE ALERT SECTION BASED ON CERTAIN PROPERTY VALUES #}
-{% set regExp = r/(OPEN|LOW|HIGH|FAULT|NOSENSOR)/i %}
+{% set regExp = r/(OPEN|LOW|HIGH|FAULT|NOSENSOR|RUNNING)/i %}
 {# DOORS #}
 {% if regExp.test(carData.doors.frontLeft.value) %}{% set alertDoorFL = true %}{% set noActiveAlerts = false %}{% endif %}
 {% if regExp.test(carData.doors.frontRight.value) %}{% set alertDoorFR = true %}{% set noActiveAlerts = false %}{% endif %}
@@ -47,6 +47,8 @@
 {% if regExp.test(carData.engineCoolantLevel.value) %}{% set alertEngineCoolant = true %}{% set noActiveAlerts = false %}{% endif %}
 {% if regExp.test(carData.oilLevel.value) %}{% set alertOilLevel = true %}{% set noActiveAlerts = false %}{% endif %}
 {% if regExp.test(carData.washerFluidLevel.value) %}{% set alertWasherFluid = true %}{% set noActiveAlerts = false %}{% endif %}
+{# ENGINE #}
+{% if regExp.test(carData.engineRunning.value) %}{% set alertEngineRunning = true %}{% set noActiveAlerts = false %}{% endif %}
 
 {# CONTENT SECTION #}
 {% if loading %}
@@ -59,7 +61,9 @@
     <div id="mmm-volvocar" class="mmm-volvocar">
         <div class="wrapper">
             {# <p><a href="/MMM-VolvoCar/auth">{{ "AUTHENTICATE" | translate | upper }}</a></p> #}
-            <p>ACCESS_TOKEN NOT VALID</p>
+            <center>
+                <p><b>{{ "AUTHENTICATE_HAEDER" | translate | upper }}</b><br>
+                <i>{{ "AUTHENTICATE_TEXT" | translate }}</i></p></center>
         </div>
     </div>
 {% else %}
@@ -163,6 +167,8 @@
                 {% if alertEngineCoolant %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_ENGINE_COOLANT" | translate | upper }}</span></div>{% endif %}
                 {% if alertOilLevel %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_OIL_LEVEL" | translate | upper }}</span></div>{% endif %}
                 {% if alertWasherFluid %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_WASHER_FLUID" | translate | upper }}</span></div>{% endif %}
+                {# ENGINE #}
+                {% if alertEngineRunning %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_ENGINE_RUNNING" | translate | upper }}</span></div>{% endif %}
             </div>
         </div>
 
