@@ -22,6 +22,10 @@
 	align-items: center;
 	justify-content: center;
 }
+.container.info-icons {
+	align-items: flex-start !important;
+	justify-content: flex-start !important;
+}
 
 .container>* {
 	flex: 0 0 auto;

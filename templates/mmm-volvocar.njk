@@ -3,11 +3,12 @@
 {% set noActiveAlerts = true %}
 
 {# FUEL SPECIFIC VARIABLES #}
-{% if carData.fuelType | upper in ["DIESEL","PETROL","PETROL/ELECTRIC"] %}{% set fuelPowered = true %}{% else %}{% set fuelPowered = false %}{% endif %}
+{% if carData.fuelType | upper in ["DIESEL","PETROL","PETROL/ELECTRIC"] %}{% set fuelPoweredCar = true %}{% else %}{% set fuelPoweredCar = false %}{% endif %}
+{% if carData.fuelType | upper in ["PETROL/ELECTRIC"] %}{% set hybridCar = true %}{% else %}{% set hybridCar = false %}{% endif %}
 {% if carData.fuelAmount.value %}{% set fuelLevelPercentage = ((carData.fuelAmount.value/config.carFuelTankSize)*100) | round(0, floor)  %}{% else %}{% set fuelLevelPercentage = 0 %}{% endif %}
 
 {# ELECTRIC SPECIFIC VARIABLES #}
-{% if carData.fuelType | upper in ["ELECTRIC","PETROL/ELECTRIC"] %}{% set batteryPowered = true %}{% else %}{% set batteryPowered = false %}{% endif %}
+{% if carData.fuelType | upper in ["ELECTRIC","PETROL/ELECTRIC"] %}{% set batteryPoweredCar = true %}{% else %}{% set batteryPoweredCar = false %}{% endif %}
 {% if carData.chargingSystemStatus.value | upper in ["CHARGING_SYSTEM_CHARGING"] %}{% set isCharging = true %}{% else %}{% set isCharging = false %}{% endif %}
 
 {# MACRO TO RETURN A CLASS BASED ON THE PROVIDED VALUE #}
@@ -109,7 +110,7 @@
         {# STATUSBARS #}
         <div class="wrapper {{'hide' if config.hideStatusbar}}">
             {# FUEL LEVEL STATUSBAR #}
-            <div class="container statusbar {{'hide' if not fuelPowered}}">
+            <div class="container statusbar {{'hide' if not fuelPoweredCar}}">
                 <div class="item align-left">
                     <i class="fa-solid fa-gas-pump"></i>
                     <span>{{carData.distanceToEmptyTank.value}} km</span>
@@ -124,7 +125,7 @@
             </div>
 
             {# ELECTRIC CAR BATTERY STATUSBAR #}
-            <div class="container statusbar {{'hide' if not batteryPowered}}">
+            <div class="container statusbar {{'hide' if not batteryPoweredCar}}">
                 <div class="item align-left">
                     <i class="fa-solid {{'fa-plug' if isCharging else 'fa-bolt'}}"></i>
                     <span>{{carData.estimatedChargingTime.value+' min' if isCharging else carData.electricRange.value+' km'}}</span>
@@ -147,26 +148,20 @@
                     <i class="fa-solid {{'fa-lock' if isLocked else 'fa-lock-open danger'}}"></i>
                     <span>{% if isLocked %}{{ "LOCKED" | translate | upper }}{% else %}{{ "UNLOCKED" | translate | upper }}{% endif %}</span>
                 </div>
-                <div class="item {{'hide' if not carData.odometer.value}}">
-                    <i class="fa-solid fa-road"></i>
-                    <span>{{carData.odometer.value}} km</span>
-                </div>
                 <div class="item {{'hide' if not carData.averageSpeed.value}}">
                     <i class="fa-solid fa-gauge-high"></i>
                     <span>{{carData.averageSpeed.value}} km/h</span>
                 </div>
-                {% if carData.fuelType | upper in ["DIESEL","PETROL","PETROL/ELECTRIC"] %}
-                <div class="item {{'hide' if not carData.averageFuelConsumption.value}}">
-                    <i class="fa-solid fa-chart-line"></i>
-                    <span>{{carData.averageFuelConsumption.value}} L/100km</span>
+                <div class="item {{'hide' if not carData.odometer.value}}">
+                    <i class="fa-solid fa-road"></i>
+                    <span>{{carData.odometer.value}} km</span>
                 </div>
-                {% endif %}
-                {% if carData.fuelType | upper in ["ELECTRIC"] %}
-                <div class="item {{'hide' if not carData.averageEnergyConsumption.value}}">
+                <div class="item {{'hide' if (not carData.averageFuelConsumption.value) and (not carData.averageEnergyConsumption.value)}}">
                     <i class="fa-solid fa-chart-line"></i>
-                    <span>{{carData.averageEnergyConsumption.value}} kWh/100km</span>
+                    <span class="{{'hide' if not batteryPoweredCar}}">{{carData.averageEnergyConsumption.value}} kWh/100km</span>
+                    <br class="{{'hide' if (not hybridCar)}}"><i class="fa-solid fa-chart-line {{'hide' if (not hybridCar)}}"></i>
+                    <span class="{{'hide' if not fuelPoweredCar}}">{{carData.averageFuelConsumption.value}} L/100km</span>
                 </div>
-                {% endif %}
             </div>
         </div>
 
