@@ -2,6 +2,7 @@ const NodeHelper = require("node_helper");
 const Log = require("logger");
 const axios = require('axios');
 const fs = require('fs');
+const fsp = require('fs').promises;
 const OAuth = require('./auth/oauth.js');
 const VolvoApis = require('./api/volvo.js');
 
@@ -17,7 +18,7 @@ module.exports = NodeHelper.create({
 
 	start: function () {},
 
-	downloadHeaderImage: function (imageUrl, localPath, carData) {
+	downloadHeaderImage: async function (imageUrl, localPath) {
 		var self = this;
 
 		// Find the image filename and make sure it's set to default.png
@@ -37,34 +38,19 @@ module.exports = NodeHelper.create({
 			modifiedUrl.searchParams.set(key, value);
 		}
 
-		// Create a writer to save the file
-		const writer = fs.createWriteStream(localPath)
-
-		// Download and save the imagethe image
-		axios({
-			method: 'get',
-			url: modifiedUrl,
-			responseType: 'stream',
-		}).then(response => {
-			return new Promise((resolve, reject) => {
-				response.data.pipe(writer);
-
-				let error = null;
-
-				writer.on('error', err => {
-					error = err;
-					writer.close();
-					reject(err);
-			  	});
-
-				writer.on('close', () => {
-					if (!error) {
-				  		resolve(true);
-					}
-			  	});
-			});
-		});
-	},
+		try {
+			// Fetch the image data as an array buffer
+			const response = await fetch(modifiedUrl);
+			const arrayBuffer = await response.arrayBuffer();
+		
+			// Write the array buffer to the file
+			await fsp.writeFile(localPath, Buffer.from(arrayBuffer));
+		
+			Log.info(this.name + 'Image downloaded successfully:', localPath);
+		  } catch (error) {
+			Log.error(this.name +'Error downloading image:', error);
+		}
+	},	
 
 	socketNotificationReceived: function (notification, payload) {
 		Log.info(`node_helper of ${this.name} received a socket notification: ${notification}`);
@@ -129,7 +115,7 @@ module.exports = NodeHelper.create({
 
 				// Download the header image if it does not already exist 
 				if (!fs.existsSync(this.config.headerImageFile)) {
-					this.downloadHeaderImage(apiSampleData.data.images.exteriorImageUrl, this.config.headerImageFile, apiSampleData);
+					this.downloadHeaderImage(apiSampleData.data.images.exteriorImageUrl, this.config.headerImageFile);
 				}
 
 				// Send the data to the Mirror
@@ -164,7 +150,7 @@ module.exports = NodeHelper.create({
 				
 				// Download the header image if it does not already exist 
 				if (!fs.existsSync(this.config.headerImageFile)) {
-					this.downloadHeaderImage(carData.data.images.exteriorImageUrl, this.config.headerImageFile, carData);
+					this.downloadHeaderImage(carData.data.images.exteriorImageUrl, this.config.headerImageFile);
 				}
 
 				// Send the data to the Mirror
