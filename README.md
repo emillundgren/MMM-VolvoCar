@@ -47,7 +47,6 @@ Here's an example of a basic config for the module. See full list of available s
 		authVccApiKey: 'CHANGE_FOR_YOUR_VCC_API_KEY',
 
 		// SETTINGS: Car
-		carType: 'hybrid',
 		carVin: 'CHANGE_FOR_YOUR_CAR_VIN',
 		carFuelTankSize: 60,
 	}
@@ -67,7 +66,6 @@ Here's an example of a basic config for the module. See full list of available s
 | `apiBaseUrl` | The base URL for the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `https://api.volvocars.com`</li></ul> |
 | `apiUseSampleDataFile` | Used to decide if you want to use real data from the API or sample data from the provided file <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `false`</li><li>**Possible values:** `true` or `false`</li></ul> |
 | `apiSampleDataFile` | The path for where your sample data are stored <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `./modules/MMM-VolvoCar/assets/sampleData.json`</li></ul> |
-| `carType` | The type of car. Used to to decide what info should be shown <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li><li>**Possible values:** `electric` or `hybrid` or `petrol` or `diesel`</li></ul> |
 | `carVin` | The VIN-code of your car. Used in API-calls to fetch the data from your car <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
 | `carFuelTankSize` | The size of your fuel tank. <br> _Currently needed as this data is not available in the API_ <br><br> <ul><li>**Type:** `number`</li><li>**Default:** `60`</li></ul> |
 | `hideHeaderImage` | Boolean to decide if the header image of your car should be shown <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `false`</li><li>**Possible values:** `true` or `false`</li></ul> |
