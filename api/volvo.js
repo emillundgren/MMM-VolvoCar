@@ -61,14 +61,14 @@ class VolvoApis {
 	// ╚██████╗╚██████╔╝██║ ╚████║██║ ╚████║███████╗╚██████╗   ██║   ███████╗██████╔╝    ██║  ██║██║     ██║
 	//  ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═╝   ╚══════╝╚═════╝     ╚═╝  ╚═╝╚═╝     ╚═╝
 
-	async getVehicleDetails(access_token) {
+	async getEngineDiagnostic(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v2/vehicles/${this.carVin}/engine`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
 					'vcc-api-key': this.vcc_api_key,
-					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicle.v1+json'
+					'accept': 'application/json'
 				}
 			});
 			return JSON.parse(response.body)
@@ -77,14 +77,14 @@ class VolvoApis {
 		}
 	}
 
-	async getOdometer(access_token) {
+	async getDiagnostics(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/odometer`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v2/vehicles/${this.carVin}/diagnostics`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
 					'vcc-api-key': this.vcc_api_key,
-					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
+					'accept': 'application/json'
 				}
 			});
 			return JSON.parse(response.body)
@@ -93,14 +93,61 @@ class VolvoApis {
 		}
 	}
 
-	async getDoorsStatus(access_token) {
+	async getBrakeFluidLevel(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/doors`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v2/vehicles/${this.carVin}/brakes`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
 					'vcc-api-key': this.vcc_api_key,
-					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
+					'accept': 'application/json'
+				}
+			});
+			return JSON.parse(response.body)
+		} catch (error) {
+			Log.error(error);
+		}
+	}
+
+	async getWindowStatus(access_token) {
+		try {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v2/vehicles/${this.carVin}/windows`, {
+				headers: {
+					'User-Agent': 'MMM-VolvoCar',
+					'Authorization': `Bearer ${access_token}`,
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/json'
+				}
+			});
+			// Parse result and create new object
+			const result = JSON.parse(response.body);
+			const newObject = {
+				status: result.status,
+				operationId: result.operationId,
+				data: {
+					windows: {
+						frontLeft: result.data.frontLeftWindow,
+						frontRight: result.data.frontRightWindow,
+						rearLeft: result.data.rearLeftWindow,
+						rearRight: result.data.rearRightWindow,
+						sunroof: result.data.sunroof,
+					}
+				}
+			}
+			return newObject;
+		} catch (error) {
+			Log.error(error);
+		}
+	}
+
+	async getDoorAndLockStatus(access_token) {
+		try {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v2/vehicles/${this.carVin}/doors`, {
+				headers: {
+					'User-Agent': 'MMM-VolvoCar',
+					'Authorization': `Bearer ${access_token}`,
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/json'
 				}
 			});
 			// Parse result and create new object
@@ -111,12 +158,14 @@ class VolvoApis {
 				data: {
 					carLocked: result.data.carLocked,
 					doors: {
-						frontLeft: result.data.frontLeftDoorOpen,
-						frontRight: result.data.frontRightDoorOpen,
-						rearLeft: result.data.rearLeftDoorOpen,
-						rearRight: result.data.rearRightDoorOpen,
-						hood: result.data.hoodOpen,
-						tailGate: result.data.tailGateOpen,
+						centralLock: result.data.centralLock,
+						frontLeft: result.data.frontLeftDoor,
+						frontRight: result.data.frontRightDoor,
+						rearLeft: result.data.rearLeftDoor,
+						rearRight: result.data.rearRightDoor,
+						tailGate: result.data.tailGate,
+						hood: result.data.hood,
+						tankLid: result.data.tankLid,
 					}
 				}
 			}
@@ -126,44 +175,78 @@ class VolvoApis {
 		}
 	}
 
-	async getWindowsStatus(access_token) {
+	async getEngineStatus(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/windows`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v2/vehicles/${this.carVin}/engine-status`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
 					'vcc-api-key': this.vcc_api_key,
-					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
+					'accept': 'application/json'
 				}
 			});
-			// Parse result and create new object
-			const result = JSON.parse(response.body);
-			const newObject = {
-				status: result.status,
-				operationId: result.operationId,
-				data: {
-					windows: {
-						frontLeft: result.data.frontLeftWindowOpen,
-						frontRight: result.data.frontRightWindowOpen,
-						rearLeft: result.data.rearLeftWindowOpen,
-						rearRight: result.data.rearRightWindowOpen,
-					}
-				}
-			}
-			return newObject;
+			return JSON.parse(response.body)
 		} catch (error) {
 			Log.error(error);
 		}
 	}
 
-	async getTyres(access_token) {
+	async getFuelAmount(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/tyres`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v2/vehicles/${this.carVin}/fuel`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
 					'vcc-api-key': this.vcc_api_key,
-					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
+					'accept': 'application/json'
+				}
+			});
+			return JSON.parse(response.body)
+		} catch (error) {
+			Log.error(error);
+		}
+	}
+
+	async getOdometer(access_token) {
+		try {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v2/vehicles/${this.carVin}/odometer`, {
+				headers: {
+					'User-Agent': 'MMM-VolvoCar',
+					'Authorization': `Bearer ${access_token}`,
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/json'
+				}
+			});
+			return JSON.parse(response.body)
+		} catch (error) {
+			Log.error(error);
+		}
+	}
+
+	async getStatistics(access_token) {
+		try {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v2/vehicles/${this.carVin}/statistics`, {
+				headers: {
+					'User-Agent': 'MMM-VolvoCar',
+					'Authorization': `Bearer ${access_token}`,
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/json'
+				}
+			});
+			return JSON.parse(response.body)
+		} catch (error) {
+			Log.error(error);
+		}
+	}
+
+	async getTyresStatus(access_token) {
+		try {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v2/vehicles/${this.carVin}/tyres`, {
+				headers: {
+					'User-Agent': 'MMM-VolvoCar',
+					'Authorization': `Bearer ${access_token}`,
+					'vcc-api-key': this.vcc_api_key,
+					'accept': 'application/json'
 				}
 			});
 			// Parse result and create new object
@@ -186,14 +269,14 @@ class VolvoApis {
 		}
 	}
 
-	async getFuel(access_token) {
+	async getVehicleDetails(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/fuel`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v2/vehicles/${this.carVin}`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
 					'vcc-api-key': this.vcc_api_key,
-					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
+					'accept': 'application/json'
 				}
 			});
 			return JSON.parse(response.body)
@@ -202,97 +285,50 @@ class VolvoApis {
 		}
 	}
 
-	async getEngineStatus(access_token) {
+	async getWarnings(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/engine-status`, {
+			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v2/vehicles/${this.carVin}/warnings`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
 					'vcc-api-key': this.vcc_api_key,
-					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
+					'accept': 'application/json'
 				}
 			});
-			return JSON.parse(response.body)
-		} catch (error) {
-			Log.error(error);
-		}
-	}
-
-	async getStatistics(access_token) {
-		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/statistics`, {
-				headers: {
-					'User-Agent': 'MMM-VolvoCar',
-					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key,
-					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
+			// Parse result and create new object
+			const result = JSON.parse(response.body);
+			const newObject = {
+				status: result.status,
+				operationId: result.operationId,
+				data: {
+					warnings: {
+						brakeLightLeftWarning: result.data.brakeLightLeftWarning,
+						brakeLightCenterWarning: result.data.brakeLightCenterWarning,
+						brakeLightRightWarning: result.data.brakeLightRightWarning,
+						fogLightFrontWarning: result.data.fogLightFrontWarning,
+						fogLightRearWarning: result.data.fogLightRearWarning,
+						positionLightFrontLeftWarning: result.data.positionLightFrontLeftWarning,
+						positionLightFrontRightWarning: result.data.positionLightFrontRightWarning,
+						positionLightRearLeftWarning: result.data.positionLightRearLeftWarning,
+						positionLightRearRightWarning: result.data.positionLightRearRightWarning,
+						highBeamLeftWarning: result.data.highBeamLeftWarning,
+						highBeamRightWarning: result.data.highBeamRightWarning,
+						lowBeamLeftWarning: result.data.lowBeamLeftWarning,
+						lowBeamRightWarning: result.data.lowBeamRightWarning,
+						daytimeRunningLightLeftWarning: result.data.daytimeRunningLightLeftWarning,
+						daytimeRunningLightRightWarning: result.data.daytimeRunningLightRightWarning,
+						turnIndicationFrontLeftWarning: result.data.turnIndicationFrontLeftWarning,
+						turnIndicationFrontRightWarning: result.data.turnIndicationFrontRightWarning,
+						turnIndicationRearLeftWarning: result.data.turnIndicationRearLeftWarning,
+						turnIndicationRearRightWarning: result.data.turnIndicationRearRightWarning,
+						registrationPlateLightWarning: result.data.registrationPlateLightWarning,
+						sideMarkLightsWarning: result.data.sideMarkLightsWarning,
+						hazardLightsWarning: result.data.hazardLightsWarning,
+						reverseLightsWarning: result.data.reverseLightsWarning,
+					}
 				}
-			});
-			return JSON.parse(response.body)
-		} catch (error) {
-			Log.error(error);
-		}
-	}
-
-	async getExternalTemp(access_token) {
-		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/environment`, {
-				headers: {
-					'User-Agent': 'MMM-VolvoCar',
-					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key,
-					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
-				}
-			});
-			return JSON.parse(response.body)
-		} catch (error) {
-			Log.error(error);
-		}
-	}
-
-	async getDiagnostics(access_token) {
-		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/diagnostics`, {
-				headers: {
-					'User-Agent': 'MMM-VolvoCar',
-					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key,
-					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
-				}
-			});
-			return JSON.parse(response.body)
-		} catch (error) {
-			Log.error(error);
-		}
-	}
-
-	async getDiagEngine(access_token) {
-		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/engine`, {
-				headers: {
-					'User-Agent': 'MMM-VolvoCar',
-					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key,
-					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
-				}
-			});
-			return JSON.parse(response.body)
-		} catch (error) {
-			Log.error(error);
-		}
-	}
-
-	async getDiagBrakes(access_token) {
-		try {
-			const response = await got(`${this.apiBaseUrl}/connected-vehicle/v1/vehicles/${this.carVin}/brakes`, {
-				headers: {
-					'User-Agent': 'MMM-VolvoCar',
-					'Authorization': `Bearer ${access_token}`,
-					'vcc-api-key': this.vcc_api_key,
-					'accept': 'application/vnd.volvocars.api.connected-vehicle.vehicledata.v1+json'
-				}
-			});
-			return JSON.parse(response.body)
+			}
+			return newObject
 		} catch (error) {
 			Log.error(error);
 		}

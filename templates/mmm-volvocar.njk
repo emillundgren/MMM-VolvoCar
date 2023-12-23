@@ -1,13 +1,13 @@
 {# GENERAL VARIABLES #}
-{% if carData.carLocked.value | upper in ["LOCKED"] %}{% set isLocked = true %}{% else %}{% set isLocked = false %}{% endif %}
+{% if carData.doors.centralLock.value | upper in ["LOCKED"] %}{% set isLocked = true %}{% else %}{% set isLocked = false %}{% endif %}
 {% set noActiveAlerts = true %}
 
 {# FUEL SPECIFIC VARIABLES #}
-{% if config.carType | upper in ["PETROL","DIESEL","HYBRID"] %}{% set fuelPowered = true %}{% else %}{% set fuelPowered = false %}{% endif %}
+{% if carData.fuelType | upper in ["DIESEL","PETROL","PETROL/ELECTRIC"] %}{% set fuelPowered = true %}{% else %}{% set fuelPowered = false %}{% endif %}
 {% if carData.fuelAmount.value %}{% set fuelLevelPercentage = ((carData.fuelAmount.value/config.carFuelTankSize)*100) | round(0, floor)  %}{% else %}{% set fuelLevelPercentage = 0 %}{% endif %}
 
 {# ELECTRIC SPECIFIC VARIABLES #}
-{% if config.carType | upper in ["ELECTRIC","HYBRID"] %}{% set batteryPowered = true %}{% else %}{% set batteryPowered = false %}{% endif %}
+{% if carData.fuelType | upper in ["ELECTRIC","PETROL/ELECTRIC"] %}{% set batteryPowered = true %}{% else %}{% set batteryPowered = false %}{% endif %}
 {% if carData.chargingSystemStatus.value | upper in ["CHARGING_SYSTEM_CHARGING"] %}{% set isCharging = true %}{% else %}{% set isCharging = false %}{% endif %}
 
 {# MACRO TO RETURN A CLASS BASED ON THE PROVIDED VALUE #}
@@ -22,7 +22,19 @@
 {% endmacro %}
 
 {# ACTIVATE ALERT SECTION BASED ON CERTAIN PROPERTY VALUES #}
-{% set regExp = r/(OPEN|LOW|HIGH|FAULT|NOSENSOR|RUNNING)/i %}
+{% set regExp = r/((TOO_)?LOW|(TOO_)?HIGH|SERVICE_REQUIRED|OPEN|UNLOCKED|RUNNING|(VERY_)?(HIGH_|LOW_)?PRESSURE|FAULT|FAILURE)/i %}
+
+{# WARNINGS #}
+{% if regExp.test(carData.engineCoolantLevelWarning.value) %}{% set alertEngineCoolant = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.oilLevelWarning.value) %}{% set alertOilLevel = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.brakeFluidLevelWarning.value) %}{% set alertBreakFluid = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.washerFluidLevel.value) %}{% set alertWasherFluid = true %}{% set noActiveAlerts = false %}{% endif %}
+{# WINDOWS #}
+{% if regExp.test(carData.windows.frontLeft.value) %}{% set alertWindowFL = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.windows.frontRight.value) %}{% set alertWindowFR = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.windows.rearLeft.value) %}{% set alertWindowRL = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.windows.rearRight.value) %}{% set alertWindowRR = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.windows.sunroof.value) %}{% set alertSunroof = true %}{% set noActiveAlerts = false %}{% endif %}
 {# DOORS #}
 {% if regExp.test(carData.doors.frontLeft.value) %}{% set alertDoorFL = true %}{% set noActiveAlerts = false %}{% endif %}
 {% if regExp.test(carData.doors.frontRight.value) %}{% set alertDoorFR = true %}{% set noActiveAlerts = false %}{% endif %}
@@ -30,11 +42,9 @@
 {% if regExp.test(carData.doors.rearRight.value) %}{% set alertDoorRR = true %}{% set noActiveAlerts = false %}{% endif %}
 {% if regExp.test(carData.doors.hood.value) %}{% set alertHood = true %}{% set noActiveAlerts = false %}{% endif %}
 {% if regExp.test(carData.doors.tailGate.value) %}{% set alertTailgate = true %}{% set noActiveAlerts = false %}{% endif %}
-{# WINDOWS #}
-{% if regExp.test(carData.windows.frontLeft.value) %}{% set alertWindowFL = true %}{% set noActiveAlerts = false %}{% endif %}
-{% if regExp.test(carData.windows.frontRight.value) %}{% set alertWindowFR = true %}{% set noActiveAlerts = false %}{% endif %}
-{% if regExp.test(carData.windows.rearLeft.value) %}{% set alertWindowRL = true %}{% set noActiveAlerts = false %}{% endif %}
-{% if regExp.test(carData.windows.rearRight.value) %}{% set alertWindowRR = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.doors.tankLid.value) %}{% set alertTankLid = true %}{% set noActiveAlerts = false %}{% endif %}
+{# ENGINE #}
+{% if regExp.test(carData.engineStatus.value) %}{% set alertEngineRunning = true %}{% set noActiveAlerts = false %}{% endif %}
 {# TIRES #}
 {% if regExp.test(carData.tires.frontLeft.value) %}{% set alertTireFL = true %}{% set noActiveAlerts = false %}{% endif %}
 {% if regExp.test(carData.tires.frontRight.value) %}{% set alertTireFR = true %}{% set noActiveAlerts = false %}{% endif %}
@@ -42,13 +52,30 @@
 {% if regExp.test(carData.tires.rearRight.value) %}{% set alertTireRR = true %}{% set noActiveAlerts = false %}{% endif %}
 {# CHARGING #}
 {% if regExp.test(carData.chargingSystemStatus.value) %}{% set alertCharging = true %}{% set noActiveAlerts = false %}{% endif %}
-{# FLUIDS #}
-{% if regExp.test(carData.brakeFluid.value) %}{% set alertBreakFluid = true %}{% set noActiveAlerts = false %}{% endif %}
-{% if regExp.test(carData.engineCoolantLevel.value) %}{% set alertEngineCoolant = true %}{% set noActiveAlerts = false %}{% endif %}
-{% if regExp.test(carData.oilLevel.value) %}{% set alertOilLevel = true %}{% set noActiveAlerts = false %}{% endif %}
-{% if regExp.test(carData.washerFluidLevel.value) %}{% set alertWasherFluid = true %}{% set noActiveAlerts = false %}{% endif %}
-{# ENGINE #}
-{% if regExp.test(carData.engineRunning.value) %}{% set alertEngineRunning = true %}{% set noActiveAlerts = false %}{% endif %}
+{# LIGHTS #}
+{% if regExp.test(carData.warnings.brakeLightLeftWarning.value) %}{% set alertBrakeLightLeft = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.brakeLightCenterWarning.value) %}{% set alertBrakeLightCenter = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.brakeLightRightWarning.value) %}{% set alertBrakeLightRight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.fogLightFrontWarning.value) %}{% set alertFogLightFront = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.fogLightRearWarning.value) %}{% set alertFogLightRear = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.positionLightFrontLeftWarning.value) %}{% set alertPositionLightFrontLeft = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.positionLightFrontRightWarning.value) %}{% set alertPositionLightFrontRight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.positionLightRearLeftWarning.value) %}{% set alertPositionLightRearLeft = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.positionLightRearRightWarning.value) %}{% set alertPositionLightRearRight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.highBeamLeftWarning.value) %}{% set alertHighBeamLeft = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.highBeamRightWarning.value) %}{% set alertHighBeamRight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.lowBeamLeftWarning.value) %}{% set alertLowBeamLeft = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.lowBeamRightWarning.value) %}{% set alertLowBeamRight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.daytimeRunningLightLeftWarning.value) %}{% set alertDaytimeRunningLightLeft = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.daytimeRunningLightRightWarning.value) %}{% set alertDaytimeRunningLightRight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.turnIndicationFrontLeftWarning.value) %}{% set alertTurnIndicationFrontLeft = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.turnIndicationFrontRightWarning.value) %}{% set alertTurnIndicationFrontRight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.turnIndicationRearLeftWarning.value) %}{% set alertTurnIndicationRearLeft = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.turnIndicationRearRightWarning.value) %}{% set alertTurnIndicationRearRight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.registrationPlateLightWarning.value) %}{% set alertRegistrationPlateLight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.sideMarkLightsWarning.value) %}{% set alertSideMarkLights = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.hazardLightsWarning.value) %}{% set alertHazardLights = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(carData.warnings.reverseLightsWarning.value) %}{% set alertReverseLights = true %}{% set noActiveAlerts = false %}{% endif %}
 
 {# CONTENT SECTION #}
 {% if loading %}
@@ -85,7 +112,7 @@
             <div class="container statusbar {{'hide' if not fuelPowered}}">
                 <div class="item align-left">
                     <i class="fa-solid fa-gas-pump"></i>
-                    <span>{{carData.distanceToEmpty.value}} km</span>
+                    <span>{{carData.distanceToEmptyTank.value}} km</span>
                 </div>
                 <div class="item align-right">
                     <div class="statusbar-container">
@@ -116,7 +143,7 @@
         <div class="wrapper {{'hide' if config.hideInfoIcons}}">
             <div class="divider {{'hide' if config.hideStatusbar}}"></div>
             <div class="container info-icons">
-                <div class="item {{'hide' if not carData.carLocked.value}}">
+                <div class="item {{'hides' if not carData.doors.centralLock.value}}">
                     <i class="fa-solid {{'fa-lock' if isLocked else 'fa-lock-open danger'}}"></i>
                     <span>{% if isLocked %}{{ "LOCKED" | translate | upper }}{% else %}{{ "UNLOCKED" | translate | upper }}{% endif %}</span>
                 </div>
@@ -124,18 +151,22 @@
                     <i class="fa-solid fa-road"></i>
                     <span>{{carData.odometer.value}} km</span>
                 </div>
-                {# <div class="item {{'hide' if not carData.averageSpeed.value}}">
+                <div class="item {{'hide' if not carData.averageSpeed.value}}">
                     <i class="fa-solid fa-gauge-high"></i>
                     <span>{{carData.averageSpeed.value}} km/h</span>
-                </div> #}
-                {# <div class="item {{'hide' if not carData.averageFuelConsumption.value}}">
+                </div>
+                {% if carData.fuelType | upper in ["DIESEL","PETROL","PETROL/ELECTRIC"] %}
+                <div class="item {{'hide' if not carData.averageFuelConsumption.value}}">
                     <i class="fa-solid fa-chart-line"></i>
                     <span>{{carData.averageFuelConsumption.value}} L/100km</span>
-                </div> #}
-                {# <div class="item {{'hide' if not carData.externalTemp.value}}">
-                    <i class="fa-solid fa-temperature-three-quarters"></i>
-                    <span>{{carData.externalTemp.value}} °C</span>
-                </div> #}
+                </div>
+                {% endif %}
+                {% if carData.fuelType | upper in ["ELECTRIC"] %}
+                <div class="item {{'hide' if not carData.averageEnergyConsumption.value}}">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>{{carData.averageEnergyConsumption.value}} kWh/100km</span>
+                </div>
+                {% endif %}
             </div>
         </div>
 
@@ -143,18 +174,27 @@
         <div class="wrapper {{'hide' if config.hideAlertIcons or noActiveAlerts}}">
             <div class="divider {{'hide' if config.hideInfoIcons and config.hideStatusbar}}"></div>
             <div class="container alert-icons">
-                {# DOORS #}
-                {% if alertDoorFL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_DOOR_FRONT_LEFT" | translate | upper }}</span></div>{% endif %}
-                {% if alertDoorFR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_DOOR_FRONT_RIGHT" | translate | upper }}</span></div>{% endif %}
-                {% if alertDoorRL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_DOOR_REAR_LEFT" | translate | upper }}</span></div>{% endif %}
-                {% if alertDoorRR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_DOOR_REAR_RIGHT" | translate | upper }}</span></div>{% endif %}
-                {% if alertTailgate %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TAILGATE" | translate | upper }}</span></div>{% endif %}
-                {% if alertHood %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_HOOD" | translate | upper }}</span></div>{% endif %}
+                {# WARNINGS #}
+                {% if alertEngineCoolant %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_ENGINE_COOLANT" | translate | upper }}</span></div>{% endif %}
+                {% if alertOilLevel %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_OIL_LEVEL" | translate | upper }}</span></div>{% endif %}
+                {% if alertBreakFluid %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_BRAKE_FLUID" | translate | upper }}</span></div>{% endif %}
+                {% if alertWasherFluid %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_WASHER_FLUID" | translate | upper }}</span></div>{% endif %}
                 {# WINDOWS #}
                 {% if alertWindowFL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_WINDOW_FRONT_LEFT" | translate | upper }}</span></div>{% endif %}
                 {% if alertWindowFR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_WINDOW_FRONT_RIGHT" | translate | upper }}</span></div>{% endif %}
                 {% if alertWindowRL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_WINDOW_REAR_LEFT" | translate | upper }}</span></div>{% endif %}
                 {% if alertWindowRR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_WINDOW_REAR_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertSunroof %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_SUNROOF" | translate | upper }}</span></div>{% endif %}
+                {# DOORS #}
+                {% if alertDoorFL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_DOOR_FRONT_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertDoorFR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_DOOR_FRONT_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertDoorRL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_DOOR_REAR_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertDoorRR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_DOOR_REAR_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertHood %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_HOOD" | translate | upper }}</span></div>{% endif %}
+                {% if alertTailgate %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TAILGATE" | translate | upper }}</span></div>{% endif %}
+                {% if alertTankLid %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TANK_LID" | translate | upper }}</span></div>{% endif %}
+                {# ENGINE #}
+                {% if alertEngineRunning %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_ENGINE_RUNNING" | translate | upper }}</span></div>{% endif %}
                 {# TIRES #}
                 {% if alertTireFL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TIRE_FRONT_LEFT" | translate | upper }}</span></div>{% endif %}
                 {% if alertTireFR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TIRE_FRONT_RIGHT" | translate | upper }}</span></div>{% endif %}
@@ -162,13 +202,30 @@
                 {% if alertTireRR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TIRE_REAR_RIGHT" | translate | upper }}</span></div>{% endif %}
                 {# CHARGING #}
                 {% if alertCharging %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_CHARGING" | translate | upper }}</span></div>{% endif %}
-                {# FLUIDS #}
-                {% if alertBreakFluid %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_BRAKE_FLUID" | translate | upper }}</span></div>{% endif %}
-                {% if alertEngineCoolant %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_ENGINE_COOLANT" | translate | upper }}</span></div>{% endif %}
-                {% if alertOilLevel %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_OIL_LEVEL" | translate | upper }}</span></div>{% endif %}
-                {% if alertWasherFluid %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_WASHER_FLUID" | translate | upper }}</span></div>{% endif %}
-                {# ENGINE #}
-                {% if alertEngineRunning %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_ENGINE_RUNNING" | translate | upper }}</span></div>{% endif %}
+                {# LIGHTS #}
+                {% if alertBrakeLightLeft %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_BRAKE_LIGHT_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertBrakeLightCenter %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_BRAKE_LIGHT_CENTER" | translate | upper }}</span></div>{% endif %}
+                {% if alertBrakeLightRight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_BRAKE_LIGHT_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertFogLightFront %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_FOG_LIGHT_FRONT" | translate | upper }}</span></div>{% endif %}
+                {% if alertFogLightRear %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_FOG_LIGHT_REAR" | translate | upper }}</span></div>{% endif %}
+                {% if alertPositionLightFrontLeft %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_POS_LIGHT_FRONT_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertPositionLightFrontRight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_POS_LIGHT_FRONT_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertPositionLightRearLeft %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_POS_LIGHT_REAR_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertPositionLightRearRight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_POS_LIGHT_REAR_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertHighBeamLeft %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_HIGHBEAM_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertHighBeamRight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_HIGHBEAM_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertLowBeamLeft %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_LOWBEAM_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertLowBeamRight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_LOWBEAM_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertDaytimeRunningLightLeft %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_DAYTIMERUNNINGLIGHT_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertDaytimeRunningLightRight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_DAYTIMERUNNINGLIGHT_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertTurnIndicationFrontLeft %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TURN_LIGHT_FRONT_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertTurnIndicationFrontRight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TURN_LIGHT_FRONT_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertTurnIndicationRearLeft %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TURN_LIGHT_REAR_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertTurnIndicationRearRight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TURN_LIGHT_REAR_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertRegistrationPlateLight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_REGPLATE_LIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertSideMarkLights %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_SIDEMARK_LIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertHazardLights %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_HAZARD_LIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertReverseLights %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_REVERSE_LIGHT" | translate | upper }}</span></div>{% endif %}
             </div>
         </div>
 

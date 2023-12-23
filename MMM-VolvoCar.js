@@ -18,7 +18,6 @@ Module.register("MMM-VolvoCar", {
 		apiSampleDataFile: './modules/MMM-VolvoCar/assets/sampleData.json',
 
 		// SETTINGS: Car
-		carType: null,
 		carVin: null,
 		carFuelTankSize: 60,
 

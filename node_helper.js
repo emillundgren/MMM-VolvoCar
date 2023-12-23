@@ -80,8 +80,8 @@ module.exports = NodeHelper.create({
 			}
 
 			// Make sure that we have needed credential set in the config
-			if (!this.config.authUsername || !this.config.authPassword || !this.config.authVccApiKey || !this.config.carVin || !this.config.carType) {
-				Log.error(this.name + ' - MMMVC_SET_CONFIG: Either authUsername, authPassword, authVccApiKey, carVin or carType is not set, exiting...');
+			if (!this.config.authUsername || !this.config.authPassword || !this.config.authVccApiKey || !this.config.carVin) {
+				Log.error(this.name + ' - MMMVC_SET_CONFIG: Either authUsername, authPassword, authVccApiKey or carVin is not set, exiting...');
 				return;
 			}
 
@@ -129,7 +129,7 @@ module.exports = NodeHelper.create({
 
 				// Download the header image if it does not already exist 
 				if (!fs.existsSync(this.config.headerImageFile)) {
-					this.downloadHeaderImage(apiSampleData.data.images.exteriorDefaultUrl, this.config.headerImageFile, apiSampleData);
+					this.downloadHeaderImage(apiSampleData.data.images.exteriorImageUrl, this.config.headerImageFile, apiSampleData);
 				}
 
 				// Send the data to the Mirror
@@ -146,25 +146,25 @@ module.exports = NodeHelper.create({
 				this.volvoApiClient.getCarLocation(this.authClient.access_token),
 
 				// Connected Vehicle API
-				this.volvoApiClient.getVehicleDetails(this.authClient.access_token),
-				this.volvoApiClient.getOdometer(this.authClient.access_token),
-				this.volvoApiClient.getDoorsStatus(this.authClient.access_token),
-				this.volvoApiClient.getWindowsStatus(this.authClient.access_token),
-				this.volvoApiClient.getTyres(this.authClient.access_token),
-				this.volvoApiClient.getFuel(this.authClient.access_token),
-				this.volvoApiClient.getEngineStatus(this.authClient.access_token),
-				this.volvoApiClient.getStatistics(this.authClient.access_token),
-				//this.volvoApiClient.getExternalTemp(this.authClient.access_token), // Currently not returning any data...
+				this.volvoApiClient.getEngineDiagnostic(this.authClient.access_token),
 				this.volvoApiClient.getDiagnostics(this.authClient.access_token),
-				this.volvoApiClient.getDiagEngine(this.authClient.access_token),
-				this.volvoApiClient.getDiagBrakes(this.authClient.access_token),
+				this.volvoApiClient.getBrakeFluidLevel(this.authClient.access_token),
+				this.volvoApiClient.getWindowStatus(this.authClient.access_token),
+				this.volvoApiClient.getDoorAndLockStatus(this.authClient.access_token),
+				this.volvoApiClient.getEngineStatus(this.authClient.access_token),
+				this.volvoApiClient.getFuelAmount(this.authClient.access_token),
+				this.volvoApiClient.getOdometer(this.authClient.access_token),
+				this.volvoApiClient.getStatistics(this.authClient.access_token),
+				this.volvoApiClient.getTyresStatus(this.authClient.access_token),
+				this.volvoApiClient.getVehicleDetails(this.authClient.access_token),
+				this.volvoApiClient.getWarnings(this.authClient.access_token),
 			]).then((objects) => {
 				const mergedObjects = Object.assign({}, ...objects.map(object => object.data));
 				const carData = { data: mergedObjects };
 				
 				// Download the header image if it does not already exist 
 				if (!fs.existsSync(this.config.headerImageFile)) {
-					this.downloadHeaderImage(carData.data.images.exteriorDefaultUrl, this.config.headerImageFile, carData);
+					this.downloadHeaderImage(carData.data.images.exteriorImageUrl, this.config.headerImageFile, carData);
 				}
 
 				// Send the data to the Mirror
