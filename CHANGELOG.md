@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.2.0] - 2023-12-23
+
+### Added
+
+- Added new api call to get car warnings
+- Display of new warning icons
+- Adjusted logic how average fuel/energy consumption is shown
+
+### Changed
+
+- Changed to the v2 of connected-vehicle api
+
+### Fixed
+
+- Fixed the method to download the image of the car
+
+### Removed
+
+- The setting carType was removed as that data is now available through the API
+
 ## [2.1.0] - 2023-09-22
 
 ### Added
