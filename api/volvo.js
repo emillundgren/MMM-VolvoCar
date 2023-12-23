@@ -48,7 +48,23 @@ class VolvoApis {
 					'accept': 'application/json'
 				}
 			});
-			return JSON.parse(response.body)
+			// Parse result and create new object
+			const result = JSON.parse(response.body);
+			const newObject = {
+				status: result.status,
+				operationId: result.operationId,
+				data: {
+					location: {
+						coordinates: result.data.geometry.coordinates,
+						lon: result.data.geometry.coordinates[0],
+						lat: result.data.geometry.coordinates[1],
+						height: result.data.geometry.coordinates[2],
+						heading: result.data.properties.heading,
+						timestamp: result.data.properties.timestamp,
+					}
+				}
+			}
+			return newObject;
 		} catch (error) {
 			Log.error(error);
 		}
