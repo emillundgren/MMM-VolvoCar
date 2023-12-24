@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.2.1] - 2023-12-24
+
+### Changed
+
+- Adjust the output from the location api call
+
+### Fixed
+
+- Fixed a typo in the translation strings
+
 ## [2.2.0] - 2023-12-23
 
 ### Added
