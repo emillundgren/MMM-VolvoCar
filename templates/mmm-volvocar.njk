@@ -128,7 +128,7 @@
             <div class="container statusbar {{'hide' if not batteryPoweredCar}}">
                 <div class="item align-left">
                     <i class="fa-solid {{'fa-plug' if isCharging else 'fa-bolt'}}"></i>
-                    <span>{{carData.estimatedChargingTimeToTargetBatteryChargeLevel.value+' min' if isCharging else carData.distanceToEmptyBattery.value+' km'}}</span>
+                    <span>{{carData.estimatedChargingTimeToTargetBatteryChargeLevel.value+' min' if isCharging else carData.electricRange.value+' km'}}</span>
                 </div>
                 <div class="item align-right">
                     <div class="statusbar-container">
