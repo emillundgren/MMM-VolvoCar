@@ -11,32 +11,32 @@
 /*
 ** BASE STRUCTURE
 */
-.wrapper {
+.MMM-VolvoCar .wrapper {
 	width: calc(100vw / 3);
 	min-width: 450px;
 }
 
-.container {
+.MMM-VolvoCar .container {
 	display: flex;
 	flex-wrap: wrap;
-	flex-direction: inherit !important;
+	flex-direction: row;
 	align-items: center;
 	justify-content: center;
 }
-.container.info-icons {
+.MMM-VolvoCar .container.info-icons {
 	align-items: flex-start !important;
 	justify-content: flex-start !important;
 }
 
-.container>* {
+.MMM-VolvoCar .container>* {
 	flex: 0 0 auto;
 }
 
-.item {
+.MMM-VolvoCar .item {
 	width: 50%;
 }
 
-.divider {
+.MMM-VolvoCar .divider {
 	border-top: 1px dashed var(--color-text);
 	margin: 0.5em 0;
 }
@@ -44,12 +44,12 @@
 /*
 ** STYLE: header-image
 */
-.header-image {
+.MMM-VolvoCar .header-image {
 	height: 150px;
 	position: relative;
 }
 
-.header-image>img {
+.MMM-VolvoCar .header-image>img {
 	height: 100%;
 	width: 100%;
 	object-fit: cover;
@@ -61,47 +61,47 @@
 	mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
 }
 
-.header-image .container>*:first-child {
+.MMM-VolvoCar .header-image .container>*:first-child {
 	font-weight: 700;
 }
 
-.header-image .container>*:not(:first-child) {
+.MMM-VolvoCar .header-image .container>*:not(:first-child) {
 	font-weight: 300;
 }
 
-.header-image .container.layout-1>* {
+.MMM-VolvoCar .header-image .container.layout-1>* {
 	width: 100%;
 	text-align: left;
 }
 
-.header-image .container.layout-2>* {
+.MMM-VolvoCar .header-image .container.layout-2>* {
 	width: 50%;
 	text-align: left;
 }
 
-.header-image .container.layout-2>*:not(:first-child) {
+.MMM-VolvoCar .header-image .container.layout-2>*:not(:first-child) {
 	text-align: right;
 }
 
 /*
 ** STYLE: statusbar
 */
-.statusbar>.align-left {
+.MMM-VolvoCar .statusbar>.align-left {
 	width: 25% !important;
 }
 
-.statusbar>.align-right {
+.MMM-VolvoCar .statusbar>.align-right {
 	width: 75% !important;
 }
 
-.statusbar>div>.statusbar-container {
+.MMM-VolvoCar .statusbar>div>.statusbar-container {
 	width: auto;
 	height: var(--font-size);
 	background: var(--color-statusbar-background);
 	border-radius: 1em;
 }
 
-.statusbar>div>.statusbar-container>.statusbar-bar {
+.MMM-VolvoCar .statusbar>div>.statusbar-container>.statusbar-bar {
 	height: 100%;
 	text-align: center;
 	color: #000 !important;
@@ -110,11 +110,11 @@
 	background: var(--color-statusbar-default);
 }
 
-.statusbar>div>.statusbar-container>.statusbar-bar>.statusbar-text {
+.MMM-VolvoCar .statusbar>div>.statusbar-container>.statusbar-bar>.statusbar-text {
 	line-height: var(--font-size);
 }
 
-.statusbar-bar.charging-animation {
+.MMM-VolvoCar .statusbar-bar.charging-animation {
 	background-image: repeating-linear-gradient(
 		135deg,
 		rgba(96, 188, 104, 0.75),
@@ -147,22 +147,22 @@
 /*
 ** STYLE: info-icons
 */
-.info-icons>.item:nth-child(odd) {
+.MMM-VolvoCar .info-icons>.item:nth-child(odd) {
 	text-align: left;
 }
 
-.info-icons>.item:nth-child(even) {
+.MMM-VolvoCar .info-icons>.item:nth-child(even) {
 	text-align: right;
 }
 
 /*
 ** STYLE: alert-icons
 */
-.alert-icons {
+.MMM-VolvoCar .alert-icons {
 	text-align: center;
 }
 
-.alert-icons>.item {
+.MMM-VolvoCar .alert-icons>.item {
 	width: auto;
 	font-size: var(--font-size-xsmall);
 	line-height: var(--font-size);
@@ -176,11 +176,11 @@
 /*
 ** STYLE: last-updated
 */
-.last-updated {
+.MMM-VolvoCar .last-updated {
 	text-align: end;
 }
 
-.last-updated>.item {
+.MMM-VolvoCar .last-updated>.item {
 	width: 100%;
 	font-style: italic;
 	font-size: var(--font-size-xsmall);
@@ -190,34 +190,34 @@
 /*
 ** OVERRIDES
 */
-.hide {
+.MMM-VolvoCar .hide {
 	display: none !important;
 }
 
-.align-left {
+.MMM-VolvoCar .align-left {
 	text-align: left !important;
 }
 
-.align-center {
+.MMM-VolvoCar .align-center {
 	text-align: center !important;
 }
 
-.align-right {
+.MMM-VolvoCar .align-right {
 	text-align: right !important;
 }
 
-.warning {
+.MMM-VolvoCar .warning {
 	color: var(--color-warning) !important;
 }
 
-.warning-bg {
+.MMM-VolvoCar .warning-bg {
 	background-color: var(--color-warning) !important;
 }
 
-.danger {
+.MMM-VolvoCar .danger {
 	color: var(--color-danger) !important;
 }
 
-.danger-bg {
+.MMM-VolvoCar .danger-bg {
 	background-color: var(--color-danger) !important;
 }
