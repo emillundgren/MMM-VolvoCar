@@ -66,8 +66,8 @@ module.exports = NodeHelper.create({
 			}
 
 			// Make sure that we have needed credential set in the config
-			if (!this.config.authUsername || !this.config.authPassword || !this.config.authVccApiKey || !this.config.carVin) {
-				Log.error(this.name + ' - MMMVC_SET_CONFIG: Either authUsername, authPassword, authVccApiKey or carVin is not set, exiting...');
+			if (!this.config.authUsername || !this.config.authPassword || !this.config.authClientId || !this.config.authClientSecret || !this.config.authVccApiKey || !this.config.carVin) {
+				Log.error(this.name + ' - MMMVC_SET_CONFIG: Either authUsername, authPassword, authClientId, authClientSecret, authVccApiKey or carVin is not set, exiting...');
 				return;
 			}
 

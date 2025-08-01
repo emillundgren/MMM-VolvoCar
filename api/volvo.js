@@ -17,15 +17,20 @@ class VolvoApis {
 
 	async getRechargeStatus(access_token) {
 		try {
-			const response = await got(`${this.apiBaseUrl}/energy/v1/vehicles/${this.carVin}/recharge-status`, {
+			const response = await got(`${this.apiBaseUrl}/energy/v2/vehicles/${this.carVin}/state`, {
 				headers: {
 					'User-Agent': 'MMM-VolvoCar',
 					'Authorization': `Bearer ${access_token}`,
 					'vcc-api-key': this.vcc_api_key,
-					'accept': 'application/vnd.volvocars.api.energy.vehicledata.v1+json'
+					'accept': 'application/json'
 				}
 			});
-			return JSON.parse(response.body)
+			// Parse result and create new object
+			const result = JSON.parse(response.body);
+			const newObject = {
+				data: result
+			}
+			return newObject;
 		} catch (error) {
 			Log.error(error);
 		}

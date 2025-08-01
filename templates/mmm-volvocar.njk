@@ -9,7 +9,7 @@
 
 {# ELECTRIC SPECIFIC VARIABLES #}
 {% if carData.fuelType | upper in ["ELECTRIC","PETROL/ELECTRIC"] %}{% set batteryPoweredCar = true %}{% else %}{% set batteryPoweredCar = false %}{% endif %}
-{% if carData.chargingSystemStatus.value | upper in ["CHARGING_SYSTEM_CHARGING"] %}{% set isCharging = true %}{% else %}{% set isCharging = false %}{% endif %}
+{% if carData.chargingStatus.value | upper in ["CHARGING_SYSTEM_CHARGING"] %}{% set isCharging = true %}{% else %}{% set isCharging = false %}{% endif %}
 
 {# MACRO TO RETURN A CLASS BASED ON THE PROVIDED VALUE #}
 {% macro setStatusbarColor(val) %}
@@ -128,7 +128,7 @@
             <div class="container statusbar {{'hide' if not batteryPoweredCar}}">
                 <div class="item align-left">
                     <i class="fa-solid {{'fa-plug' if isCharging else 'fa-bolt'}}"></i>
-                    <span>{{carData.estimatedChargingTime.value+' min' if isCharging else carData.electricRange.value+' km'}}</span>
+                    <span>{{carData.estimatedChargingTimeToTargetBatteryChargeLevel.value+' min' if isCharging else carData.distanceToEmptyBattery.value+' km'}}</span>
                 </div>
                 <div class="item align-right">
                     <div class="statusbar-container">

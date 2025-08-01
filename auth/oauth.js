@@ -10,6 +10,8 @@ class OAuth {
 	constructor(config) {
 		this.username = config.authUsername;
 		this.password = config.authPassword;
+		this.clientId = config.authClientId
+		this.clientSecret = config.authClientSecret
 		this.scope = config.authScope;
 		this.authUrl = config.authUrl;
 		this.tokenUrl = config.authTokenUrl;
@@ -31,7 +33,7 @@ class OAuth {
 					scope: this.scope,
 				}),
 				headers: {
-					'Authorization': 'Basic aDRZZjBiOlU4WWtTYlZsNnh3c2c1WVFxWmZyZ1ZtSWFEcGhPc3kxUENhVXNpY1F0bzNUUjVrd2FKc2U0QVpkZ2ZJZmNMeXc=',
+					'Authorization': 'Basic ' + Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64'),
 					'Content-Type': 'application/x-www-form-urlencoded',
 					'User-Agent': 'okhttp/4.10.0',
 				}
@@ -54,7 +56,7 @@ class OAuth {
 					refresh_token: refreshToken,
 				}),
 				headers: {
-					'Authorization': 'Basic aDRZZjBiOlU4WWtTYlZsNnh3c2c1WVFxWmZyZ1ZtSWFEcGhPc3kxUENhVXNpY1F0bzNUUjVrd2FKc2U0QVpkZ2ZJZmNMeXc=',
+					'Authorization': 'Basic ' + Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64'),
 					'Content-Type': 'application/x-www-form-urlencoded',
 					'User-Agent': 'okhttp/4.10.0',
 				}

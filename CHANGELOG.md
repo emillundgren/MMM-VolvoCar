@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.2.2] - 2025-08-01
+
+### Changed
+
+- Adjusted Energy API call to v2
+- Added ClientId and ClientSecret to the config and the get/refresh_token calls
+- Adjusted the names of some api-parameters in the template
+- Temporary fix to refresh OAuth2 token
+
 ## [2.2.1] - 2023-12-24
 
 ### Changed

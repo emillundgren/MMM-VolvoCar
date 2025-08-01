@@ -1,6 +1,6 @@
 {
 	"name": "mmm-volvocar",
-	"version": "2.2.1",
+	"version": "2.2.2",
 	"description": "A MagicMirror Module for displaying data from your Volvo car",
 	"repository": {
 		"type": "git",
