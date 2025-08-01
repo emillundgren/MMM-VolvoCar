@@ -6,7 +6,7 @@ Module.register("MMM-VolvoCar", {
 
 		// SETTINGS: Authorization
 		authTokenUrl: 'https://volvoid.eu.volvocars.com/as/token.oauth2',
-		authScope: 'openid email profile care_by_volvo:financial_information:invoice:read care_by_volvo:financial_information:payment_method care_by_volvo:subscription:read customer:attributes customer:attributes:write order:attributes vehicle:attributes tsp_customer_api:all conve:brake_status conve:command_accessibility conve:commands conve:diagnostics_engine_status conve:diagnostics_workshop conve:doors_status conve:engine_status conve:environment conve:fuel_status conve:lock_status conve:navigation conve:odometer_status conve:trip_statistics conve:tyre_status conve:vehicle_relation conve:warnings conve:windows_status energy:battery_charge_level energy:charging_connection_status energy:charging_system_status energy:electric_range energy:estimated_charging_time energy:recharge_status vehicle:attributes',
+		authScope: 'conve:fuel_status conve:brake_status conve:doors_status location:read openid conve:diagnostics_workshop conve:trip_statistics conve:environment conve:odometer_status conve:engine_status conve:lock_status conve:vehicle_relation conve:windows_status conve:navigation conve:tyre_status conve:connectivity_status energy:state:read energy:capability:read conve:battery_charge_level conve:diagnostics_engine_status conve:warnings',
 		authUsername: null,
 		authPassword: null,
 		authClientId: null,

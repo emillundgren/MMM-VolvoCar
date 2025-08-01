@@ -28,14 +28,12 @@ class OAuth {
 				body: querystring.stringify({
 					username: this.username,
 					password: this.password,
-					access_token_manager_id: 'JWTh4Yf0b',
 					grant_type: 'password',
 					scope: this.scope,
 				}),
 				headers: {
 					'Authorization': 'Basic ' + Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64'),
 					'Content-Type': 'application/x-www-form-urlencoded',
-					'User-Agent': 'okhttp/4.10.0',
 				}
 			});
 
@@ -51,14 +49,12 @@ class OAuth {
 		try {
 			const response = await got.post(this.tokenUrl, {
 				body: querystring.stringify({
-					access_token_manager_id: "JWTh4Yf0b",
 					grant_type: "refresh_token",
 					refresh_token: refreshToken,
 				}),
 				headers: {
 					'Authorization': 'Basic ' + Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64'),
 					'Content-Type': 'application/x-www-form-urlencoded',
-					'User-Agent': 'okhttp/4.10.0',
 				}
 			});
 
