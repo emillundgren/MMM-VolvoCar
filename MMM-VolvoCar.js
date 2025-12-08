@@ -1,29 +1,26 @@
 Module.register("MMM-VolvoCar", {
-	// Default settings for the module
-	defaults: {
+
+    defaults: {
 		// SETTINGS: MMM-VolvoCar module
-		moduleDataRefreshInterval: 10 * 60 * 1000,
+		refreshInterval: 10 * 60 * 1000,
 
-		// SETTINGS: Authorization
-		authTokenUrl: 'https://volvoid.eu.volvocars.com/as/token.oauth2',
-		authScope: 'conve:fuel_status conve:brake_status conve:doors_status location:read openid conve:diagnostics_workshop conve:trip_statistics conve:environment conve:odometer_status conve:engine_status conve:lock_status conve:vehicle_relation conve:windows_status conve:navigation conve:tyre_status conve:connectivity_status energy:state:read energy:capability:read conve:battery_charge_level conve:diagnostics_engine_status conve:warnings',
-		authUsername: null,
-		authPassword: null,
-		authClientId: null,
-		authClientSecret: null,
-		authVccApiKey: null,
-		authTokenFile: './modules/MMM-VolvoCar/assets/tokens.json',
-
-		// SETTINGS: API
-		apiBaseUrl: 'https://api.volvocars.com',
-		apiUseSampleDataFile: false,
+        // SETTINGS: API & Authorization
+        authUrl: "https://volvoid.eu.volvocars.com/as/authorization.oauth2",
+        tokenUrl: "https://volvoid.eu.volvocars.com/as/token.oauth2",
+        apiBaseUrl: "https://api.volvocars.com",
+        scope: "openid conve:fuel_status conve:brake_status conve:doors_status location:read openid conve:diagnostics_workshop conve:trip_statistics conve:environment conve:odometer_status conve:engine_status conve:lock_status conve:vehicle_relation conve:windows_status conve:tyre_status conve:connectivity_status energy:state:read energy:capability:read conve:battery_charge_level conve:diagnostics_engine_status conve:warnings",
+        apiUseSampleDataFile: false,
 		apiSampleDataFile: './modules/MMM-VolvoCar/assets/sampleData.json',
+        clientId: null,
+        clientSecret: null,
+        redirectUri: null,
+        apiKey: null,
 
-		// SETTINGS: Car
-		carVin: null,
-		carFuelTankSize: 60,
+        // SETTINGS: Car
+        carVin: null,
+        carFuelTankSize: 60,
 
-		// SETTINGS: Display
+        // SETTINGS: Display
 		// Header Image
 		hideHeaderImage: false,
 		headerImageLayout: 1,
@@ -48,95 +45,75 @@ Module.register("MMM-VolvoCar", {
 		// Last Updated
 		hideLastUpdated: false,
 		dateFormat: 'YYYY-MM-DD HH:mm:ss',
-	},
+    },
 
-	// Start our module and send the config to the node_helper
-	start: function () {
-		Log.info(this.name + ' is starting');
+    start() {
+        this.authenticated = false;
+        this.authUrl = null;
 
-		// Assign some default loading variables
-		this.loading = true;
-		this.authenticated = false;
+        this.sendSocketNotification("MMMVC_INIT_MODULE", this.config);
+    },
 
-		this.sendSocketNotification('MMMVC_SET_CONFIG', this.config);
-	},
-
-	// Define required scripts.
-	getScripts: function () {
+    getStyles: function () {
 		return [
-			"moment.js",
-		];
-	},
-
-	// Get the CSS-file for the module
-	getStyles: function () {
-		return [
-			this.file('MMM-VolvoCar.css'),
-			'font-awesome.css',
+			'assets\\MMM-VolvoCar.css',
 		]
 	},
 
-	// Get translations for the module
-	getTranslations: function () {
-		return {
+    getTranslations() {
+        return {
 			en: "translations/en.json",
 			sv: "translations/sv.json"
 		};
-	},
+    },
 
-	// The template of how the data is shown on the mirror
-	getTemplate: function () {
-		return "templates\\mmm-volvocar.njk"
-	},
+    getTemplate() {
+        return "templates\\MMM-VolvoCar.njk"
+    },
+    getTemplateData() {
+        var templateData = {
+            authenticated: this.authenticated,
+            authUrl: this.authUrl,
+            config: this.config,
+            carData: this.carData,
+            lastUpdated: this.lastUpdated,
+        }
+        return templateData
+    },
 
-	// Data for the template above
-	getTemplateData: function () {
-		var templateData = {
-			loading: this.loading,
-			authenticated: this.authenticated,
-			config: this.config,
-			carData: this.carData,
-			lastUpdated: this.lastUpdated
-		};
-		return templateData
-	},
+    socketNotificationReceived(notification, payload) {
+        if (notification === "MMMVC_AUTH_SUCCESSFUL") {
+            this.authenticated = true;
+            this.updateDom();
+            this.sendSocketNotification('MMMVC_FETCH_DATA');
+            this.startLoop();
+        }
 
-	socketNotificationReceived: function (notification, payload) {
-		Log.info(`${this.name} received a socket notification: ${notification}`);
-		var self = this;
+        if (notification === "VOLVO_AUTH_NEEDED") {
+            fetch("/MMM-VolvoCar/generate-url")
+                .then(r => r.text())
+                .then(url => {
+                    this.authUrl = url;
+                    this.updateDom();
+                });
+        }
 
-		// When not authenticated, we show the auth-link
-		if (notification === 'MMMVC_SHOW_AUTH') {
-			this.loading = false;
-			this.authenticated = false;
-			self.updateDom();
-		}
+        if (notification === "MMMVC_REDRAW_MODULE") {
+            const now = moment();
+            this.carData = payload;
+            this.lastUpdated = now.format(this.config.dateFormat);
+            this.updateDom();
+        }
 
-		// When the module is ready, we request to fetch data from the API
-		if (notification === 'MMMVC_MODULE_READY') {
-			this.loading = false;
-			this.authenticated = true;
+        if (notification === "MMMVC_UPDATE_DOM") {
+            this.updateDom();
+        }
+    },
 
-			// Do an initial fetch of the data and then start the loop of updating the data
-			this.sendSocketNotification('MMMVC_GET_CAR_DATA');
-			self.startLoop();
-		}
-
-		// Redraw the module with the new data
-		if (notification === 'MMMVC_REDRAW_MIRROR') {
-			const now = moment();
-
-			this.carData = payload.data;
-			this.lastUpdated = now.format(this.config.dateFormat);
-			self.updateDom();
-		}
-	},
-
-	// Start the loop that refreshes the data based on the set updateInterval
-	startLoop: function () {
-		Log.log(this.name + ' is starting the update loop');
+    startLoop: function () {
+		console.log(`${this.name} is starting the update loop`);
 		window.setInterval(() => {
-			this.sendSocketNotification('MMMVC_GET_CAR_DATA');
-		}, this.config.moduleDataRefreshInterval);
+			this.sendSocketNotification('MMMVC_FETCH_DATA');
+		}, this.config.refreshInterval );
 	},
 });

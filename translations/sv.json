@@ -1,7 +1,7 @@
 {
     "LOADING": "LADDAR...",
     "AUTHENTICATE_HEADER": "EJ INLOGGAD",
-    "AUTHENTICATE_TEXT": "Om detta är första gången du startar modulen, testa att ladda om spegeln",
+    "AUTHENTICATE_TEXT": "Klicka här för att logga in till Volvo API",
     "LAST_UPDATED": "SENAST UPPDATERAD",
     "LOCKED": "LÅST",
     "UNLOCKED": "UPPLÅST",

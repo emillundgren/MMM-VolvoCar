@@ -1,0 +1,372 @@
+{#########################################################################################################################################
+
+8888888b.     d8888 8888888b.   .d8888b.  8888888888             d8888 8888888b. 8888888      8888888b.        d8888 88888888888     d8888 
+888   Y88b   d88888 888   Y88b d88P  Y88b 888                   d88888 888   Y88b  888        888  "Y88b      d88888     888        d88888 
+888    888  d88P888 888    888 Y88b.      888                  d88P888 888    888  888        888    888     d88P888     888       d88P888 
+888   d88P d88P 888 888   d88P  "Y888b.   8888888             d88P 888 888   d88P  888        888    888    d88P 888     888      d88P 888 
+8888888P" d88P  888 8888888P"      "Y88b. 888                d88P  888 8888888P"   888        888    888   d88P  888     888     d88P  888 
+888      d88P   888 888 T88b         "888 888               d88P   888 888         888        888    888  d88P   888     888    d88P   888 
+888     d8888888888 888  T88b  Y88b  d88P 888              d8888888888 888         888        888  .d88P d8888888888     888   d8888888888 
+888    d88P     888 888   T88b  "Y8888P"  8888888888      d88P     888 888       8888888      8888888P" d88P     888     888  d88P     888 
+
+#########################################################################################################################################}
+
+{# PARSE API DATA - energyState #}
+{% set batteryChargeLevel                               = carData.energyState.batteryChargeLevel %}
+{% set electricRange                                    = carData.energyState.electricRange %}
+{% set chargerConnectionStatus                          = carData.energyState.chargerConnectionStatus %}
+{% set chargingStatus                                   = carData.energyState.chargingStatus %}
+{% set chargingType                                     = carData.energyState.chargingType %}
+{% set chargerPowerStatus                               = carData.energyState.chargerPowerStatus %}
+{% set estimatedChargingTimeToTargetBatteryChargeLevel  = carData.energyState.estimatedChargingTimeToTargetBatteryChargeLevel %}
+{% set chargingCurrentLimit                             = carData.energyState.chargingCurrentLimit %}
+{% set targetBatteryChargeLevel                         = carData.energyState.targetBatteryChargeLevel %}
+{% set chargingPower                                    = carData.energyState.chargingPower %}
+
+{# PARSE API DATA - location #}
+{% set locationHeading      = carData.location.data.properties.heading %}
+{% set locationCoordinates  = carData.location.data.geometry.coordinates %}
+
+{# PARSE API DATA - engineDiagnostic #}
+{% set oilLevelWarning              = carData.engineDiagnostic.data.oilLevelWarning %}
+{% set engineCoolantLevelWarning    = carData.engineDiagnostic.data.engineCoolantLevelWarning %}
+
+{# PARSE API DATA - diagnostics #}
+{% set serviceWarning           = carData.diagnostics.data.serviceWarning %}
+{% set engineHoursToService     = carData.diagnostics.data.engineHoursToService %}
+{% set distanceToService        = carData.diagnostics.data.distanceToService %}
+{% set washerFluidLevelWarning  = carData.diagnostics.data.washerFluidLevelWarning %}
+{% set timeToService            = carData.diagnostics.data.timeToService %}
+
+{# PARSE API DATA - brakeFluidLevel #}
+{% set brakeFluidLevelWarning   = carData.brakeFluidLevel.data.brakeFluidLevelWarning %}
+
+{# PARSE API DATA - windowStatus #}
+{% set frontLeftWindow  = carData.windowStatus.data.frontLeftWindow %}
+{% set frontRightWindow = carData.windowStatus.data.frontRightWindow %}
+{% set rearLeftWindow   = carData.windowStatus.data.rearLeftWindow %}
+{% set rearRightWindow  = carData.windowStatus.data.rearRightWindow %}
+{% set sunroof          = carData.windowStatus.data.sunroof %}
+
+{# PARSE API DATA - doorAndLockStatus #}
+{% set centralLock      = carData.doorAndLockStatus.data.centralLock %}
+{% set frontLeftDoor    = carData.doorAndLockStatus.data.frontLeftDoor %}
+{% set frontRightDoor   = carData.doorAndLockStatus.data.frontRightDoor %}
+{% set rearLeftDoor     = carData.doorAndLockStatus.data.rearLeftDoor %}
+{% set rearRightDoor    = carData.doorAndLockStatus.data.rearRightDoor %}
+{% set hood             = carData.doorAndLockStatus.data.hood %}
+{% set tailgate         = carData.doorAndLockStatus.data.tailgate %}
+{% set tankLid          = carData.doorAndLockStatus.data.tankLid %}
+
+{# PARSE API DATA - engineStatus #}
+{% set engineStatus = carData.engineStatus.data.engineStatus %}
+
+{# PARSE API DATA - fuelAmount #}
+{% set fuelAmount   = carData.fuelAmount.data.fuelAmount %}
+
+{# PARSE API DATA - odometer #}
+{% set odometer = carData.odometer.data.odometer %}
+
+{# PARSE API DATA - statistics #}
+{% set averageEnergyConsumption = carData.statistics.data.averageEnergyConsumption %}
+{% set averageSpeed             = carData.statistics.data.averageSpeed %}
+{% set averageSpeedAutomatic    = carData.statistics.data.averageSpeedAutomatic %}
+{% set tripMeterManual          = carData.statistics.data.odometetripMeterManualr %}
+{% set tripMeterAutomatic       = carData.statistics.data.tripMeterAutomatic %}
+{% set distanceToEmptyBattery   = carData.statistics.data.distanceToEmptyBattery %}
+
+{# PARSE API DATA - tyreStatus #}
+{% set frontLeftTyre    = carData.tyreStatus.data.frontLeft %}
+{% set frontRightTyre   = carData.tyreStatus.data.frontRight %}
+{% set rearLeftTyre     = carData.tyreStatus.data.rearLeft %}
+{% set rearRightTyre    = carData.tyreStatus.data.rearRight %}
+
+{# PARSE API DATA - vehicleDetails #}
+{% set vehicleDetails   = carData.vehicleDetails.data %}
+
+{# PARSE API DATA - warnings #}
+{% set brakeLightCenterWarning          = carData.warnings.data.brakeLightCenterWarning %}
+{% set brakeLightLeftWarning            = carData.warnings.data.brakeLightLeftWarning %}
+{% set brakeLightRightWarning           = carData.warnings.data.brakeLightRightWarning %}
+{% set fogLightFrontWarning             = carData.warnings.data.fogLightFrontWarning %}
+{% set fogLightRearWarning              = carData.warnings.data.fogLightRearWarning %}
+{% set positionLightFrontLeftWarning    = carData.warnings.data.positionLightFrontLeftWarning %}
+{% set positionLightFrontRightWarning   = carData.warnings.data.positionLightFrontRightWarning %}
+{% set positionLightRearLeftWarning     = carData.warnings.data.positionLightRearLeftWarning %}
+{% set positionLightRearRightWarning    = carData.warnings.data.positionLightRearRightWarning %}
+{% set highBeamLeftWarning              = carData.warnings.data.highBeamLeftWarning %}
+{% set highBeamRightWarning             = carData.warnings.data.highBeamRightWarning %}
+{% set lowBeamLeftWarning               = carData.warnings.data.lowBeamLeftWarning %}
+{% set lowBeamRightWarning              = carData.warnings.data.lowBeamRightWarning %}
+{% set daytimeRunningLightLeftWarning   = carData.warnings.data.daytimeRunningLightLeftWarning %}
+{% set daytimeRunningLightRightWarning  = carData.warnings.data.daytimeRunningLightRightWarning %}
+{% set turnIndicationFrontLeftWarning   = carData.warnings.data.turnIndicationFrontLeftWarning %}
+{% set turnIndicationFrontRightWarning  = carData.warnings.data.turnIndicationFrontRightWarning %}
+{% set turnIndicationRearLeftWarning    = carData.warnings.data.turnIndicationRearLeftWarning %}
+{% set turnIndicationRearRightWarning   = carData.warnings.data.turnIndicationRearRightWarning %}
+{% set registrationPlateLightWarning    = carData.warnings.data.registrationPlateLightWarning %}
+{% set sideMarkLightsWarning            = carData.warnings.data.sideMarkLightsWarning %}
+{% set hazardLightsWarning              = carData.warnings.data.hazardLightsWarning %}
+{% set reverseLightsWarning             = carData.warnings.data.reverseLightsWarning %}
+
+{#############################################################################################
+
+888     888     d8888 8888888b.  8888888        d8888 888888b.   888      8888888888 .d8888b.  
+888     888    d88888 888   Y88b   888         d88888 888  "88b  888      888       d88P  Y88b 
+888     888   d88P888 888    888   888        d88P888 888  .88P  888      888       Y88b.      
+Y88b   d88P  d88P 888 888   d88P   888       d88P 888 8888888K.  888      8888888    "Y888b.   
+ Y88b d88P  d88P  888 8888888P"    888      d88P  888 888  "Y88b 888      888           "Y88b. 
+  Y88o88P  d88P   888 888 T88b     888     d88P   888 888    888 888      888             "888 
+   Y888P  d8888888888 888  T88b    888    d8888888888 888   d88P 888      888       Y88b  d88P 
+    Y8P  d88P     888 888   T88b 8888888 d88P     888 8888888P"  88888888 8888888888 "Y8888P"  
+
+#############################################################################################}
+
+{# GENERAL VARIABLES #}
+{% if centralLock.value | upper in ["LOCKED"] %}{% set isLocked = true %}{% else %}{% set isLocked = false %}{% endif %}
+{% set noActiveAlerts = true %}
+
+{# FUEL SPECIFIC VARIABLES #}
+{% if vehicleDetails.fuelType | upper in ["DIESEL","PETROL","PETROL/ELECTRIC"] %}{% set fuelPoweredCar = true %}{% else %}{% set fuelPoweredCar = false %}{% endif %}
+{% if vehicleDetails.fuelType | upper in ["PETROL/ELECTRIC"] %}{% set hybridCar = true %}{% else %}{% set hybridCar = false %}{% endif %}
+{% if fuelAmount.value %}{% set fuelLevelPercentage = ((fuelAmount.value/config.carFuelTankSize)*100) | round(0, floor)  %}{% else %}{% set fuelLevelPercentage = 0 %}{% endif %}
+
+{# ELECTRIC SPECIFIC VARIABLES #}
+{% if vehicleDetails.fuelType | upper in ["ELECTRIC","PETROL/ELECTRIC"] %}{% set batteryPoweredCar = true %}{% else %}{% set batteryPoweredCar = false %}{% endif %}
+{% if chargingStatus.value | upper in ["CHARGING_SYSTEM_CHARGING"] %}{% set isCharging = true %}{% else %}{% set isCharging = false %}{% endif %}
+
+{# MACRO TO RETURN A CLASS BASED ON THE PROVIDED VALUE #}
+{% macro setStatusbarColor(val) %}
+    {% if config.useStatusbarColor %}
+        {% if val >= config.statusbarColorWarnMinMax | first and val <= config.statusbarColorWarnMinMax | last %}
+            warning-bg
+        {% elif val >= config.statusbarColorDangerMinMax | first and val <= config.statusbarColorDangerMinMax | last %}
+            danger-bg
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
+{# ACTIVATE ALERT SECTION BASED ON CERTAIN PROPERTY VALUES #}
+{% set regExp = r/((TOO_)?LOW|(TOO_)?HIGH|SERVICE_REQUIRED|OPEN|UNLOCKED|RUNNING|(VERY_)?(HIGH_|LOW_)?PRESSURE|FAULT|FAILURE)/i %}
+
+{# WARNINGS #}
+{% if regExp.test(engineCoolantLevelWarning.value) %}{% set alertEngineCoolant = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(oilLevelWarning.value) %}{% set alertOilLevel = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(brakeFluidLevelWarning.value) %}{% set alertBreakFluid = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(washerFluidLevelWarning.value) %}{% set alertWasherFluid = true %}{% set noActiveAlerts = false %}{% endif %}
+{# WINDOWS #}
+{% if regExp.test(frontLeftWindow.value) %}{% set alertWindowFL = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(frontRightWindow.value) %}{% set alertWindowFR = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(rearLeftWindow.value) %}{% set alertWindowRL = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(rearRightWindow.value) %}{% set alertWindowRR = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(sunroof.value) %}{% set alertSunroof = true %}{% set noActiveAlerts = false %}{% endif %}
+{# DOORS #}
+{% if regExp.test(centralLock.value) %}{% set alertDoorCentral = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(frontLeftDoor.value) %}{% set alertDoorFL = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(frontRightDoor.value) %}{% set alertDoorFR = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(rearLeftDoor.value) %}{% set alertDoorRL = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(rearRightDoor.value) %}{% set alertDoorRR = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(hood.value) %}{% set alertHood = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(tailGate.value) %}{% set alertTailgate = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(tankLid.value) %}{% set alertTankLid = true %}{% set noActiveAlerts = false %}{% endif %}
+{# ENGINE #}
+{% if regExp.test(engineStatus.value) %}{% set alertEngineRunning = true %}{% set noActiveAlerts = false %}{% endif %}
+{# TIRES #}
+{% if regExp.test(frontLeftTyre.value) %}{% set alertTireFL = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(frontRightTyre.value) %}{% set alertTireFR = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(rearLeftTyre.value) %}{% set alertTireRL = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(rearRightTyre.value) %}{% set alertTireRR = true %}{% set noActiveAlerts = false %}{% endif %}
+{# CHARGING #}
+{% if regExp.test(chargingStatus.value) %}{% set alertCharging = true %}{% set noActiveAlerts = false %}{% endif %}
+{# LIGHTS #}
+{% if regExp.test(brakeLightCenterWarning.value) %}{% set alertBrakeLightCenter = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(brakeLightLeftWarning.value) %}{% set alertBrakeLightLeft = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(brakeLightRightWarning.value) %}{% set alertBrakeLightRight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(fogLightFrontWarning.value) %}{% set alertFogLightFront = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(fogLightRearWarning.value) %}{% set alertFogLightRear = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(positionLightFrontLeftWarning.value) %}{% set alertPositionLightFrontLeft = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(positionLightFrontRightWarning.value) %}{% set alertPositionLightFrontRight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(positionLightRearLeftWarning.value) %}{% set alertPositionLightRearLeft = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(positionLightRearRightWarning.value) %}{% set alertPositionLightRearRight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(highBeamLeftWarning.value) %}{% set alertHighBeamLeft = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(highBeamRightWarning.value) %}{% set alertHighBeamRight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(lowBeamLeftWarning.value) %}{% set alertLowBeamLeft = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(lowBeamRightWarning.value) %}{% set alertLowBeamRight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(daytimeRunningLightLeftWarning.value) %}{% set alertDaytimeRunningLightLeft = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(daytimeRunningLightRightWarning.value) %}{% set alertDaytimeRunningLightRight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(turnIndicationFrontLeftWarning.value) %}{% set alertTurnIndicationFrontLeft = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(turnIndicationFrontRightWarning.value) %}{% set alertTurnIndicationFrontRight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(turnIndicationRearLeftWarning.value) %}{% set alertTurnIndicationRearLeft = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(turnIndicationRearRightWarning.value) %}{% set alertTurnIndicationRearRight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(registrationPlateLightWarning.value) %}{% set alertRegistrationPlateLight = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(sideMarkLightsWarning.value) %}{% set alertSideMarkLights = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(hazardLightsWarning.value) %}{% set alertHazardLights = true %}{% set noActiveAlerts = false %}{% endif %}
+{% if regExp.test(reverseLightsWarning.value) %}{% set alertReverseLights = true %}{% set noActiveAlerts = false %}{% endif %}
+
+{################################################################################
+
+ .d8888b.   .d88888b.  888b    888 88888888888 8888888888 888b    888 88888888888 
+d88P  Y88b d88P" "Y88b 8888b   888     888     888        8888b   888     888     
+888    888 888     888 88888b  888     888     888        88888b  888     888     
+888        888     888 888Y88b 888     888     8888888    888Y88b 888     888     
+888        888     888 888 Y88b888     888     888        888 Y88b888     888     
+888    888 888     888 888  Y88888     888     888        888  Y88888     888     
+Y88b  d88P Y88b. .d88P 888   Y8888     888     888        888   Y8888     888     
+ "Y8888P"   "Y88888P"  888    Y888     888     8888888888 888    Y888     888     
+
+################################################################################}
+{% if loading %}
+    <div id="mmm-volvocar" class="mmm-volvocar">
+        <div class="wrapper">
+            <p>{{ "LOADING" | translate | upper }}</p>
+        </div>
+    </div>
+{% elif not authenticated %}
+    <div id="mmm-volvocar" class="mmm-volvocar">
+        <div class="wrapper">
+            <center>
+                <p><b>{{ "AUTHENTICATE_HEADER" | translate | upper }}</b><br>
+                <a href="{{authUrl}}" target="_blank">{{ "AUTHENTICATE_TEXT" | translate }}</i></p>
+            </center>
+        </div>
+    </div>
+{% else %}
+    <div id="mmm-volvocar" class="mmm-volvocar">
+        {# HEADER IMAGE #}
+        <div class="wrapper {{'hide' if config.hideHeaderImage}}">
+            <div class="header-image">
+                <img src="{{config.headerImageFile}}"></img>
+                <div class="container layout-{{config.headerImageLayout}}">
+                    <span class="item {{'hide' if config.hideHeaderImageTextModel}}">{{vehicleDetails.descriptions.model}} {{vehicleDetails.modelYear}}</span>
+                    <span class="item {{'hide' if config.hideHeaderImageTextCustom}}">{{config.headerImageCustomText}}</span>
+                </div>
+            </div>
+        </div>
+
+        {# STATUSBARS #}
+        <div class="wrapper {{'hide' if config.hideStatusbar}}">
+            {# FUEL LEVEL STATUSBAR #}
+            <div class="container statusbar {{'hide' if not fuelPoweredCar}}">
+                <div class="item align-left">
+                    <i class="fa-solid fa-gas-pump"></i>
+                    <span>{{distanceToEmptyTank.value}} km</span>
+                </div>
+                <div class="item align-right">
+                    <div class="statusbar-container">
+                        <div class="statusbar-bar {{setStatusbarColor(fuelLevelPercentage)}}" style="width: {{fuelLevelPercentage}}%">
+                            <div class="statusbar-text">{{fuelLevelPercentage}}%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# ELECTRIC CAR BATTERY STATUSBAR #}
+            <div class="container statusbar {{'hide' if not batteryPoweredCar}}">
+                <div class="item align-left">
+                    <i class="fa-solid {{'fa-plug' if isCharging else 'fa-bolt'}}"></i>
+                    <span>{{estimatedChargingTimeToTargetBatteryChargeLevel.value+' min' if isCharging else electricRange.value+' km'}}</span>
+                </div>
+                <div class="item align-right">
+                    <div class="statusbar-container">
+                        <div class="statusbar-bar {{'charging-animation' if isCharging and config.useStatusbarChargingAnimation}} {{setStatusbarColor(batteryChargeLevel.value)}}" style="width: {{batteryChargeLevel.value | round(0, floor)}}%">
+                            <div class="statusbar-text">{{batteryChargeLevel.value | round(0, floor)}}%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# INFO ICONS #}
+        <div class="wrapper {{'hide' if config.hideInfoIcons}}">
+            <div class="divider {{'hide' if config.hideStatusbar}}"></div>
+            <div class="container info-icons">
+                <div class="item {{'hides' if not centralLock.value}}">
+                    <i class="fa-solid {{'fa-lock' if isLocked else 'fa-lock-open danger'}}"></i>
+                    <span>{% if isLocked %}{{ "LOCKED" | translate | upper }}{% else %}{{ "UNLOCKED" | translate | upper }}{% endif %}</span>
+                </div>
+                <div class="item {{'hide' if not averageSpeed.value}}">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>{{averageSpeed.value}} km/h</span>
+                </div>
+                <div class="item {{'hide' if not odometer.value}}">
+                    <i class="fa-solid fa-road"></i>
+                    <span>{{odometer.value}} km</span>
+                </div>
+                <div class="item {{'hide' if (not averageFuelConsumption.value) and (not averageEnergyConsumption.value)}}">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span class="{{'hide' if not batteryPoweredCar}}">{{averageEnergyConsumption.value}} kWh/100km</span>
+                    <br class="{{'hide' if (not hybridCar)}}"><i class="fa-solid fa-chart-line {{'hide' if (not hybridCar)}}"></i>
+                    <span class="{{'hide' if not fuelPoweredCar}}">{{averageFuelConsumption.value}} L/100km</span>
+                </div>
+            </div>
+        </div>
+
+        {# ALERTS ICONS #}
+        <div class="wrapper {{'hide' if config.hideAlertIcons or noActiveAlerts}}">
+            <div class="divider {{'hide' if config.hideInfoIcons and config.hideStatusbar}}"></div>
+            <div class="container alert-icons">
+                {# WARNINGS #}
+                {% if alertEngineCoolant %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_ENGINE_COOLANT" | translate | upper }}</span></div>{% endif %}
+                {% if alertOilLevel %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_OIL_LEVEL" | translate | upper }}</span></div>{% endif %}
+                {% if alertBreakFluid %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_BRAKE_FLUID" | translate | upper }}</span></div>{% endif %}
+                {% if alertWasherFluid %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_WASHER_FLUID" | translate | upper }}</span></div>{% endif %}
+                {# WINDOWS #}
+                {% if alertWindowFL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_WINDOW_FRONT_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertWindowFR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_WINDOW_FRONT_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertWindowRL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_WINDOW_REAR_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertWindowRR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_WINDOW_REAR_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertSunroof %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_SUNROOF" | translate | upper }}</span></div>{% endif %}
+                {# DOORS #}
+                {% if alertDoorFL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_DOOR_FRONT_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertDoorFR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_DOOR_FRONT_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertDoorRL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_DOOR_REAR_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertDoorRR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_DOOR_REAR_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertHood %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_HOOD" | translate | upper }}</span></div>{% endif %}
+                {% if alertTailgate %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TAILGATE" | translate | upper }}</span></div>{% endif %}
+                {% if alertTankLid %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TANK_LID" | translate | upper }}</span></div>{% endif %}
+                {# ENGINE #}
+                {% if alertEngineRunning %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_ENGINE_RUNNING" | translate | upper }}</span></div>{% endif %}
+                {# TIRES #}
+                {% if alertTireFL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TIRE_FRONT_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertTireFR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TIRE_FRONT_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertTireRL %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TIRE_REAR_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertTireRR %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TIRE_REAR_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {# CHARGING #}
+                {% if alertCharging %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_CHARGING" | translate | upper }}</span></div>{% endif %}
+                {# LIGHTS #}
+                {% if alertBrakeLightLeft %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_BRAKE_LIGHT_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertBrakeLightCenter %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_BRAKE_LIGHT_CENTER" | translate | upper }}</span></div>{% endif %}
+                {% if alertBrakeLightRight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_BRAKE_LIGHT_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertFogLightFront %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_FOG_LIGHT_FRONT" | translate | upper }}</span></div>{% endif %}
+                {% if alertFogLightRear %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_FOG_LIGHT_REAR" | translate | upper }}</span></div>{% endif %}
+                {% if alertPositionLightFrontLeft %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_POS_LIGHT_FRONT_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertPositionLightFrontRight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_POS_LIGHT_FRONT_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertPositionLightRearLeft %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_POS_LIGHT_REAR_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertPositionLightRearRight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_POS_LIGHT_REAR_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertHighBeamLeft %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_HIGHBEAM_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertHighBeamRight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_HIGHBEAM_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertLowBeamLeft %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_LOWBEAM_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertLowBeamRight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_LOWBEAM_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertDaytimeRunningLightLeft %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_DAYTIMERUNNINGLIGHT_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertDaytimeRunningLightRight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_DAYTIMERUNNINGLIGHT_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertTurnIndicationFrontLeft %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TURN_LIGHT_FRONT_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertTurnIndicationFrontRight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TURN_LIGHT_FRONT_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertTurnIndicationRearLeft %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TURN_LIGHT_REAR_LEFT" | translate | upper }}</span></div>{% endif %}
+                {% if alertTurnIndicationRearRight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_TURN_LIGHT_REAR_RIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertRegistrationPlateLight %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_REGPLATE_LIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertSideMarkLights %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_SIDEMARK_LIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertHazardLights %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_HAZARD_LIGHT" | translate | upper }}</span></div>{% endif %}
+                {% if alertReverseLights %}<div class="item"><i class="fa-solid fa-triangle-exclamation"></i> <span>{{ "ALERT_REVERSE_LIGHT" | translate | upper }}</span></div>{% endif %}
+            </div>
+        </div>
+
+        {# LAST UPDATED TIMESTAMP #}
+        <div class="wrapper {{'hide' if config.hideLastUpdated}}">
+            <div class="container last-updated">
+                <div class="item align-right">
+                    <p>{{ "LAST_UPDATED" | translate | capitalize   }} {{lastUpdated}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

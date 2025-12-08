@@ -1,41 +1,42 @@
 {
-    "data": {
+    "energyState": {
         "batteryChargeLevel": {
-            "value": 81,
-            "unit": "%",
-            "timestamp": "2025-08-01T14:27:36.166Z"
+            "status": "OK",
+            "value": 59,
+            "unit": "percentage",
+            "updatedAt": "2025-12-08T10:50:21Z"
         },
         "electricRange": {
             "status": "OK",
-            "value": 330,
+            "value": 220,
             "unit": "km",
-            "updatedAt": "2025-08-01T14:27:36Z"
+            "updatedAt": "2025-12-08T10:50:21Z"
         },
         "chargerConnectionStatus": {
             "status": "OK",
             "value": "DISCONNECTED",
-            "updatedAt": "2025-08-01T14:27:36Z"
+            "updatedAt": "2025-12-08T10:50:21Z"
         },
         "chargingStatus": {
             "status": "OK",
             "value": "IDLE",
-            "updatedAt": "2025-08-01T14:27:36Z"
+            "updatedAt": "2025-12-08T10:50:21Z"
         },
         "chargingType": {
             "status": "OK",
             "value": "NONE",
-            "updatedAt": "2025-08-01T14:27:36Z"
+            "updatedAt": "2025-12-08T10:50:21Z"
         },
         "chargerPowerStatus": {
             "status": "OK",
             "value": "NO_POWER_AVAILABLE",
-            "updatedAt": "2025-08-01T14:27:36Z"
+            "updatedAt": "2025-12-08T10:50:21Z"
         },
         "estimatedChargingTimeToTargetBatteryChargeLevel": {
             "status": "OK",
             "value": 0,
             "unit": "minutes",
-            "updatedAt": "2025-08-01T14:27:36Z"
+            "updatedAt": "2025-12-08T10:50:21Z"
         },
         "chargingCurrentLimit": {
             "status": "OK",
@@ -47,276 +48,332 @@
             "status": "OK",
             "value": 90,
             "unit": "percentage",
-            "updatedAt": "2025-07-28T14:36:27Z"
+            "updatedAt": "2025-11-18T07:53:48Z"
         },
         "chargingPower": {
             "status": "ERROR",
             "code": "PROPERTY_NOT_FOUND",
             "message": "No valid value could be found for the requested property"
-        },
-        "location": {
-            "coordinates": [
-                0,
-                0,
-                0
-            ],
-            "lon": 0,
-            "lat": 0,
-            "height": 0,
-            "heading": "0",
-            "timestamp": "2025-08-01T14:12:39.759Z"
-        },
-        "oilLevelWarning": {
-            "value": "NO_WARNING",
-            "timestamp": "2025-08-01T14:12:35.349Z"
-        },
-        "engineCoolantLevelWarning": {
-            "value": "NO_WARNING",
-            "timestamp": "2025-08-01T14:12:35.349Z"
-        },
-        "serviceWarning": {
-            "value": "NO_WARNING",
-            "timestamp": "2025-08-01T14:12:35.349Z"
-        },
-        "engineHoursToService": {
-            "value": 1259,
-            "unit": "h",
-            "timestamp": "2025-08-01T14:12:35.349Z"
-        },
-        "distanceToService": {
-            "value": 28152,
-            "unit": "km",
-            "timestamp": "2025-08-01T14:12:35.349Z"
-        },
-        "washerFluidLevelWarning": {
-            "value": "NO_WARNING",
-            "timestamp": "2025-08-01T14:12:35.349Z"
-        },
-        "timeToService": {
-            "value": 19,
-            "unit": "months",
-            "timestamp": "2025-08-01T14:12:35.349Z"
-        },
-        "brakeFluidLevelWarning": {
-            "value": "NO_WARNING",
-            "timestamp": "2025-08-01T14:12:35.349Z"
-        },
-        "windows": {
-            "frontLeft": {
-                "value": "CLOSED",
-                "timestamp": "2025-08-01T14:13:11.157Z"
+        }
+    },
+    "location": {
+        "status": 200,
+        "operationId": "",
+        "data": {
+            "type": "Feature",
+            "properties": {
+                "timestamp": "2025-12-08T10:52:49.047Z",
+                "heading": "0"
             },
-            "frontRight": {
-                "value": "CLOSED",
-                "timestamp": "2025-08-01T14:13:11.157Z"
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    0,
+                    0,
+                    0
+                ]
+            }
+        }
+    },
+    "engineDiagnostic": {
+        "data": {
+            "oilLevelWarning": {
+                "value": "NO_WARNING",
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
-            "rearLeft": {
-                "value": "CLOSED",
-                "timestamp": "2025-08-01T14:13:11.157Z"
+            "engineCoolantLevelWarning": {
+                "value": "NO_WARNING",
+                "timestamp": "2025-12-08T10:52:47.716Z"
+            }
+        }
+    },
+    "diagnostics": {
+        "data": {
+            "serviceWarning": {
+                "value": "NO_WARNING",
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
-            "rearRight": {
+            "engineHoursToService": {
+                "value": 1202,
+                "unit": "h",
+                "timestamp": "2025-12-08T10:52:47.716Z"
+            },
+            "distanceToService": {
+                "value": 25469,
+                "unit": "km",
+                "timestamp": "2025-12-08T10:52:47.716Z"
+            },
+            "washerFluidLevelWarning": {
+                "value": "NO_WARNING",
+                "timestamp": "2025-12-08T10:52:47.716Z"
+            },
+            "timeToService": {
+                "value": 15,
+                "unit": "months",
+                "timestamp": "2025-12-08T10:52:47.716Z"
+            }
+        }
+    },
+    "brakeFluidLevel": {
+        "data": {
+            "brakeFluidLevelWarning": {
+                "value": "NO_WARNING",
+                "timestamp": "2025-12-08T10:52:47.716Z"
+            }
+        }
+    },
+    "windowStatus": {
+        "data": {
+            "frontLeftWindow": {
                 "value": "CLOSED",
-                "timestamp": "2025-08-01T14:13:11.157Z"
+                "timestamp": "2025-12-08T10:52:55.257Z"
+            },
+            "frontRightWindow": {
+                "value": "CLOSED",
+                "timestamp": "2025-12-08T10:52:55.257Z"
+            },
+            "rearLeftWindow": {
+                "value": "CLOSED",
+                "timestamp": "2025-12-08T10:52:55.257Z"
+            },
+            "rearRightWindow": {
+                "value": "CLOSED",
+                "timestamp": "2025-12-08T10:52:55.257Z"
             },
             "sunroof": {
                 "value": "UNSPECIFIED",
-                "timestamp": "2025-08-01T14:13:11.157Z"
+                "timestamp": "2025-12-08T10:52:55.257Z"
             }
-        },
-        "doors": {
+        }
+    },
+    "doorAndLockStatus": {
+        "data": {
             "centralLock": {
                 "value": "LOCKED",
-                "timestamp": "2025-08-01T14:13:11.157Z"
+                "timestamp": "2025-12-08T10:52:55.257Z"
             },
-            "frontLeft": {
+            "frontLeftDoor": {
                 "value": "CLOSED",
-                "timestamp": "2025-08-01T14:13:11.157Z"
+                "timestamp": "2025-12-08T10:52:55.257Z"
             },
-            "frontRight": {
+            "frontRightDoor": {
                 "value": "CLOSED",
-                "timestamp": "2025-08-01T14:13:11.157Z"
+                "timestamp": "2025-12-08T10:52:55.257Z"
             },
-            "rearLeft": {
+            "rearLeftDoor": {
                 "value": "CLOSED",
-                "timestamp": "2025-08-01T14:13:11.157Z"
+                "timestamp": "2025-12-08T10:52:55.257Z"
             },
-            "rearRight": {
+            "rearRightDoor": {
                 "value": "CLOSED",
-                "timestamp": "2025-08-01T14:13:11.157Z"
+                "timestamp": "2025-12-08T10:52:55.257Z"
             },
             "hood": {
                 "value": "CLOSED",
-                "timestamp": "2025-08-01T14:13:11.157Z"
+                "timestamp": "2025-12-08T10:52:55.257Z"
+            },
+            "tailgate": {
+                "value": "CLOSED",
+                "timestamp": "2025-12-08T10:52:55.257Z"
             },
             "tankLid": {
                 "value": "CLOSED",
-                "timestamp": "2025-08-01T14:13:11.157Z"
+                "timestamp": "2025-12-08T10:52:55.257Z"
             }
-        },
-        "engineStatus": {
-            "value": "STOPPED",
-            "timestamp": "2025-08-01T14:24:48.780Z"
-        },
-        "odometer": {
-            "value": 12268,
-            "unit": "km",
-            "timestamp": "2025-08-01T14:12:35.349Z"
-        },
-        "averageEnergyConsumption": {
-            "value": 18.5,
-            "unit": "kWh/100km",
-            "timestamp": "2025-08-01T17:38:02.151Z"
-        },
-        "averageSpeed": {
-            "value": 45,
-            "unit": "km/h",
-            "timestamp": "2025-08-01T14:12:35.349Z"
-        },
-        "averageSpeedAutomatic": {
-            "value": 26,
-            "unit": "km/h",
-            "timestamp": "2025-08-01T14:12:35.349Z"
-        },
-        "tripMeterManual": {
-            "value": 5243.8,
-            "unit": "km",
-            "timestamp": "2025-08-01T14:12:35.349Z"
-        },
-        "tripMeterAutomatic": {
-            "value": 9.1,
-            "unit": "km",
-            "timestamp": "2025-08-01T14:12:35.349Z"
-        },
-        "distanceToEmptyBattery": {
-            "value": 330,
-            "unit": "km",
-            "timestamp": "2025-08-01T14:27:36.166Z"
-        },
-        "tires": {
+        }
+    },
+    "engineStatus": {
+        "data": {
+            "engineStatus": {
+                "value": "STOPPED",
+                "timestamp": "2025-12-08T11:05:01.766Z"
+            }
+        }
+    },
+    "fuelAmount": {
+        "data": {
+            "batteryChargeLevel": {
+                "value": 59,
+                "unit": "%",
+                "timestamp": "2025-12-08T10:50:21.800Z"
+            }
+        }
+    },
+    "odometer": {
+        "data": {
+            "odometer": {
+                "value": 14951,
+                "unit": "km",
+                "timestamp": "2025-12-08T10:52:47.716Z"
+            }
+        }
+    },
+    "statistics": {
+        "data": {
+            "averageEnergyConsumption": {
+                "value": 18.8,
+                "unit": "kWh/100km",
+                "timestamp": "2025-12-08T17:11:53.004Z"
+            },
+            "averageSpeed": {
+                "value": 47,
+                "unit": "km/h",
+                "timestamp": "2025-12-08T10:52:47.716Z"
+            },
+            "averageSpeedAutomatic": {
+                "value": 30,
+                "unit": "km/h",
+                "timestamp": "2025-12-08T10:52:47.716Z"
+            },
+            "tripMeterManual": {
+                "value": 7927.2,
+                "unit": "km",
+                "timestamp": "2025-12-08T10:52:47.716Z"
+            },
+            "tripMeterAutomatic": {
+                "value": 3.8,
+                "unit": "km",
+                "timestamp": "2025-12-08T10:52:47.716Z"
+            },
+            "distanceToEmptyBattery": {
+                "value": 220,
+                "unit": "km",
+                "timestamp": "2025-12-08T10:50:21.800Z"
+            }
+        }
+    },
+    "tyreStatus": {
+        "data": {
             "frontLeft": {
                 "value": "UNSPECIFIED",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "frontRight": {
                 "value": "UNSPECIFIED",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "rearLeft": {
                 "value": "UNSPECIFIED",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "rearRight": {
                 "value": "UNSPECIFIED",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             }
-        },
-        "vin": "YV4952NA4F120DEMO",
-        "modelYear": 2023,
-        "gearbox": "AUTOMATIC",
-        "fuelType": "ELECTRIC",
-        "externalColour": "Crystal White Pearl",
-        "batteryCapacityKWH": 69.452,
-        "images": {
-            "exteriorImageUrl": "https://cas.volvocars.com/image/dynamic/MY23_2217/536/exterior-v5/R6/70700/R78000/R15A/FN02/TC06/_/_/TP05/LR02/_/GR08/T101/TJ02/NP02/TM04/JG02/CB04/_/JB0A/T221/LF05/_/VP09/FH01/_/_/_/_/_/_/default.png?market=se&client=public-api-engineering&angle=1&bg=00000000&w=1920",
-            "internalImageUrl": "https://cas.volvocars.com/image/dynamic/MY23_2217/536/interior-v3/R6/1/70700/R78000/NC0F/DI06/RU09/PD03/PS02/P201/LK02/NJ04/KB05/NY02/KK05/_/_/NP02/CB04/_/K502/_/_/K903/FH01/PN03/default.jpg?market=se&client=public-api-engineering&angle=0&w=1920"
-        },
-        "descriptions": {
-            "model": "XC40",
-            "upholstery": "CHARCOAL/TEXTILE/CITY CANVAS",
-            "steering": "LEFT"
-        },
-        "warnings": {
-            "brakeLightLeftWarning": {
-                "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+        }
+    },
+    "vehicleDetails": {
+        "data": {
+            "vin": "YV4952NA4F120DEMO",
+            "modelYear": 2023,
+            "gearbox": "AUTOMATIC",
+            "fuelType": "ELECTRIC",
+            "externalColour": "Crystal White Pearl",
+            "batteryCapacityKWH": 69.452,
+            "images": {
+                "exteriorImageUrl": "https://cas.volvocars.com/image/dynamic/MY23_2217/536/exterior-v5/R6/70700/R78000/R15A/FN02/TC06/_/_/TP05/LR02/_/GR08/T101/TJ02/NP02/TM04/JG02/CB04/_/JB0A/T221/LF05/_/VP09/FH01/_/_/_/_/_/_/default.png?market=se&client=public-api-engineering&angle=1&bg=00000000&w=1920",
+                "internalImageUrl": "https://cas.volvocars.com/image/dynamic/MY23_2217/536/interior-v3/R6/1/70700/R78000/NC0F/DI06/RU09/PD03/PS02/P201/LK02/NJ04/KB05/NY02/KK05/_/_/NP02/CB04/_/K502/_/_/K903/FH01/PN03/default.png?market=se&client=public-api-engineering&angle=0&bg=00000000&w=1920"
             },
+            "descriptions": {
+                "model": "XC40",
+                "upholstery": "CHARCOAL/TEXTILE/CITY CANVAS",
+                "steering": "LEFT"
+            }
+        }
+    },
+    "warnings": {
+        "data": {
             "brakeLightCenterWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
+            },
+            "brakeLightLeftWarning": {
+                "value": "NO_WARNING",
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "brakeLightRightWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "fogLightFrontWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "fogLightRearWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "positionLightFrontLeftWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "positionLightFrontRightWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "positionLightRearLeftWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "positionLightRearRightWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "highBeamLeftWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "highBeamRightWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "lowBeamLeftWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "lowBeamRightWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "daytimeRunningLightLeftWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "daytimeRunningLightRightWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "turnIndicationFrontLeftWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "turnIndicationFrontRightWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "turnIndicationRearLeftWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "turnIndicationRearRightWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "registrationPlateLightWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "sideMarkLightsWarning": {
                 "value": "NO_WARNING",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "hazardLightsWarning": {
                 "value": "UNSPECIFIED",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             },
             "reverseLightsWarning": {
                 "value": "UNSPECIFIED",
-                "timestamp": "2025-08-01T14:12:35.349Z"
+                "timestamp": "2025-12-08T10:52:47.716Z"
             }
         }
     }

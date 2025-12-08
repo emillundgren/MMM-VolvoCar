@@ -1,7 +1,7 @@
 {
     "LOADING": "LOADING...",
     "AUTHENTICATE_HEADER": "NOT AUTHENTICATED",
-    "AUTHENTICATE_TEXT": "If this is the first time running the application, try refreshing the mirror once",
+    "AUTHENTICATE_TEXT": "Click here to login to the Volvo API",
     "LAST_UPDATED": "LAST UPDATED",
     "LOCKED": "LOCKED",
     "UNLOCKED": "UNLOCKED",

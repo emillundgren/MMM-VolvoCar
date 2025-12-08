@@ -1,164 +1,162 @@
 const NodeHelper = require("node_helper");
-const Log = require("logger");
-const axios = require('axios');
+const express = require("express");
 const fs = require('fs');
 const fsp = require('fs').promises;
-const OAuth = require('./auth/oauth.js');
-const VolvoApis = require('./api/volvo.js');
+const VolvoOAuth = require("./vcapi/oauth");
+const VolvoApiClient = require("./vcapi/api");
 
 module.exports = NodeHelper.create({
-	// Create config object for the node_helper
-	config: {},
 
-	// Create authClient object
-	authClient: null,
+    start() {
+        this.oauth = null;
+    },
 
-	// Create volvoApiClient object
-	volvoApiClient: null,
+    downloadHeaderImage: async function (imageUrl, localPath) {
+        var self = this;
 
-	start: function () {},
+        // Find the image filename and make sure it's set to default.png
+        const imageUrlRegEx = /(?<filename>[\w-]+)(?<fileseparator>\.)(?<fileextension>jpeg|jpg|png|gif)/g
+        const imageUrlFixed = imageUrl.replace(imageUrlRegEx, "default.png");
 
-	downloadHeaderImage: async function (imageUrl, localPath) {
-		var self = this;
+        // Adjusted image-parameters for the view we want
+        const urlParamsToModify = {
+            w: 720,
+            bg: '00000000',
+            angle: 3,
+        }
 
-		// Find the image filename and make sure it's set to default.png
-		const imageUrlRegEx = /(?<filename>[\w-]+)(?<fileseparator>\.)(?<fileextension>jpeg|jpg|png|gif)/g
-		const imageUrlFixed = imageUrl.replace(imageUrlRegEx, "default.png");
+        // Modify the incoming URL with the new image-parameters
+        const modifiedUrl = new URL(imageUrlFixed);
+        for (const [key, value] of Object.entries(urlParamsToModify)) {
+            modifiedUrl.searchParams.set(key, value);
+        }
 
-		// Adjusted image-parameters for the view we want
-		const urlParamsToModify = {
-			w: 720,
-			bg: '00000000',
-			angle: 3,
-		}
+        try {
+            // Fetch the image data as an array buffer
+            const response = await fetch(modifiedUrl);
+            const arrayBuffer = await response.arrayBuffer();
+        
+            // Write the array buffer to the file
+            await fsp.writeFile(localPath, Buffer.from(arrayBuffer));
+        
+            console.info(`${this.name} [node_helper]: Image downloaded successfully:`, localPath);
+            this.sendSocketNotification("MMMVC_UPDATE_DOM");
+            } catch (error) {
+            console.error(`${this.name} [node_helper]: Error downloading image:`, error);
+        }
+    },	
 
-		// Modify the incoming URL with the new image-parameters
-		const modifiedUrl = new URL(imageUrlFixed);
-		for (const [key, value] of Object.entries(urlParamsToModify)) {
-			modifiedUrl.searchParams.set(key, value);
-		}
+    socketNotificationReceived(notification, payload) {
+        console.log(`${this.name} [node_helper]: Received a socket notification - ${notification}`)
+        
+        if (notification === "MMMVC_INIT_MODULE") {
+            // Set the config from the main module to the node_helper
+            this.config = payload;
 
-		try {
-			// Fetch the image data as an array buffer
-			const response = await fetch(modifiedUrl);
-			const arrayBuffer = await response.arrayBuffer();
-		
-			// Write the array buffer to the file
-			await fsp.writeFile(localPath, Buffer.from(arrayBuffer));
-		
-			Log.info(this.name + 'Image downloaded successfully:', localPath);
-		  } catch (error) {
-			Log.error(this.name +'Error downloading image:', error);
-		}
-	},	
+            // Verify that all needed config parameters is set
+            if (!this.config.clientId) {console.error(`${this.name} [node_helper]: The config value 'clientId' is needed for the module to work`); return;}
+            if (!this.config.clientSecret) {console.error(`${this.name} [node_helper]: The config value 'clientSecret' is needed for the module to work`); return;}
+            if (!this.config.apiKey) {console.error(`${this.name} [node_helper]: The config value 'apiKey' is needed for the module to work`); return;}
+            if (!this.config.carVin) {console.error(`${this.name} [node_helper]: The config value 'carVin' is needed for the module to work`); return;}
 
-	socketNotificationReceived: function (notification, payload) {
-		Log.info(`node_helper of ${this.name} received a socket notification: ${notification}`);
-		var self = this;
+            // Setup instance of VolvoOAuth and VolvoApiClient
+            this.oauth = new VolvoOAuth(this.config);
+            this.api = new VolvoApiClient(this.oauth, this.config);
 
-		if (notification === 'MMMVC_SET_CONFIG') {
-			// Set the config from the main module to the node_helper
-			this.config = payload;
+            // TODO: Check if we can avoid creating the express-server when already authenticated?
+            this.registerModuleEndpoints();
+            this.checkAuthStatus();
+        }
 
-			// If the authClient is set, check if token is expired and then show login prompt, otherwise start the app
-			if (this.authClient != null) {
-				this.authClient.isExpired() ? self.sendSocketNotification('MMMVC_SHOW_AUTH') : self.sendSocketNotification('MMMVC_MODULE_READY');
-			}
+        if(notification === "MMMVC_FETCH_DATA") {
+            // Use the Sample Data instead of the API
+            if (this.config.apiUseSampleDataFile && fs.existsSync(this.config.apiSampleDataFile)) {
+                console.log(`Displaying data from ${this.config.apiSampleDataFile} instead of using the API`);
+                const apiSampleData = JSON.parse(fs.readFileSync(this.config.apiSampleDataFile, 'utf8'));
 
-			// Make sure that we have needed credential set in the config
-			if (!this.config.authUsername || !this.config.authPassword || !this.config.authClientId || !this.config.authClientSecret || !this.config.authVccApiKey || !this.config.carVin) {
-				Log.error(this.name + ' - MMMVC_SET_CONFIG: Either authUsername, authPassword, authClientId, authClientSecret, authVccApiKey or carVin is not set, exiting...');
-				return;
-			}
+                // Download the header image if it does not already exist 
+                if (!fs.existsSync(this.config.headerImageFile)) {
+                    console.debug(`${this.name} [node_helper]: headerImage missing, trying to download...`)
+                    this.downloadHeaderImage(apiSampleData.vehicleDetails.data.images.exteriorImageUrl, this.config.headerImageFile);
+                } else {
+                    console.debug(`${this.name} [node_helper]: headerImage already exists, no need to download again.`)
+                }
+                
+				this.sendSocketNotification('MMMVC_REDRAW_MODULE', apiSampleData);
+                console.debug(JSON.stringify(apiSampleData, null, 4));
+                return;
+            }
+            
+            // Fetch all API data
+            this.api.getAllData()
+            .then((carData) => {
+                // Download the header image if it does not already exist 
+                if (!fs.existsSync(this.config.headerImageFile)) {
+                        console.debug(`${this.name} [node_helper]: headerImage missing, trying to download...`)
+                        this.downloadHeaderImage(carData.vehicleDetails.data.images.exteriorImageUrl, this.config.headerImageFile);
+                    } else {
+                        console.debug(`${this.name} [node_helper]: headerImage already exists, no need to download again.`)
+                    }
 
-			// If no authClient is created, create one!
-			if (this.authClient === null) {
-				Log.info(`${this.name} - Setting up OAuth2 client`);
-				this.authClient = new OAuth(this.config);
-			}
+                    this.sendSocketNotification('MMMVC_REDRAW_MODULE', carData);
+                    console.debug(JSON.stringify(carData, null, 4));
+                }) 
+                .catch(err => console.error(err));
+        }
+    },
 
-			// If no volvoApiClient is created, create one!
-			if (this.volvoApiClient === null) {
-				Log.info(`${this.name} - Setting up Volvo Cars API client`);
-				this.volvoApiClient = new VolvoApis(this.config);
-			}
+    async checkAuthStatus() {
+        if (this.config.apiUseSampleDataFile) {
+            this.sendSocketNotification("MMMVC_AUTH_SUCCESSFUL");
+            return;
+        }
 
-			// Check if an access token exists and if it is valid or not
-			if (this.authClient.isExpired()) {
-				if (this.authClient.refresh_token && this.authClient.refresh_token.length > 0) {
-					this.authClient.refreshToken(this.authClient.refresh_token, () => {
-						self.sendSocketNotification('MMMVC_MODULE_READY');
-					});
-				}
-				else
-					self.sendSocketNotification('MMMVC_SHOW_AUTH');
-			}
-			else {
-				self.sendSocketNotification('MMMVC_MODULE_READY');
-			}
-		}
+        try {
+            const accessToken = await this.oauth.getValidAccessToken();
 
-		if (notification === 'MMMVC_GET_CAR_DATA') {
-			// Make sure that the authClient is setup and access_token is valid
-			if (this.authClient === null) return;
-			if (this.authClient.isExpired()) {
-				this.authClient.refreshToken(this.authClient.refresh_token, () => {
-					self.sendSocketNotification('MMMVC_GET_CAR_DATA');
-				});
-				return;
-			}
+            if (accessToken) {
+                console.log(`${this.name} [node_helper]: Authentication OK - valid token available`);
+                this.sendSocketNotification("MMMVC_AUTH_SUCCESSFUL");
+                return;
+            }
 
-			// Use the Sample Data instead of the API
-			if (this.config.apiUseSampleDataFile && fs.existsSync(this.config.apiSampleDataFile)) {
-				Log.log(`Displaying data from ${this.config.apiSampleDataFile} instead of using the API`);
-				var apiSampleData = JSON.parse(fs.readFileSync(this.config.apiSampleDataFile, 'utf8'));
+        } catch (err) {
+            console.error(`${this.name} [node_helper]: Error while checking token:`, err);
+        }
 
-				// Download the header image if it does not already exist 
-				if (!fs.existsSync(this.config.headerImageFile)) {
-					this.downloadHeaderImage(apiSampleData.data.images.exteriorImageUrl, this.config.headerImageFile);
-				}
+        // No access token → user must log in
+        console.log(`${this.name} [node_helper]: No valid token → login required.`);
+        this.sendSocketNotification("VOLVO_AUTH_NEEDED");
+    },
 
-				// Send the data to the Mirror
-				self.sendSocketNotification('MMMVC_REDRAW_MIRROR', apiSampleData);
-				return;
-			}
+    registerModuleEndpoints() {
+        const router = express.Router();
 
-			// Fetch the needed data from the API
-			Promise.all([
-				// Energy API
-				this.volvoApiClient.getRechargeStatus(this.authClient.access_token),
+        router.get("/generate-url", (request, result) => {
+            result.send(this.oauth.getAuthorizationUrl());
+        });
 
-				// Location API
-				this.volvoApiClient.getCarLocation(this.authClient.access_token),
+        router.get("/callback", async (request, result) => {
+            const code = request.query.code;
+            const state = request.query.state;
 
-				// Connected Vehicle API
-				this.volvoApiClient.getEngineDiagnostic(this.authClient.access_token),
-				this.volvoApiClient.getDiagnostics(this.authClient.access_token),
-				this.volvoApiClient.getBrakeFluidLevel(this.authClient.access_token),
-				this.volvoApiClient.getWindowStatus(this.authClient.access_token),
-				this.volvoApiClient.getDoorAndLockStatus(this.authClient.access_token),
-				this.volvoApiClient.getEngineStatus(this.authClient.access_token),
-				this.volvoApiClient.getFuelAmount(this.authClient.access_token),
-				this.volvoApiClient.getOdometer(this.authClient.access_token),
-				this.volvoApiClient.getStatistics(this.authClient.access_token),
-				this.volvoApiClient.getTyresStatus(this.authClient.access_token),
-				this.volvoApiClient.getVehicleDetails(this.authClient.access_token),
-				this.volvoApiClient.getWarnings(this.authClient.access_token),
-			]).then((objects) => {
-				const mergedObjects = Object.assign({}, ...objects.map(object => object.data));
-				const carData = { data: mergedObjects };
-				
-				// Download the header image if it does not already exist 
-				if (!fs.existsSync(this.config.headerImageFile)) {
-					this.downloadHeaderImage(carData.data.images.exteriorImageUrl, this.config.headerImageFile);
-				}
+            if (state !== this.oauth.state) {
+                result.status(400).send("State mismatch");
+                return;
+            }
 
-				// Send the data to the Mirror
-				self.sendSocketNotification('MMMVC_REDRAW_MIRROR', carData);
+            try {
+                await this.oauth.exchangeCodeForToken(code);
+                this.sendSocketNotification("MMMVC_AUTH_SUCCESSFUL");
 
-				// Add full output of data for debugging
-				Log.debug(JSON.stringify(carData, null, 4));
-			});
-		}
-	},
+                result.send("<h2>MMM-VolvoCar: Login successful ✔</h2><p>You may close this window.</p>");
+
+            } catch (err) {
+                console.error("Token exchange failed:", err);
+                result.status(500).send("Token exchange failed");
+            }
+        });
+
+        this.expressApp.use("/MMM-VolvoCar", router);
+    }
 });
