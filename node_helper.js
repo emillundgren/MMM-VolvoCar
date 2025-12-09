@@ -33,7 +33,11 @@ module.exports = NodeHelper.create({
 
         try {
             // Fetch the image data as an array buffer
-            const response = await fetch(modifiedUrl);
+            const response = await fetch(modifiedUrl, {
+                headers: {
+                    "User-Agent": "Mozilla/5.0 (MagicMirror Module)",
+                },
+            });
             const arrayBuffer = await response.arrayBuffer();
         
             // Write the array buffer to the file
@@ -54,8 +58,8 @@ module.exports = NodeHelper.create({
             this.config = payload;
 
             // Verify that all needed config parameters is set
-            if (!this.config.clientId) {console.error(`${this.name} [node_helper]: The config value 'clientId' is needed for the module to work`); return;}
-            if (!this.config.clientSecret) {console.error(`${this.name} [node_helper]: The config value 'clientSecret' is needed for the module to work`); return;}
+            if (!this.config.authClientId) {console.error(`${this.name} [node_helper]: The config value 'authClientId' is needed for the module to work`); return;}
+            if (!this.config.authClientSecret) {console.error(`${this.name} [node_helper]: The config value 'authClientSecret' is needed for the module to work`); return;}
             if (!this.config.apiKey) {console.error(`${this.name} [node_helper]: The config value 'apiKey' is needed for the module to work`); return;}
             if (!this.config.carVin) {console.error(`${this.name} [node_helper]: The config value 'carVin' is needed for the module to work`); return;}
 

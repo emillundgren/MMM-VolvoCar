@@ -57,13 +57,15 @@ Here's an example of a basic config for the module. See full list of available s
 | **Setting** | **Description**|
 | --- | --- |
 | `moduleDataRefreshInterval` | The interval for which the data shown inthe module is refreshed <br><br> <ul><li>**Type:** `number`</li><li>**Default:** `10 * 60 * 1000`</li></ul> |
+| `authUrl` | The OAuth2 Autorization URL for the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `https://volvoid.eu.volvocars.com/as/authorization.oauth2`</li></ul> |
 | `authTokenUrl` | The OAuth2 Token URL for the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `https://volvoid.eu.volvocars.com/as/token.oauth2`</li></ul> |
 | `authScope` | The needed scopes from the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `openid`</li></ul> |
-| `authUsername` | The username of your Volvo Cars account <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
-| `authPassword` | The password of your Volvo Cars account <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
-| `authVccApiKey` | Your Volvo API application's api key <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
-| `authTokenFile` | The path for where to store the access_token from the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `./modules/MMM-VolvoCar/assets/tokens.json`</li></ul> |
+| `authClientId` | The clientId of your Volvo Cars API Application <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
+| `authClientSecret` | The clientSecret of your Volvo Cars API Application <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
+| `authRedirectUri` | The redirectUri of your Volvo Cars API Application <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
+| `authTokenFile` | The path for where to store the access_token from the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `./modules/MMM-VolvoCar/vcapi/token.json`</li></ul> |
 | `apiBaseUrl` | The base URL for the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `https://api.volvocars.com`</li></ul> |
+| `apiKey` | Your Volvo API application's api key <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
 | `apiUseSampleDataFile` | Used to decide if you want to use real data from the API or sample data from the provided file <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `false`</li><li>**Possible values:** `true` or `false`</li></ul> |
 | `apiSampleDataFile` | The path for where your sample data are stored <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `./modules/MMM-VolvoCar/assets/sampleData.json`</li></ul> |
 | `carVin` | The VIN-code of your car. Used in API-calls to fetch the data from your car <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |

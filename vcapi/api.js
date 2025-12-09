@@ -17,6 +17,7 @@ class VolvoApiClient {
         const response = await got(url, {
             responseType: "json",
             headers: {
+                "User-Agent": "Mozilla/5.0 (MagicMirror Module)",
                 "Authorization": `Bearer ${accessToken}`,
                 "vcc-api-key": this.apiKey
             }

@@ -1,19 +1,18 @@
 const crypto = require("crypto");
 const got = require("got");
 const fs = require("fs");
-const path = require("path");
 
 class VolvoOAuth {
 
     constructor(config) {
-        this.clientId = config.clientId;
-        this.clientSecret = config.clientSecret;
-        this.scope = config.scope;
+        this.authClientId = config.authClientId;
+        this.authClientSecret = config.authClientSecret;
+        this.authScope = config.authScope;
         this.authUrl = config.authUrl;
-        this.tokenUrl = config.tokenUrl;
-        this.redirectUri = config.redirectUri;
+        this.authTokenUrl = config.authTokenUrl;
+        this.authRedirectUri = config.authRedirectUri;
 
-        this.tokenFile = path.join(__dirname, "token.json");
+        this.authTokenFile = config.authTokenFile;
 
         this.verifier = null;
         this.challenge = null;
@@ -25,9 +24,9 @@ class VolvoOAuth {
     }
 
     loadToken() {
-        if (fs.existsSync(this.tokenFile)) {
+        if (fs.existsSync(this.authTokenFile)) {
             try {
-                this.token = JSON.parse(fs.readFileSync(this.tokenFile));
+                this.token = JSON.parse(fs.readFileSync(this.authTokenFile));
                 console.debug(`MMM-VolvoCar [oauth]: Token loaded - ${JSON.stringify(this.token)}`);
                 return true;
             } catch (e) {
@@ -65,7 +64,7 @@ class VolvoOAuth {
         }
 
         console.debug(`MMM-VolvoCar [oauth]: Saving new token: ${JSON.stringify(token)}`);
-        fs.writeFileSync(this.tokenFile, JSON.stringify(token, null, 2));
+        fs.writeFileSync(this.authTokenFile, JSON.stringify(token, null, 2));
         this.token = token;
     }
 
@@ -109,16 +108,17 @@ class VolvoOAuth {
             return false;
         }
 
-        const authHeader = "Basic " + Buffer.from(`${this.clientId}:${this.clientSecret}`).toString("base64");
+        const authHeader = "Basic " + Buffer.from(`${this.authClientId}:${this.authClientSecret}`).toString("base64");
 
         try {
-            const response = await got.post(this.tokenUrl, {
+            const response = await got.post(this.authTokenUrl, {
                 form: {
                     grant_type: "refresh_token",
                     refresh_token: this.token.refresh_token,
                     code_verifier: this.verifier
                 },
                 headers: {
+                    "User-Agent": "Mozilla/5.0 (MagicMirror Module)",
                     "Authorization": authHeader,
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
@@ -148,10 +148,10 @@ class VolvoOAuth {
         this.state = crypto.randomBytes(16).toString("hex");
 
         const p = new URLSearchParams({
-            client_id: this.clientId,
+            client_id: this.authClientId,
             response_type: "code",
-            redirect_uri: this.redirectUri,
-            scope: this.scope,
+            redirect_uri: this.authRedirectUri,
+            authScope: this.authScope,
             state: this.state,
             code_challenge: this.challenge,
             code_challenge_method: "S256"
@@ -161,18 +161,19 @@ class VolvoOAuth {
     }
 
     async exchangeCodeForToken(code) {
-        const authHeader = "Basic " + Buffer.from(`${this.clientId}:${this.clientSecret}`).toString("base64");
+        const authHeader = "Basic " + Buffer.from(`${this.authClientId}:${this.authClientSecret}`).toString("base64");
 
-        const response = await got.post(this.tokenUrl, {
+        const response = await got.post(this.authTokenUrl, {
             form: {
                 grant_type: "authorization_code",
                 code,
-                redirect_uri: this.redirectUri,
+                redirect_uri: this.authRedirectUri,
                 code_verifier: this.verifier
             },
             headers: {
+                "User-Agent": "Mozilla/5.0 (MagicMirror Module)",
                 "Authorization": authHeader,
-                "Content-Type": "application/x-www-form-urlencoded"
+                "Content-Type": "application/x-www-form-urlencoded",
             },
             responseType: "json"
         });
