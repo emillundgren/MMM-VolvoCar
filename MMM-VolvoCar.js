@@ -4,7 +4,7 @@ Module.register("MMM-VolvoCar", {
 		// SETTINGS: MMM-VolvoCar module
 		moduleDataRefreshInterval: 10 * 60 * 1000,
 
-        // SETTINGS: API & Authorization
+        // SETTINGS: Authorization
         authUrl: "https://volvoid.eu.volvocars.com/as/authorization.oauth2",
         authTokenUrl: "https://volvoid.eu.volvocars.com/as/token.oauth2",
         authScope: "openid conve:fuel_status conve:brake_status conve:doors_status location:read openid conve:diagnostics_workshop conve:trip_statistics conve:environment conve:odometer_status conve:engine_status conve:lock_status conve:vehicle_relation conve:windows_status conve:tyre_status conve:connectivity_status energy:state:read energy:capability:read conve:battery_charge_level conve:diagnostics_engine_status conve:warnings",
