@@ -92,7 +92,7 @@ Module.register("MMM-VolvoCar", {
             this.startLoop();
         }
 
-        if (notification === "VOLVO_AUTH_NEEDED") {
+        if (notification === "MMMVC_AUTH_NEEDED") {
             fetch("/MMM-VolvoCar/generate-url")
                 .then(r => r.text())
                 .then(url => {

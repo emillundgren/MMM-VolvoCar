@@ -130,7 +130,7 @@ module.exports = NodeHelper.create({
 
         // No access token → user must log in
         console.log(`${this.name} [node_helper]: No valid token → login required.`);
-        this.sendSocketNotification("VOLVO_AUTH_NEEDED");
+        this.sendSocketNotification("MMMVC_AUTH_NEEDED");
     },
 
     registerModuleEndpoints() {
