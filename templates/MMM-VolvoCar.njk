@@ -225,8 +225,13 @@ Y88b  d88P Y88b. .d88P 888   Y8888     888     888        888   Y8888     888
     <div id="mmm-volvocar" class="mmm-volvocar">
         <div class="wrapper">
             <center>
-                <p><b>{{ "AUTHENTICATE_HEADER" | translate | upper }}</b><br>
-                <a href="{{authUrl}}" target="_blank">{{ "AUTHENTICATE_TEXT" | translate }}</a></p>
+                    <p><b>{{ "AUTHENTICATE_HEADER" | translate | upper }}</b><br>
+                {% if config.authShowQrCode and qrCode %}
+                    {{ "AUTHENTICATE_TEXT_QR" | translate }}
+                    <a href="{{authUrl}}" target="_blank"><img src="{{ qrCode }}" alt='{{ "AUTHENTICATE_HEADER_QR" | translate | upper }}' /></a>
+                {% else %}
+                    <a href="{{authUrl}}" target="_blank">{{ "AUTHENTICATE_TEXT_LINK" | translate }}</a></p>
+                {% endif %}
             </center>
         </div>
     </div>

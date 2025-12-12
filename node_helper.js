@@ -4,6 +4,7 @@ const fs = require('fs');
 const fsp = require('fs').promises;
 const VolvoOAuth = require("./vcapi/oauth");
 const VolvoApiClient = require("./vcapi/api");
+const QRCode = require("qrcode");
 
 module.exports = NodeHelper.create({
 
@@ -43,7 +44,7 @@ module.exports = NodeHelper.create({
             // Write the array buffer to the file
             await fsp.writeFile(localPath, Buffer.from(arrayBuffer));
         
-            console.info(`${this.name} [node_helper]: Image downloaded successfully:`, localPath);
+            console.info(`${this.name} [node_helper]: headerImage downloaded successfully:`, localPath);
             this.sendSocketNotification("MMMVC_UPDATE_DOM");
             } catch (error) {
             console.error(`${this.name} [node_helper]: Error downloading image:`, error);
@@ -72,10 +73,23 @@ module.exports = NodeHelper.create({
             this.checkAuthStatus();
         }
 
+        if(notification === "MMMVC_GENERATE_QR_CODE") {
+            console.debug(`${this.name} [node_helper]: Got an authUrl to generate QR-code for - ${payload}`);
+            QRCode.toDataURL(payload, {
+                width: 300,
+            })
+            .then((qrCodeUrl) => {
+                this.sendSocketNotification("MMMVC_SHOW_AUTH", qrCodeUrl);
+            })
+            .catch((error) => {
+                console.error(`${this.name} [node_helper]: Error generating QR code`);
+            })
+        }
+
         if(notification === "MMMVC_FETCH_DATA") {
             // Use the Sample Data instead of the API
             if (this.config.apiUseSampleDataFile && fs.existsSync(this.config.apiSampleDataFile)) {
-                console.log(`Displaying data from ${this.config.apiSampleDataFile} instead of using the API`);
+                console.log(`${this.name} [node_helper]: Displaying data from ${this.config.apiSampleDataFile} instead of using the API`);
                 const apiSampleData = JSON.parse(fs.readFileSync(this.config.apiSampleDataFile, 'utf8'));
 
                 // Download the header image if it does not already exist 

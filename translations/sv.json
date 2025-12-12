@@ -1,7 +1,8 @@
 {
     "LOADING": "LADDAR...",
     "AUTHENTICATE_HEADER": "EJ INLOGGAD",
-    "AUTHENTICATE_TEXT": "Klicka här för att logga in till Volvo API",
+    "AUTHENTICATE_TEXT_QR": "Skanna eller klicka på QR-koden för att logga in till Volvo API",
+    "AUTHENTICATE_TEXT_LINK": "Klicka här för att logga in till Volvo API",
     "LAST_UPDATED": "SENAST UPPDATERAD",
     "LOCKED": "LÅST",
     "UNLOCKED": "UPPLÅST",

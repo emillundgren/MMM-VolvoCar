@@ -11,6 +11,7 @@ Module.register("MMM-VolvoCar", {
         authClientId: null,
         authClientSecret: null,
         authRedirectUri: null,
+        authShowQrCode: true,
         authTokenFile: './modules/MMM-VolvoCar/vcapi/token.json',
 
         // SETTINGS: API
@@ -53,6 +54,7 @@ Module.register("MMM-VolvoCar", {
     start() {
         this.authenticated = false;
         this.authUrl = null;
+        this.qrCode = null;
 
         this.sendSocketNotification("MMMVC_INIT_MODULE", this.config);
     },
@@ -77,6 +79,7 @@ Module.register("MMM-VolvoCar", {
         var templateData = {
             authenticated: this.authenticated,
             authUrl: this.authUrl,
+            qrCode: this.qrCode,
             config: this.config,
             carData: this.carData,
             lastUpdated: this.lastUpdated,
@@ -97,8 +100,13 @@ Module.register("MMM-VolvoCar", {
                 .then(r => r.text())
                 .then(url => {
                     this.authUrl = url;
-                    this.updateDom();
+                    this.sendSocketNotification("MMMVC_GENERATE_QR_CODE", url);
                 });
+        }
+
+        if (notification === "MMMVC_SHOW_AUTH") {
+            this.qrCode = payload;
+            this.updateDom();
         }
 
         if (notification === "MMMVC_REDRAW_MODULE") {
@@ -114,7 +122,7 @@ Module.register("MMM-VolvoCar", {
     },
 
     startLoop: function () {
-		console.log(`${this.name} is starting the update loop`);
+		Log.info(`${this.name} is starting the update loop`);
 		window.setInterval(() => {
 			this.sendSocketNotification('MMMVC_FETCH_DATA');
 		}, this.config.moduleDataRefreshInterval );
