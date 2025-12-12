@@ -74,7 +74,6 @@ module.exports = NodeHelper.create({
         }
 
         if(notification === "MMMVC_GENERATE_QR_CODE") {
-            console.debug(`${this.name} [node_helper]: Got an authUrl to generate QR-code for - ${payload}`);
             QRCode.toDataURL(payload, {
                 width: 300,
             })
@@ -94,14 +93,10 @@ module.exports = NodeHelper.create({
 
                 // Download the header image if it does not already exist 
                 if (!fs.existsSync(this.config.headerImageFile)) {
-                    console.debug(`${this.name} [node_helper]: headerImage missing, trying to download...`)
                     this.downloadHeaderImage(apiSampleData.vehicleDetails.data.images.exteriorImageUrl, this.config.headerImageFile);
-                } else {
-                    console.debug(`${this.name} [node_helper]: headerImage already exists, no need to download again.`)
                 }
                 
 				this.sendSocketNotification('MMMVC_REDRAW_MODULE', apiSampleData);
-                console.debug(JSON.stringify(apiSampleData, null, 4));
                 return;
             }
             
@@ -110,14 +105,10 @@ module.exports = NodeHelper.create({
             .then((carData) => {
                 // Download the header image if it does not already exist 
                 if (!fs.existsSync(this.config.headerImageFile)) {
-                        console.debug(`${this.name} [node_helper]: headerImage missing, trying to download...`)
                         this.downloadHeaderImage(carData.vehicleDetails.data.images.exteriorImageUrl, this.config.headerImageFile);
-                    } else {
-                        console.debug(`${this.name} [node_helper]: headerImage already exists, no need to download again.`)
                     }
 
                     this.sendSocketNotification('MMMVC_REDRAW_MODULE', carData);
-                    console.debug(JSON.stringify(carData, null, 4));
                 }) 
                 .catch(err => console.error(err));
         }

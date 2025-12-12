@@ -76,6 +76,7 @@ Module.register("MMM-VolvoCar", {
         return "templates\\MMM-VolvoCar.njk"
     },
     getTemplateData() {
+        Log.debug(`${this.name}: Current carData - ${this.carData}`);
         var templateData = {
             authenticated: this.authenticated,
             authUrl: this.authUrl,

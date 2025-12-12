@@ -26,10 +26,9 @@ class VolvoOAuth {
         if (fs.existsSync(this.authTokenFile)) {
             try {
                 this.token = JSON.parse(fs.readFileSync(this.authTokenFile));
-                console.debug(`MMM-VolvoCar [oauth]: Token loaded - ${JSON.stringify(this.token)}`);
                 return true;
             } catch (e) {
-                console.error("Failed to load token:", e);
+                console.error("MMM-VolvoCar [oauth]: Failed to load token:", e);
             }
         }
         return false;
@@ -42,7 +41,7 @@ class VolvoOAuth {
             try {
                 data = JSON.parse(body);
             } catch (err) {
-                console.error("Unable to parse token body as JSON:", err);
+                console.error("MMM-VolvoCar [oauth]: Unable to parse token body as JSON - ", err);
                 data = {};
             }
         }
@@ -62,7 +61,6 @@ class VolvoOAuth {
             token.expires_at = Date.now();
         }
 
-        console.debug(`MMM-VolvoCar [oauth]: Saving new token: ${JSON.stringify(token)}`);
         fs.writeFileSync(this.authTokenFile, JSON.stringify(token, null, 2));
         this.token = token;
     }
