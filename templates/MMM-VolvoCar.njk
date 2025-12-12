@@ -133,7 +133,7 @@ Y88b   d88P  d88P 888 888   d88P   888       d88P 888 8888888K.  888      888888
 
 {# ELECTRIC SPECIFIC VARIABLES #}
 {% if vehicleDetails.fuelType | upper in ["ELECTRIC","PETROL/ELECTRIC"] %}{% set batteryPoweredCar = true %}{% else %}{% set batteryPoweredCar = false %}{% endif %}
-{% if chargingStatus.value | upper in ["CHARGING_SYSTEM_CHARGING"] %}{% set isCharging = true %}{% else %}{% set isCharging = false %}{% endif %}
+{% if chargingStatus.value | upper in ["CHARGING"] %}{% set isCharging = true %}{% else %}{% set isCharging = false %}{% endif %}
 
 {# MACRO TO RETURN A CLASS BASED ON THE PROVIDED VALUE #}
 {% macro setStatusbarColor(val) %}
