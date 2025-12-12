@@ -1,5 +1,4 @@
 const crypto = require("crypto");
-const got = require("got");
 const fs = require("fs");
 
 class VolvoOAuth {
@@ -110,27 +109,35 @@ class VolvoOAuth {
 
         const authHeader = "Basic " + Buffer.from(`${this.authClientId}:${this.authClientSecret}`).toString("base64");
 
+        const formData = new URLSearchParams({
+            grant_type: "refresh_token",
+            refresh_token: this.token.refresh_token,
+            code_verifier: this.verifier
+        });
+
         try {
-            const response = await got.post(this.authTokenUrl, {
-                form: {
-                    grant_type: "refresh_token",
-                    refresh_token: this.token.refresh_token,
-                    code_verifier: this.verifier
-                },
+            const response = await fetch(this.authTokenUrl, {
+                method: "POST",
                 headers: {
                     "User-Agent": "Mozilla/5.0 (MagicMirror Module)",
                     "Authorization": authHeader,
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
-                responseType: "json"
+                body:formData.toString()
             });
 
-            this.saveToken(response.body);
-            return true;
+            if (!response.ok) {
+                const errorBody = await response.text().catch(() => null);
+                console.error(`MMM-VolvoCar [oauth]: Refresh token failed: ${response.status} ${response.statusText} — ${errorBody}`);
+                return false;
+            }
 
-        } catch (err) {
-            console.error("Refresh token failed:", err.response?.statusCode, err.response?.body);
-            return false;
+            const data = await response.json();
+
+            this.saveToken(data);
+            return true;
+        } catch (error) {
+
         }
     }
 
@@ -162,23 +169,38 @@ class VolvoOAuth {
 
     async exchangeCodeForToken(code) {
         const authHeader = "Basic " + Buffer.from(`${this.authClientId}:${this.authClientSecret}`).toString("base64");
-
-        const response = await got.post(this.authTokenUrl, {
-            form: {
-                grant_type: "authorization_code",
-                code,
-                redirect_uri: this.authRedirectUri,
-                code_verifier: this.verifier
-            },
-            headers: {
-                "User-Agent": "Mozilla/5.0 (MagicMirror Module)",
-                "Authorization": authHeader,
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            responseType: "json"
+        const formData = new URLSearchParams({
+            grant_type: "authorization_code",
+            code: code,
+            redirect_uri: this.authRedirectUri,
+            code_verifier: this.verifier
         });
 
-        this.saveToken(response.body);
+        try {
+            const response = await fetch(this.authTokenUrl, {
+                method: "POST",
+                headers: {
+                    "User-Agent": "Mozilla/5.0 (MagicMirror Module)",
+                    "Authorization": authHeader,
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: formData.toString()
+            });
+
+            // Manual error handling since fetch does not throw on HTTP error codes
+            if (!response.ok) {
+                const errorBody = await response.text().catch(() => null);
+                throw new Error(
+                    `MMM-VolvoCar [oauth]: Token exchange failed: ${response.status} ${response.statusText} — ${errorBody}`
+                );
+            }
+
+            const data = await response.json();
+            this.saveToken(data);
+
+        } catch (err) {
+            console.error("MMM-VolvoCar [oauth]: exchangeCodeForToken error:", err);
+        }
     }
 }
 

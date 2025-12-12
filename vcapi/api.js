@@ -1,21 +1,18 @@
-const got = require("got");
-
 class VolvoApiClient {
 
     constructor(oauth, config) {
         this.oauth = oauth;
         this.carVin = config.carVin;
         this.apiKey = config.apiKey;
-        this.base = config.apiBaseUrl;
+        this.baseUrl = config.apiBaseUrl;
     }
 
     async makeRequest(path) {
         const accessToken = await this.oauth.getValidAccessToken();
+        const url = `${this.baseUrl}${path}`;
 
-        const url = `${this.base}${path}`;
-
-        const response = await got(url, {
-            responseType: "json",
+        const response = await fetch(url, {
+            method: "GET",
             headers: {
                 "User-Agent": "Mozilla/5.0 (MagicMirror Module)",
                 "Authorization": `Bearer ${accessToken}`,
@@ -23,7 +20,11 @@ class VolvoApiClient {
             }
         });
 
-        return response.body;
+        if (!response.ok) {
+            throw new Error(`MMM-VolvoCar [api]: HTTP error ${response.status} - ${response.statusText}`);
+        }
+
+        return await response.json();
     }
 
     // Energy API
