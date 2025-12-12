@@ -148,10 +148,10 @@ class VolvoOAuth {
         this.state = crypto.randomBytes(16).toString("hex");
 
         const p = new URLSearchParams({
-            client_id: this.authClientId,
             response_type: "code",
+            client_id: this.authClientId,
             redirect_uri: this.authRedirectUri,
-            authScope: this.authScope,
+            scope: this.authScope,
             state: this.state,
             code_challenge: this.challenge,
             code_challenge_method: "S256"
