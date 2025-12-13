@@ -12,7 +12,6 @@ Module.register("MMM-VolvoCar", {
         authClientSecret: null,
         authRedirectUri: null,
         authShowQrCode: true,
-        authTokenFile: './modules/MMM-VolvoCar/vcapi/token.json',
 
         // SETTINGS: API
         apiBaseUrl: "https://api.volvocars.com",
@@ -62,8 +61,14 @@ Module.register("MMM-VolvoCar", {
         this.carData        = null;
         this.lastUpdated    = null;
 
+        // Define the token-file per instance
+        this.config.authTokenFile = `./modules/MMM-VolvoCar/vcapi/token-${this.identifier}.json`,
+
         // Initialize the module
-        this.sendSocketNotification("MMMVC_INIT_MODULE", this.config);
+        this.sendSocketNotification("MMMVC_INIT_MODULE", {
+            identifier: this.identifier,
+            config:     this.config,
+        });
     },
 
     getStyles: function () {
@@ -99,19 +104,26 @@ Module.register("MMM-VolvoCar", {
     },
 
     socketNotificationReceived(notification, payload) {
+        if (payload?.identifier && payload.identifier !== this.identifier) {
+            return;
+        }
+
         if (notification === "MMMVC_AUTH_NEEDED") {
-            fetch("/MMM-VolvoCar/generate-url")
+            fetch(`/MMM-VolvoCar/generate-url/${this.identifier}`)
                 .then(response => response.text())
                 .then(authUrl => {
                     this.authUrl = authUrl;
-                    this.sendSocketNotification("MMMVC_GENERATE_QR_CODE", authUrl);
+                    this.sendSocketNotification("MMMVC_GENERATE_QR_CODE", {
+                        identifier: this.identifier,
+                        authUrl,
+                    });
                 });
         }
 
         if (notification === "MMMVC_SHOW_AUTH") {
             this.loading        = false;
             this.loadingReason  = "auth";
-            this.qrCode = payload;
+            this.qrCode = payload.qrCode;
             this.updateDom();
         }
 
@@ -120,7 +132,9 @@ Module.register("MMM-VolvoCar", {
             this.loading        = true;
             this.loadingReason  = "fetching";
             this.updateDom();
-            this.sendSocketNotification('MMMVC_FETCH_DATA');
+            this.sendSocketNotification('MMMVC_FETCH_DATA', {
+                identifier: this.identifier,
+            });
             this.startLoop();
         }
 
@@ -137,7 +151,7 @@ Module.register("MMM-VolvoCar", {
             this.loading        = false;
             this.loadingReason  = null;
             this.error          = null;
-            this.carData        = payload;
+            this.carData        = payload.data;
             this.lastUpdated    = now.format(this.config.dateFormat);
             this.updateDom();
         }
@@ -150,7 +164,9 @@ Module.register("MMM-VolvoCar", {
     startLoop: function () {
 		Log.info(`${this.name} is starting the update loop`);
 		window.setInterval(() => {
-			this.sendSocketNotification('MMMVC_FETCH_DATA');
+			this.sendSocketNotification('MMMVC_FETCH_DATA', {
+                identifier: this.identifier,
+            });
 		}, this.config.moduleDataRefreshInterval );
 	},
 });

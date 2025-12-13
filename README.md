@@ -68,7 +68,6 @@ Here's an example of a basic config for the module. See full list of available s
 | `authClientSecret` | The clientSecret of your Volvo Cars API Application <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
 | `authRedirectUri` | The redirectUri of your Volvo Cars API Application <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
 | `authShowQrCode` | Used to decide if you want to show a QR-code or link for authorization <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `true`</li><li>**Possible values:** `true` or `false`</li></ul> |
-| `authTokenFile` | The path for where to store the access_token from the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `./modules/MMM-VolvoCar/vcapi/token.json`</li></ul> |
 | `apiBaseUrl` | The base URL for the Volvo API <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `https://api.volvocars.com`</li></ul> |
 | `apiKey` | Your Volvo API application's api key <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
 | `apiUseSampleDataFile` | Used to decide if you want to use real data from the API or sample data from the provided file <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `false`</li><li>**Possible values:** `true` or `false`</li></ul> |

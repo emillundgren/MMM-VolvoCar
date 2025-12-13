@@ -147,10 +147,10 @@ class VolvoOAuth {
         return crypto.createHash("sha256").update(v).digest("base64url");
     }
 
-    getAuthorizationUrl() {
+    getAuthorizationUrl(identifier) {
         this.verifier = this.generateVerifier();
         this.challenge = this.generateChallenge(this.verifier);
-        this.state = crypto.randomBytes(16).toString("hex");
+        this.state = `${crypto.randomBytes(16).toString("hex")}.${identifier}`;
 
         const p = new URLSearchParams({
             response_type: "code",
