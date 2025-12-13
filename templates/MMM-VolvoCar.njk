@@ -218,7 +218,27 @@ Y88b  d88P Y88b. .d88P 888   Y8888     888     888        888   Y8888     888
 {% if loading %}
     <div id="mmm-volvocar" class="mmm-volvocar">
         <div class="wrapper">
-            <p>{{ "LOADING" | translate | upper }}</p>
+            <center>
+                <p>
+                    <i class="fa fa-spinner fa-spin"></i>
+                    {% if loadingReason == "fetching" %}
+                        {{ "LOADING_FETCH" | translate | upper }}
+                    {% else %}
+                        {{ "LOADING_INIT" | translate | upper }}
+                    {% endif %}
+                </p>
+            </center>
+        </div>
+    </div>
+{% elif error %}
+    <div id="mmm-volvocar" class="mmm-volvocar">
+        <div class="wrapper">
+            <center>
+                <p>
+                    <i class="fa fa-exclamation-triangle"></i> <b>{{ "ERROR_API_HEADER" | translate | upper }}</b><br>
+                    {{ "ERROR_API_TEXT" | translate }}
+                </p>
+            </center>
         </div>
     </div>
 {% elif not authenticated %}

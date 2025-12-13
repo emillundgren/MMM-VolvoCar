@@ -110,7 +110,10 @@ module.exports = NodeHelper.create({
 
                     this.sendSocketNotification('MMMVC_REDRAW_MODULE', carData);
                 }) 
-                .catch(err => console.error(err));
+                .catch(error => {
+                    console.error(error);
+                    this.sendSocketNotification('MMMVC_FETCH_ERROR', error);
+                });
         }
     },
 

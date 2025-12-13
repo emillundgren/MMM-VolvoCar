@@ -1,8 +1,11 @@
 {
-    "LOADING": "LOADING...",
+    "LOADING_INIT": "LOADING...",
+    "LOADING_FETCH": "FETCHING VEHICLE DATA...",
     "AUTHENTICATE_HEADER": "NOT AUTHENTICATED",
     "AUTHENTICATE_TEXT_QR": "Scan or click the QR to login to the Volvo API",
     "AUTHENTICATE_TEXT_LINK": "Click here to login to the Volvo API",
+    "ERROR_API_HEADER": "API ERROR",
+    "ERROR_API_TEXT": "Failed to fetch vehicle data",
     "LAST_UPDATED": "LAST UPDATED",
     "LOCKED": "LOCKED",
     "UNLOCKED": "UNLOCKED",

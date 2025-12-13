@@ -1,6 +1,6 @@
 # MMM-VolvoCar
 
-A MagicMirror Module for displaying data from your Volvo car
+A MagicMirror² Module for displaying data from your Volvo car
 
 [![Platform](https://img.shields.io/badge/platform-MagicMirror-informational)](https://MagicMirror.builders)
 [![License](https://img.shields.io/badge/license-MIT-informational)](https://raw.githubusercontent.com/emillundgren/MMM-VolvoCar/master/LICENSE)
@@ -10,7 +10,7 @@ A MagicMirror Module for displaying data from your Volvo car
 ![Example Screenshot](../assets/example.gif?raw=true)
 
 ## Installation
-To use this module, you simply need to clone this repository into your Magic Mirror's modules folder
+To use this module, you simply need to clone this repository into your MagicMirror's modules folder
 
 1. Navigate to the `modules` folder
 	```bash
@@ -20,7 +20,11 @@ To use this module, you simply need to clone this repository into your Magic Mir
 	```bash
 	git clone https://github.com/emillundgren/MMM-VolvoCar.git
 	```
-3. Add the module to your Magic Mirror by copying the [Sample Config](#sample-config) below and add that to your `config.js`
+3. Install dependencies
+	```
+	cd ~/MagicMirror/modules/MMM-VolvoCar && npm install
+	```
+4. Add the module to your Magic Mirror by copying the [Sample Config](#sample-config) below and add that to your `config.js`
 
 ## Updating
 
@@ -30,7 +34,7 @@ To use this module, you simply need to clone this repository into your Magic Mir
 	```
 2. Update the repository
 	```bash
-	git pull
+	git pull && npm install
 	```
 
 ## Sample Config

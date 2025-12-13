@@ -52,10 +52,17 @@ Module.register("MMM-VolvoCar", {
     },
 
     start() {
-        this.authenticated = false;
-        this.authUrl = null;
-        this.qrCode = null;
+        // Set parameter starting values
+        this.loading        = true;
+        this.loadingReason  = "init";
+        this.authenticated  = false;
+        this.error          = false;
+        this.authUrl        = null;
+        this.qrCode         = null;
+        this.carData        = null;
+        this.lastUpdated    = null;
 
+        // Initialize the module
         this.sendSocketNotification("MMMVC_INIT_MODULE", this.config);
     },
 
@@ -75,45 +82,63 @@ Module.register("MMM-VolvoCar", {
     getTemplate() {
         return "templates\\MMM-VolvoCar.njk"
     },
+
     getTemplateData() {
-        Log.debug(`${this.name}: Current carData - ${this.carData}`);
         var templateData = {
-            authenticated: this.authenticated,
-            authUrl: this.authUrl,
-            qrCode: this.qrCode,
-            config: this.config,
-            carData: this.carData,
-            lastUpdated: this.lastUpdated,
+            loading:        this.loading,
+            loadingReason:  this.loadingReason,
+            error:          this.error,
+            authenticated:  this.authenticated,
+            authUrl:        this.authUrl,
+            qrCode:         this.qrCode,
+            config:         this.config,
+            carData:        this.carData,
+            lastUpdated:    this.lastUpdated,
         }
         return templateData
     },
 
     socketNotificationReceived(notification, payload) {
+        if (notification === "MMMVC_AUTH_NEEDED") {
+            fetch("/MMM-VolvoCar/generate-url")
+                .then(response => response.text())
+                .then(authUrl => {
+                    this.authUrl = authUrl;
+                    this.sendSocketNotification("MMMVC_GENERATE_QR_CODE", authUrl);
+                });
+        }
+
+        if (notification === "MMMVC_SHOW_AUTH") {
+            this.loading        = false;
+            this.loadingReason  = "auth";
+            this.qrCode = payload;
+            this.updateDom();
+        }
+
         if (notification === "MMMVC_AUTH_SUCCESSFUL") {
-            this.authenticated = true;
+            this.authenticated  = true;
+            this.loading        = true;
+            this.loadingReason  = "fetching";
             this.updateDom();
             this.sendSocketNotification('MMMVC_FETCH_DATA');
             this.startLoop();
         }
 
-        if (notification === "MMMVC_AUTH_NEEDED") {
-            fetch("/MMM-VolvoCar/generate-url")
-                .then(r => r.text())
-                .then(url => {
-                    this.authUrl = url;
-                    this.sendSocketNotification("MMMVC_GENERATE_QR_CODE", url);
-                });
-        }
-
-        if (notification === "MMMVC_SHOW_AUTH") {
-            this.qrCode = payload;
+        if (notification === "MMMVC_FETCH_ERROR") {
+            Log.error(`${this.name}: API Fetch error`);
+            this.loading    = false;
+            this.error      = true;
+            this.carData    = null;
             this.updateDom();
         }
 
         if (notification === "MMMVC_REDRAW_MODULE") {
-            const now = moment();
-            this.carData = payload;
-            this.lastUpdated = now.format(this.config.dateFormat);
+            const now           = moment();
+            this.loading        = false;
+            this.loadingReason  = null;
+            this.error          = null;
+            this.carData        = payload;
+            this.lastUpdated    = now.format(this.config.dateFormat);
             this.updateDom();
         }
 

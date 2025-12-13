@@ -1,8 +1,11 @@
 {
-    "LOADING": "LADDAR...",
+    "LOADING_INIT": "LADDAR...",
+    "LOADING_FETCH": "LADDAR FORDONSDATA...",
     "AUTHENTICATE_HEADER": "EJ INLOGGAD",
     "AUTHENTICATE_TEXT_QR": "Skanna eller klicka på QR-koden för att logga in till Volvo API",
     "AUTHENTICATE_TEXT_LINK": "Klicka här för att logga in till Volvo API",
+    "ERROR_API_HEADER": "API ERROR",
+    "ERROR_API_TEXT": "Lyckades inte hämta fordonsdata",
     "LAST_UPDATED": "SENAST UPPDATERAD",
     "LOCKED": "LÅST",
     "UNLOCKED": "UPPLÅST",
