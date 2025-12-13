@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.0] - 2025-12-13
+
+### Changed
+
+- Implemented the correct OAuth flow for Volvo API
+- Added possibility for running multiple instances of the module
+- Update the templates
+
+
 ## [2.2.2] - 2025-08-01
 
 ### Changed
