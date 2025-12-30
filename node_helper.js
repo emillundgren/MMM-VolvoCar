@@ -36,10 +36,10 @@ module.exports = NodeHelper.create({
             instance.api    = new VolvoApiClient(instance.oauth, config);
 
             // Verify that all needed config parameters is set
-            if (!instance.config.authClientId) {console.error(`${this.name} [node_helper]: The config value 'authClientId' is needed for the module to work`); return;}
-            if (!instance.config.authClientSecret) {console.error(`${this.name} [node_helper]: The config value 'authClientSecret' is needed for the module to work`); return;}
-            if (!instance.config.apiKey) {console.error(`${this.name} [node_helper]: The config value 'apiKey' is needed for the module to work`); return;}
-            if (!instance.config.carVin) {console.error(`${this.name} [node_helper]: The config value 'carVin' is needed for the module to work`); return;}
+            if (!instance.config.authClientId) {console.error(`${this.name} [node_helper]: The config value 'authClientId' is needed for the module to work`); this.sendSocketNotification("MMMVC_INIT_ERROR", {identifier: payload.identifier}); return;}
+            if (!instance.config.authClientSecret) {console.error(`${this.name} [node_helper]: The config value 'authClientSecret' is needed for the module to work`); this.sendSocketNotification("MMMVC_INIT_ERROR", {identifier: payload.identifier}); return;}
+            if (!instance.config.apiKey) {console.error(`${this.name} [node_helper]: The config value 'apiKey' is needed for the module to work`); this.sendSocketNotification("MMMVC_INIT_ERROR", {identifier: payload.identifier}); return;}
+            if (!instance.config.carVin) {console.error(`${this.name} [node_helper]: The config value 'carVin' is needed for the module to work`); this.sendSocketNotification("MMMVC_INIT_ERROR", {identifier: payload.identifier}); return;}
 
             if (!this.endpointsRegistered) {
                 this.registerModuleEndpoints();
@@ -91,19 +91,19 @@ module.exports = NodeHelper.create({
                 // Download the header image if it does not already exist 
                 if (!fs.existsSync(instance.config.headerImageFile)) {
                         this.downloadHeaderImage(carData.vehicleDetails.data.images.exteriorImageUrl, instance.config.headerImageFile, identifier);
-                    }
+                }
 
-                    this.sendSocketNotification('MMMVC_REDRAW_MODULE', { 
-                        identifier,
-                        data: carData
-                    });
-                }) 
-                .catch(error => {
-                    console.error(error);
-                    this.sendSocketNotification('MMMVC_FETCH_ERROR', {
-                        identifier
-                    });
+                this.sendSocketNotification('MMMVC_REDRAW_MODULE', { 
+                    identifier,
+                    data: carData
                 });
+            }) 
+            .catch(error => {
+                console.error(error);
+                this.sendSocketNotification('MMMVC_FETCH_ERROR', {
+                    identifier
+                });
+            });
         }
     },
 

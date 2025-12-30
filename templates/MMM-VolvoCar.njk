@@ -68,12 +68,15 @@
 {% set odometer = carData.odometer.data.odometer %}
 
 {# PARSE API DATA - statistics #}
-{% set averageEnergyConsumption = carData.statistics.data.averageEnergyConsumption %}
-{% set averageSpeed             = carData.statistics.data.averageSpeed %}
-{% set averageSpeedAutomatic    = carData.statistics.data.averageSpeedAutomatic %}
-{% set tripMeterManual          = carData.statistics.data.odometetripMeterManualr %}
-{% set tripMeterAutomatic       = carData.statistics.data.tripMeterAutomatic %}
-{% set distanceToEmptyBattery   = carData.statistics.data.distanceToEmptyBattery %}
+{% set averageFuelConsumption           = carData.statistics.data.averageFuelConsumption %}
+{% set averageEnergyConsumption         = carData.statistics.data.averageEnergyConsumption %}
+{% set averageFuelConsumptionAutomatic  = carData.statistics.data.averageFuelConsumptionAutomatic %}
+{% set averageSpeed                     = carData.statistics.data.averageSpeed %}
+{% set averageSpeedAutomatic            = carData.statistics.data.averageSpeedAutomatic %}
+{% set tripMeterManual                  = carData.statistics.data.odometetripMeterManualr %}
+{% set tripMeterAutomatic               = carData.statistics.data.tripMeterAutomatic %}
+{% set distanceToEmptyTank              = carData.statistics.data.distanceToEmptyTank %}
+{% set distanceToEmptyBattery           = carData.statistics.data.distanceToEmptyBattery %}
 
 {# PARSE API DATA - tyreStatus #}
 {% set frontLeftTyre    = carData.tyreStatus.data.frontLeft %}
@@ -235,8 +238,17 @@ Y88b  d88P Y88b. .d88P 888   Y8888     888     888        888   Y8888     888
         <div class="wrapper">
             <center>
                 <p>
-                    <i class="fa fa-exclamation-triangle"></i> <b>{{ "ERROR_API_HEADER" | translate | upper }}</b><br>
-                    {{ "ERROR_API_TEXT" | translate }}
+                    <i class="fa fa-exclamation-triangle"></i>
+                    {% if errorReason == "apifetch" %}
+                        <b>{{ "ERROR_API_HEADER" | translate | upper }}</b><br>
+                        {{ "ERROR_API_TEXT" | translate }}
+                    {% elif errorReason == "init" %}
+                        <b>{{ "ERROR_INIT_HEADER" | translate | upper }}</b><br>
+                        {{ "ERROR_INIT_TEXT" | translate }}
+                    {% else %}
+                        <b>{{ "ERROR_UNKNOWN_HEADER" | translate | upper }}</b><br>
+                        {{ "ERROR_UNKNOWN_TEXT" | translate }}
+                    {% endif %}
                 </p>
             </center>
         </div>
@@ -270,21 +282,6 @@ Y88b  d88P Y88b. .d88P 888   Y8888     888     888        888   Y8888     888
 
         {# STATUSBARS #}
         <div class="wrapper {{'hide' if config.hideStatusbar}}">
-            {# FUEL LEVEL STATUSBAR #}
-            <div class="container statusbar {{'hide' if not fuelPoweredCar}}">
-                <div class="item align-left">
-                    <i class="fa-solid fa-gas-pump"></i>
-                    <span>{{distanceToEmptyTank.value}} km</span>
-                </div>
-                <div class="item align-right">
-                    <div class="statusbar-container">
-                        <div class="statusbar-bar {{setStatusbarColor(fuelLevelPercentage)}}" style="width: {{fuelLevelPercentage}}%">
-                            <div class="statusbar-text">{{fuelLevelPercentage}}%</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             {# ELECTRIC CAR BATTERY STATUSBAR #}
             <div class="container statusbar {{'hide' if not batteryPoweredCar}}">
                 <div class="item align-left">
@@ -295,6 +292,21 @@ Y88b  d88P Y88b. .d88P 888   Y8888     888     888        888   Y8888     888
                     <div class="statusbar-container">
                         <div class="statusbar-bar {{'charging-animation' if isCharging and config.useStatusbarChargingAnimation}} {{setStatusbarColor(batteryChargeLevel.value)}}" style="width: {{batteryChargeLevel.value | round(0, floor)}}%">
                             <div class="statusbar-text">{{batteryChargeLevel.value | round(0, floor)}}%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# FUEL LEVEL STATUSBAR #}
+            <div class="container statusbar {{'hide' if not fuelPoweredCar}}">
+                <div class="item align-left">
+                    <i class="fa-solid fa-gas-pump"></i>
+                    <span>{{distanceToEmptyTank.value}} km</span>
+                </div>
+                <div class="item align-right">
+                    <div class="statusbar-container">
+                        <div class="statusbar-bar {{setStatusbarColor(fuelLevelPercentage)}}" style="width: {{fuelLevelPercentage}}%">
+                            <div class="statusbar-text">{{fuelLevelPercentage}}%</div>
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.1.0] - 2025-12-13
+
+### Added
+
+- Better display of errors during initialization
+- Added a few missing values from the API
+- Documentation on how to setup app in Volvo Developer Portal
+
+### Changed
+
+- Made the headerImage instance aware
+- Changed the order of the battery and fuel bars to reflect how it's displayed in hybrid cars
+
 ## [3.0.0] - 2025-12-13
 
 ### Changed

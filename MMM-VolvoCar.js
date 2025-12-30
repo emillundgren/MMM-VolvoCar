@@ -7,7 +7,7 @@ Module.register("MMM-VolvoCar", {
         // SETTINGS: Authorization
         authUrl: "https://volvoid.eu.volvocars.com/as/authorization.oauth2",
         authTokenUrl: "https://volvoid.eu.volvocars.com/as/token.oauth2",
-        authScope: "openid conve:fuel_status conve:brake_status conve:doors_status location:read openid conve:diagnostics_workshop conve:trip_statistics conve:environment conve:odometer_status conve:engine_status conve:lock_status conve:vehicle_relation conve:windows_status conve:tyre_status conve:connectivity_status energy:state:read energy:capability:read conve:battery_charge_level conve:diagnostics_engine_status conve:warnings",
+        authScope: "openid conve:fuel_status conve:brake_status conve:doors_status location:read conve:diagnostics_workshop conve:trip_statistics conve:environment conve:odometer_status conve:engine_status conve:lock_status conve:vehicle_relation conve:windows_status conve:tyre_status conve:connectivity_status energy:state:read energy:capability:read conve:battery_charge_level conve:diagnostics_engine_status conve:warnings",
         authClientId: null,
         authClientSecret: null,
         authRedirectUri: null,
@@ -30,7 +30,6 @@ Module.register("MMM-VolvoCar", {
 		hideHeaderImageTextModel: false,
 		hideHeaderImageTextCustom: false,
 		headerImageCustomText: null,
-		headerImageFile: './modules/MMM-VolvoCar/assets/headerImage.png',
 
 		// Statusbars
 		hideStatusbar: false,
@@ -61,8 +60,9 @@ Module.register("MMM-VolvoCar", {
         this.carData        = null;
         this.lastUpdated    = null;
 
-        // Define the token-file per instance
-        this.config.authTokenFile = `./modules/MMM-VolvoCar/vcapi/token-${this.identifier}.json`,
+        // Define files per instance
+        this.config.authTokenFile   = `./modules/MMM-VolvoCar/vcapi/token-${this.identifier}.json`,
+        this.config.headerImageFile = `./modules/MMM-VolvoCar/assets/headerImage-${this.identifier}.png`,
 
         // Initialize the module
         this.sendSocketNotification("MMMVC_INIT_MODULE", {
@@ -93,6 +93,7 @@ Module.register("MMM-VolvoCar", {
             loading:        this.loading,
             loadingReason:  this.loadingReason,
             error:          this.error,
+            errorReason:    this.errorReason,
             authenticated:  this.authenticated,
             authUrl:        this.authUrl,
             qrCode:         this.qrCode,
@@ -106,6 +107,15 @@ Module.register("MMM-VolvoCar", {
     socketNotificationReceived(notification, payload) {
         if (payload?.identifier && payload.identifier !== this.identifier) {
             return;
+        }
+
+        if (notification === "MMMVC_INIT_ERROR") {
+            Log.error(`${this.name}: Initialization error`);
+            this.loading    = false;
+            this.error      = true;
+            this.errorReason= "init";
+            this.carData    = null;
+            this.updateDom();
         }
 
         if (notification === "MMMVC_AUTH_NEEDED") {
@@ -142,6 +152,7 @@ Module.register("MMM-VolvoCar", {
             Log.error(`${this.name}: API Fetch error`);
             this.loading    = false;
             this.error      = true;
+            this.errorReason= "apifetch";
             this.carData    = null;
             this.updateDom();
         }

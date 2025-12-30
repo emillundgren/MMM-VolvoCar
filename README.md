@@ -24,7 +24,8 @@ To use this module, you simply need to clone this repository into your MagicMirr
 	```
 	cd ~/MagicMirror/modules/MMM-VolvoCar && npm install
 	```
-4. Add the module to your Magic Mirror by copying the [Sample Config](#sample-config) below and add that to your `config.js`
+4. Setup an application in the Volvo Developer Portal. See [Volvo API Application](#volvo-api-application)
+5. Add the module to your Magic Mirror by copying the [Sample Config](#sample-config) below and add that to your `config.js`
 
 ## Updating
 
@@ -37,22 +38,68 @@ To use this module, you simply need to clone this repository into your MagicMirr
 	git pull && npm install
 	```
 
+## Volvo API Application
+To be able to fetch data from the Volvo API we first need to create and publish an applicatin at their Developer Portal found [here](https://developer.volvocars.com/). Follow the steps below in order to get the clientId, clientSecret and apiKey
+
+1. Login on the [Developer Portal](https://developer.volvocars.com/) and then open your profile by pressing your name in the top right corner.
+2. You should see "Create new application". Enter a name for your application in the field and press "Create"
+3. You should now see your application appear in the list. Expand this and press "Publish" in the bottom
+4. In the form that pops up, fill in all the details required. The important fields are:
+    - Scopes
+		- Following scopes are are needed for the module to work:
+			#### Connected Vehicle API:
+			```
+			conve:battery_charge_level
+			conve:diagnostics_engine_status
+			conve:doors_status
+			conve:engine_status
+			conve:fuel_status
+			conve:trip_statistics
+			conve:warnings
+			conve:brake_status
+			conve:connectivity_status
+			conve:diagnostics_workshop
+			conve:environment
+			conve:lock_status
+			conve:odometer_status
+			conve:tyre_status
+			conve:vehicle_relation
+			conve:windows_status
+			```
+			#### Energy API:
+			```
+			energy:capability:read
+			energy:state:read
+			```
+			#### Location API:
+			```
+			location:read
+			```
+	- Redirect URI(s)
+		- Volvo require you to have a redirect URI with https://
+		- This module accepts the callback from Volvo API on `<MAGICMIRROR_ADDRESS>/MMM-VolvoCar/callback`
+		- Save this uri that you use as you need to enter this into the module configuration later.
+5. After you submitted your application successfully, you should see a popup with the Client ID and Client Secret, save both values for later use in the module configuration.
+6. Under your application you will also find the VCC Api key. Save this value and move on to the configuration of the module. See [Sample Config](#sample-config) below for the base configuration that is required for the module to work.
+
 ## Sample Config
 Here's an example of a basic config for the module. See full list of available settings below under [Configuration](#configuration)
 ```javascript
 {
 	module: "MMM-VolvoCar",
-	position: "top_right",
+	position: "top_left",
 	header: "My Volvo Car",
 	config: {
 		// SETTINGS: Authorization
-		authUsername: 'CHANGE_FOR_YOUR_CLIENT_ID',
-		authPassword: 'CHANGE_FOR_YOUR_CLIENT_SECRET',
-		authVccApiKey: 'CHANGE_FOR_YOUR_VCC_API_KEY',
+		authClientId: 'CHANGE_TO_YOUR_CLIENT_ID',
+		authClientSecret: 'CHANGE_TO_YOUR_CLIENT_SECRET',
+		authRedirectUri: 'CHANGE_TO_YOUR_REDIRECT_URI',
+		
+		// SETTINGS: API
+		apiKey: 'CHANGE_TO_YOUR_API_KEY',
 
 		// SETTINGS: Car
-		carVin: 'CHANGE_FOR_YOUR_CAR_VIN',
-		carFuelTankSize: 60,
+		carVin: 'CHANGE_TO_YOUR_CAR_VIN',
 	}
 },
 ```
@@ -79,7 +126,6 @@ Here's an example of a basic config for the module. See full list of available s
 | `hideHeaderImageTextModel` | Boolean to decide if the header image text with car model should be shown <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `false`</li><li>**Possible values:** `true` or `false`</li></ul> |
 | `hideHeaderImageTextCustom` | Boolean to decide if the header image custom text with should be shown <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `false`</li><li>**Possible values:** `true` or `false`</li></ul> |
 | `headerImageCustomText` | Custom text to display in the header image, for example the registration number of the car, if you intend to display more than one car on your Magic Mirror <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `null`</li></ul> |
-| `headerImageFile` | The path for where your header image is stored <br><br> <ul><li>**Type:** `string`</li><li>**Default:** `./modules/MMM-VolvoCar/assets/headerImage.png`</li></ul> |
 | `hideStatusbar` | Boolean to decide if the statusbars, displaying battery/fuel percentage, should be shown <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `false`</li><li>**Possible values:** `true` or `false`</li></ul> |
 | `useStatusbarChargingAnimation` | Boolean to decide if the statusbars charging animation should be used or not <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `true`</li><li>**Possible values:** `true` or `false`</li></ul> |
 | `useStatusbarColor` | Boolean to decide if the statusbars should show color when getting low. <br> _Red between values of `statusbarColorDangerMinMax`_ <br> _Yellow between values of `statusbarColorWarnMinMax`_ <br><br> <ul><li>**Type:** `boolean`</li><li>**Default:** `true`</li><li>**Possible values:** `true` or `false`</li></ul> |
