@@ -110,7 +110,7 @@ Module.register("MMM-VolvoCar", {
         }
 
         if (notification === "MMMVC_INIT_ERROR") {
-            Log.error(`${this.name}: Initialization error`);
+            Log.error(`${this.identifier}: Initialization error`);
             this.loading    = false;
             this.error      = true;
             this.errorReason= "init";
@@ -149,7 +149,7 @@ Module.register("MMM-VolvoCar", {
         }
 
         if (notification === "MMMVC_FETCH_ERROR") {
-            Log.error(`${this.name}: API Fetch error`);
+            Log.error(`${this.identifier}: API Fetch error`);
             this.loading    = false;
             this.error      = true;
             this.errorReason= "apifetch";
@@ -173,7 +173,7 @@ Module.register("MMM-VolvoCar", {
     },
 
     startLoop: function () {
-		Log.info(`${this.name} is starting the update loop`);
+		Log.info(`${this.identifier} is starting the update loop`);
 		window.setInterval(() => {
 			this.sendSocketNotification('MMMVC_FETCH_DATA', {
                 identifier: this.identifier,

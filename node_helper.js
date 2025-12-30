@@ -25,7 +25,7 @@ module.exports = NodeHelper.create({
     },
 
     socketNotificationReceived(notification, payload) {
-        console.log(`${this.name} [node_helper]: Received a socket notification - ${notification}`)
+        console.log(`${payload.identifier} [node_helper]: Received a socket notification - ${notification}`)
         
         if (notification === "MMMVC_INIT_MODULE") {
             // Setup an instnace of the module
@@ -36,10 +36,10 @@ module.exports = NodeHelper.create({
             instance.api    = new VolvoApiClient(instance.oauth, config);
 
             // Verify that all needed config parameters is set
-            if (!instance.config.authClientId) {console.error(`${this.name} [node_helper]: The config value 'authClientId' is needed for the module to work`); this.sendSocketNotification("MMMVC_INIT_ERROR", {identifier: payload.identifier}); return;}
-            if (!instance.config.authClientSecret) {console.error(`${this.name} [node_helper]: The config value 'authClientSecret' is needed for the module to work`); this.sendSocketNotification("MMMVC_INIT_ERROR", {identifier: payload.identifier}); return;}
-            if (!instance.config.apiKey) {console.error(`${this.name} [node_helper]: The config value 'apiKey' is needed for the module to work`); this.sendSocketNotification("MMMVC_INIT_ERROR", {identifier: payload.identifier}); return;}
-            if (!instance.config.carVin) {console.error(`${this.name} [node_helper]: The config value 'carVin' is needed for the module to work`); this.sendSocketNotification("MMMVC_INIT_ERROR", {identifier: payload.identifier}); return;}
+            if (!instance.config.authClientId) {console.error(`${payload.identifier} [node_helper]: The config value 'authClientId' is needed for the module to work`); this.sendSocketNotification("MMMVC_INIT_ERROR", {identifier: payload.identifier}); return;}
+            if (!instance.config.authClientSecret) {console.error(`${payload.identifier} [node_helper]: The config value 'authClientSecret' is needed for the module to work`); this.sendSocketNotification("MMMVC_INIT_ERROR", {identifier: payload.identifier}); return;}
+            if (!instance.config.apiKey) {console.error(`${payload.identifier} [node_helper]: The config value 'apiKey' is needed for the module to work`); this.sendSocketNotification("MMMVC_INIT_ERROR", {identifier: payload.identifier}); return;}
+            if (!instance.config.carVin) {console.error(`${payload.identifier} [node_helper]: The config value 'carVin' is needed for the module to work`); this.sendSocketNotification("MMMVC_INIT_ERROR", {identifier: payload.identifier}); return;}
 
             if (!this.endpointsRegistered) {
                 this.registerModuleEndpoints();
@@ -59,7 +59,7 @@ module.exports = NodeHelper.create({
                 });
             })
             .catch((error) => {
-                console.error(`${this.name} [node_helper]: Error generating QR code`);
+                console.error(`${payload.identifier} [node_helper]: Error generating QR code`);
             })
         }
 
@@ -70,7 +70,7 @@ module.exports = NodeHelper.create({
 
             // Use the Sample Data instead of the API
             if (instance.config.apiUseSampleDataFile && fs.existsSync(instance.config.apiSampleDataFile)) {
-                console.log(`${this.name} [node_helper]: Displaying data from ${instance.config.apiSampleDataFile} instead of using the API`);
+                console.log(`${payload.identifier} [node_helper]: Displaying data from ${instance.config.apiSampleDataFile} instead of using the API`);
                 const apiSampleData = JSON.parse(fs.readFileSync(instance.config.apiSampleDataFile, 'utf8'));
 
                 // Download the header image if it does not already exist 
@@ -119,7 +119,7 @@ module.exports = NodeHelper.create({
             const accessToken = await instance.oauth.getValidAccessToken();
 
             if (accessToken) {
-                console.log(`${this.name} [node_helper]: Authentication OK - valid token available`);
+                console.log(`${identifier} [node_helper]: Authentication OK - valid token available`);
                 this.sendSocketNotification("MMMVC_AUTH_SUCCESSFUL", { 
                     identifier
                 });
@@ -127,11 +127,11 @@ module.exports = NodeHelper.create({
             }
 
         } catch (error) {
-            console.error(`${this.name} [node_helper]: Error while checking token:`, error);
+            console.error(`${identifier} [node_helper]: Error while checking token:`, error);
         }
 
         // No access token → user must log in
-        console.log(`${this.name} [node_helper]: No valid token → login required.`);
+        console.log(`${identifier} [node_helper]: No valid token → login required.`);
         this.sendSocketNotification("MMMVC_AUTH_NEEDED", { 
             identifier
         });
@@ -224,12 +224,12 @@ module.exports = NodeHelper.create({
             // Write the array buffer to the file
             await fsp.writeFile(localPath, Buffer.from(arrayBuffer));
         
-            console.info(`${this.name} [node_helper]: headerImage downloaded successfully:`, localPath);
+            console.info(`${identifier} [node_helper]: headerImage downloaded successfully:`, localPath);
             this.sendSocketNotification("MMMVC_UPDATE_DOM", {
                 identifier
             });
             } catch (error) {
-            console.error(`${this.name} [node_helper]: Error downloading image:`, error);
+            console.error(`${identifier} [node_helper]: Error downloading image:`, error);
         }
     },
 });

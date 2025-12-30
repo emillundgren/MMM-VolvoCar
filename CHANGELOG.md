@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+- Made the logging instance aware
 - Made the headerImage instance aware
 - Changed the order of the battery and fuel bars to reflect how it's displayed in hybrid cars
 
